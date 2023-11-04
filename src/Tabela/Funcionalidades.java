@@ -5,6 +5,7 @@
 package Tabela;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.table.TableModel;
@@ -14,7 +15,23 @@ import javax.swing.table.TableModel;
  */
 public class Funcionalidades {
     
+    //aqui passa as colunas
     public static TableModel createObjectDataModel(String[] coluna) {
+        
+        ObjectTableModel<Employee> objTabModel = new ObjectTableModel<Employee>() {
+            @Override
+            public Object getValueAt(Employee employee, int columnIndex) {
+                if(columnIndex >= 0){
+                    return employee.getLine(columnIndex);
+                }
+                return null;
+            }            
+        };
+        objTabModel.addColumn(coluna);
+        return objTabModel;
+    }
+    //aqui passa as colunas
+    public static ObjectTableModel createObjectDataModel(ArrayList<String> coluna) {
         
         ObjectTableModel<Employee> objTabModel = new ObjectTableModel<Employee>() {
             @Override
@@ -46,7 +63,7 @@ public class Funcionalidades {
             }
 
             @Override
-            public List<Employee> getRows(int startIndex, int endIndex) {
+            public List<Employee> getRowsBetweenIdices(int startIndex, int endIndex) {
                 if(list == null){
                     return null;
                 }else{

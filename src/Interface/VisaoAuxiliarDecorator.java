@@ -558,37 +558,13 @@ public class VisaoAuxiliarDecorator {
     
     private void setTableBActionPerformed(ActionEvent evt) {
 
-//        this.paginatedDecorator.clearTable();
-//        this.dataProvider = null;
-//        this.paginatedDecorator = null;
-        
-//        this.tabela.setTableHeader(null);
-        
-//        ((ObjectTableModel)this.tabDataModel).updateColumnNames(DTO.CtrlGeral.getColuna());
         System.out.println("Numero de colunas:" + DTO.CtrlGeral.getColuna().size());
-//        this.tabela.setTableHeader(new JTableHeader(this.tabela.getColumnModel()));
         this.list = null;
         this.list = (ArrayList<Employee>) DTO.CtrlGeral.gerarDadosTabela();
-//        this.tabDataModel = this.paginatedDecorator.resetTable(DTO.CtrlGeral.getColuna(), list);
-//        this.dataProvider = createDataProvider(this.list);
         
-        this.paginatedDecorator.updateDataAndPageSize(DTO.CtrlGeral.getColuna(),
-                                                           this.list,
-                                                                 new int[]{720, 744},
-                                                   720);
-//        this.initTable(this.paginatedDecorator.resetTable(DTO.CtrlGeral.getColuna(), list), 
-//                           this.list, 
-//                                new int[]{720, 744},
-//                   720);        
-        
-//         ((ObjectTableModel)this.tabDataModel).updateData(this.list);
-
-//         this.paginatedDecorator = PaginatedTableDecorator.decorate(this.tabela,
-//              this.dataProvider, new int[]{29, 30, 31}, 30);
-         //((ObjectTableModel)this.tabDataModel).updateData(DTO.CtrlGeral.gerarDadosTabela());
-//        Funcionalidades.adjustColumnWidths(tabela);
-        
-//        DTO.CtrlGeral.gerarDadosTabela();
+        this.paginatedDecorator.setNewDataModel(createObjectDataModel(DTO.CtrlGeral.getColuna()),
+                                                createDataProvider(this.list),
+                                                new int[]{720, 744});
 
     }
     

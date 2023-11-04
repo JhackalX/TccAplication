@@ -4,14 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Tabela/ObjectTableModel.java</file>
-            <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/tccaplication/TccAplication.java</file>
             <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Tabela/PaginationDataProvider.java</file>
-            <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Interface/WindowDecorator.java</file>
+            <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Tabela/DataProvider.java</file>
             <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Tabela/Funcionalidades.java</file>
-            <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/DTO/CtrlGeral.java</file>
-            <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Interface/VisaoAuxiliarDecorator.java</file>
             <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Tabela/PaginatedTableDecorator.java</file>
-            <file>file:/C:/Users/jacka/Documents/NetBeansProjects/TccAplication/src/Interface/VisaoGeralDecorator.java</file>
         </group>
     </open-files>
 </project-private>
