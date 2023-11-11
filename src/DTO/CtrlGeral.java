@@ -10,28 +10,25 @@ import Object.ListaClassificacao;
 import Tabela.Employee;
 import java.util.ArrayList;
 import java.util.List;
-import DAO.CtrlDao;
+
 /**
  *
  * @author jacka
  */
 public class CtrlGeral{
     
-    private Info medicao = null;
-    private List<ListaClassificacao> listaClassificacao = null;
-    private Guia guia = null;
-    private CtrlDao ctrlDao;
-    private Configuracoes config;
+    private static Info medicao = null;
+    private static List<ListaClassificacao> listaClassificacao = null;
+    private static Guia guia = null;
     
     public CtrlGeral() {
-        this.config = new Configuracoes();
-        this.ctrlDao =  new CtrlDao(config.getCaminhoBasesEstacoes());
+        
         this.medicao = new Info();
         this.listaClassificacao = new ArrayList<ListaClassificacao>();
      
     }
 
-    public Info getMedicao() {
+    public static Info getMedicao() {
         if(medicao == null){
             return null;           
         }else{
@@ -40,7 +37,7 @@ public class CtrlGeral{
         } 
     }
 
-    public ArrayList<String> getColuna() {
+    public static ArrayList<String> getColuna() {
         ArrayList<String> colunas = new ArrayList<String>();
         if(medicao == null){
             colunas.add("vazio");
@@ -54,7 +51,7 @@ public class CtrlGeral{
         } 
     }
     
-    public List<ListaClassificacao> setListaClassificacao(){
+    public static List<ListaClassificacao> setListaClassificacao(){
 
         List<ListaClassificacao> listaClassificacao = new ArrayList<ListaClassificacao>();
         
@@ -89,7 +86,7 @@ public class CtrlGeral{
         return listaClassificacao;
     }
     
-    public void gerarMetEs(){
+    public static void gerarMetEs(){
 
         List<AuxEs> lista = new ArrayList<AuxEs>();
 
@@ -128,7 +125,7 @@ public class CtrlGeral{
         }
     }
     
-    public void gerarMetAR(){
+    public static void gerarMetAR(){
 
         List<AuxAr> lista = new ArrayList<AuxAr>();
 
@@ -167,20 +164,20 @@ public class CtrlGeral{
         }
     }
     
-    public void setMedicao(Info medicao) {
+    public static void setMedicao(Info medicao) {
 //        medicao.imprimirColuna();
-        this.medicao = medicao;
+        CtrlGeral.medicao = medicao;
 //        Tabela.Funcionalidades.setColumn(CtrlGeral.meses);
 //        System.out.println("setMEdicao!!!!!");
         Guia nova = new Guia();
         nova.gerarGuia(medicao.getLista(2).getDados());
-        this.setApendice(nova);
+        CtrlGeral.setApendice(nova);
 //        apendice.imprimir();
-        this.listaClassificacao = setListaClassificacao();
+        CtrlGeral.listaClassificacao = setListaClassificacao();
        
     }
 
-    public List<ListaClassificacao> getListaClassificacoes() {
+    public static List<ListaClassificacao> getListaClassificacoes() {
         return listaClassificacao;
     }
 
@@ -196,19 +193,19 @@ public class CtrlGeral{
         this.listaClassificacao.add(listaClassificacao);
     }
 
-    public List<Marcador> getApendice() {
+    public static List<Marcador> getApendice() {
         return guia.getApendice();
     }
 
-    public Marcador getMarcador(int index) {
+    public static Marcador getMarcador(int index) {
         return guia.getMarcador(index);
     }
 
-    public void setApendice(Guia apendice) {
-        this.guia = apendice;
+    public static void setApendice(Guia apendice) {
+        CtrlGeral.guia = apendice;
     }
     //Analizar aqui com mais calma
-    public List<Employee> gerarDadosTabela(){
+    public static List<Employee> gerarDadosTabela(){
 
         if(medicao == null || medicao.getLinhaCount() == 0){
             return null;
