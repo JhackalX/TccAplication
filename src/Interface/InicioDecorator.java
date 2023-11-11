@@ -4,6 +4,7 @@
  */
 package Interface;
 
+import DTO.CtrlGeral;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.GroupLayout;
@@ -26,8 +27,12 @@ class InicioDecorator {
     private JLabel jLabelOpcaoCSV;
     private JLabel jLabelOpcaoBD;
 
-    public InicioDecorator() {
+    private CtrlGeral ctrlGeral;
+    
+    public InicioDecorator(CtrlGeral ctrlGeral) {
        
+        this.ctrlGeral = ctrlGeral;
+        
         this.initComponets();
 
     }

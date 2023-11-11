@@ -17,6 +17,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
+import DTO.CtrlGeral;
 
 /**
  *
@@ -62,7 +63,11 @@ public class RecuperarDecorator {
     private JTextArea jTextAreaAjuda;    
     private JTable jTableBanco;
     
-    public RecuperarDecorator() {
+    private CtrlGeral ctrlGeral;
+    
+    public RecuperarDecorator(CtrlGeral ctrlGeral) {
+        
+        this.ctrlGeral = ctrlGeral;
 
         this.initComponets();
         this.configureInfoFields();        

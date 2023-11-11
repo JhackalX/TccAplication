@@ -4,8 +4,10 @@
  */
 package Interface;
 
+import DAO.CtrlDao;
 import DTO.CtrlGeral;
 import static DTO.Funcionalidades.lerArquivo;
+import Object.Info;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -21,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -72,8 +75,13 @@ public class ImportarDecorator {
     private JScrollPane jScrollPaneAjuda;
     private JTextArea jTextAreaAjuda;
     
-    public ImportarDecorator() {
-               
+    private CtrlGeral ctrlGeral;
+    
+    
+    public ImportarDecorator(CtrlGeral ctrlGeral) {
+        
+        this.ctrlGeral = ctrlGeral;
+        
         this.initComponets();
         this.configureInfoTextFields();
         
@@ -619,25 +627,55 @@ public class ImportarDecorator {
 //        this.habilitarPainel(1, false);
 //        this.habilitarPainel(2, false);
 //    }    
-    private void btImportarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException, IOException {                                           
-            CtrlGeral.setMedicao(lerArquivo(camField.getText()));
-//            CtrlGeral
-            this.insertInfoTextFields(CtrlGeral.getMedicao().getCidade(), 
-                                  CtrlGeral.getMedicao().getCodigo(), 
-                                   CtrlGeral.getMedicao().getLatitude(),
-                                   CtrlGeral.getMedicao().getSituacao(), 
-                                   CtrlGeral.getMedicao().getAltitude(), 
-                                  CtrlGeral.getMedicao().getLongitude(),
-                                 CtrlGeral.getMedicao().getDataInicialBR(), 
-                                  CtrlGeral.getMedicao().getDataFinalBR(), 
-                               CtrlGeral.getMedicao().getPeriodicidade(), 
-                                 CtrlGeral.getMedicao().getDataCriacaoBR());
-            //lerArquivo(camField.getText());
-            //tabelaTM.setModel(modelo);
-//            System.out.println(modelo.getLista());
-            //pop = new pesosPopup(4);
-            //pop.setVisible(true);
+    private void btImportarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException, IOException {  
         
-       
+        Info medicao = null;
+        
+        if (!camField.getText().toUpperCase().endsWith("CSV")){
+            JOptionPane.showMessageDialog(null, "Por favor selecione um arquivo .CSV para a importação");
+            return;
+        }
+        
+        medicao = lerArquivo(camField.getText());
+        
+        if (medicao == null){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro na importação do arquivo.\n Por favor tente novamente!");
+            return;
+        }
+        
+        this.ctrlGeral.setMedicao(medicao);
+
+        JOptionPane.showMessageDialog(null, "Leitura Completa!");
+
+//            CtrlGeral
+        this.insertInfoTextFields(this.ctrlGeral.getMedicao().getEstacao().getNome(), 
+                              this.ctrlGeral.getMedicao().getEstacao().getCodigo(),
+                               this.ctrlGeral.getMedicao().getEstacao().getLatitude().toString(),
+                               this.ctrlGeral.getMedicao().getEstacao().getSituacao(), 
+                               this.ctrlGeral.getMedicao().getEstacao().getAltitude().toString(), 
+                              this.ctrlGeral.getMedicao().getEstacao().getLongitude().toString(),
+                             this.ctrlGeral.getMedicao().getDataInicialBR(), 
+                              this.ctrlGeral.getMedicao().getDataFinalBR(), 
+                           this.ctrlGeral.getMedicao().getPeriodicidade(), 
+                             this.ctrlGeral.getMedicao().getDataCriacaoBR());
+
+
+        if (!this.ctrlGeral.getMedicao().getPeriodicidade().contains("Horaria")) {
+            JOptionPane.showMessageDialog(null, "Este programa suporta apenas a carga de arquivos com Periocidade Horaria!\n"
+                                                           + "O arquivo informado possui periodicidade diferente, a carga para o banco de dados nao será possivel!");
+            btAvancar.disable();
+        } else {
+            JOptionPane.showMessageDialog(null, "iniciando carga para banco de dados!");
+
+        }
+
+
+        //lerArquivo(camField.getText());
+        //tabelaTM.setModel(modelo);
+//            System.out.println(modelo.getLista());
+        //pop = new pesosPopup(4);
+        //pop.setVisible(true);
+
+
     }
 }
