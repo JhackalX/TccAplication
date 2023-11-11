@@ -5,11 +5,9 @@
  */
 package Object;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Clock;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,14 +19,12 @@ import java.util.List;
 public class Info {
     
     //informações lidas no CSV
-    private Estacao estacao;
-    
-    //private String cidade;//nome da cidade
-   // private String codigo;//codigo da estação
-   // private String latitude;//latitude
-    //private String longitude;//longitude
-   // private String altitude;//altitude
-    //private String situacao;//situação
+    private String cidade;//nome da cidade
+    private String codigo;//codigo da estação
+    private String latitude;//latitude
+    private String longitude;//longitude
+    private String altitude;//altitude
+    private String situacao;//situação
     private Date dataInicial;//data inicial da medição
     private Date dataFinal;//data final da medição
     private String periodicidade;//
@@ -48,31 +44,35 @@ public class Info {
     }
 
     //pegar do BD
-    public Info(String nomeEstacao, 
+    public Info(String cidade, 
                 String codigo, 
                 String latitude, 
                 String longitude, 
                 String altitude, 
+                String situacao, 
                 Date dataInicial, 
-                Date dataFinal,  
+                Date dataFinal, 
+                String periodicidade, 
                 List<Coluna> lista,
                 Metodologia metodologiaAplicada, 
                 Date dataCriacao) {
-        this.estacao.setNome(nomeEstacao);
-        this.estacao.setCodigo(codigo);
-        this.estacao.setLatitude(Float.parseFloat(latitude));
-        this.estacao.setLongitude(Float.parseFloat(longitude));
-        this.estacao.setAltitude(Float.parseFloat(altitude));
+        this.cidade = cidade;
+        this.codigo = codigo;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.altitude = altitude;
+        this.situacao = situacao;
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
+        this.periodicidade = periodicidade;
         this.lista = lista;
         this.metodologiaAplicada = metodologiaAplicada;
-        this.dataCriacao = Date.from(Instant.now());
+        this.dataCriacao = dataCriacao;
     }
 
     
     //leitura de inicial
-    public Info(String nomeEstacao, 
+    public Info(String cidade, 
                 String codigo, 
                 String latitude, 
                 String longitude, 
@@ -84,12 +84,13 @@ public class Info {
                 ) throws ParseException {
         
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        this.estacao = new Estacao();
-        this.estacao.setNome(nomeEstacao);
-        this.estacao.setCodigo(codigo);
-        this.estacao.setLatitude(Float.parseFloat(latitude));
-        this.estacao.setLongitude(Float.parseFloat(longitude));
-        this.estacao.setAltitude(Float.parseFloat(altitude));
+        
+        this.cidade = cidade.trim();
+        this.codigo = codigo.trim();
+        this.latitude = latitude.trim();
+        this.longitude = longitude.trim();
+        this.altitude = altitude.trim();
+        this.situacao = situacao.trim();
         this.dataInicial = dateFormate.parse(dataInicial.trim());
         this.dataFinal = dateFormate.parse(dataFinal.trim());
         this.periodicidade = periodicidade.trim();
@@ -99,62 +100,54 @@ public class Info {
         this.lista = new ArrayList<Coluna>();
         this.metodologiaAplicada = new Metodologia();
     }
-    
-    public Estacao getEstacao (){
-        return this.estacao;
-    }
-    
-    public void setEstacao(Estacao estacao){
-        this.estacao = estacao;
+
+    public String getCidade() {
+        return cidade;
     }
 
-//    public String getCidade() {
-//        return cidade;
-//    }
-//
-//    public void setCidade(String cidade) {
-//        this.cidade = cidade;
-//    }
-//
-//    public String getCodigo() {
-//        return codigo;
-//    }
-//
-//    public void setCodigo(String codigo) {
-//        this.codigo = codigo;
-//    }
-//
-//    public String getLatitude() {
-//        return latitude;
-//    }
-//
-//    public void setLatitude(String latitude) {
-//        this.latitude = latitude;
-//    }
-//
-//    public String getLongitude() {
-//        return longitude;
-//    }
-//
-//    public void setLongitude(String longitude) {
-//        this.longitude = longitude;
-//    }
-//
-//    public String getAltitude() {
-//        return altitude;
-//    }
-//
-//    public void setAltitude(String altitude) {
-//        this.altitude = altitude;
-//    }
-//
-//    public String getSituacao() {
-//        return situacao;
-//    }
-//
-//    public void setSituacao(String situacao) {
-//        this.situacao = situacao;
-//    }
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(String altitude) {
+        this.altitude = altitude;
+    }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
 
     public String getPeriodicidade() {
         return periodicidade;
@@ -173,14 +166,6 @@ public class Info {
     public void addElementos(String[] dados) {
         for(int i = 2; i < dados.length; i++){
             Dados dado = new Dados(dados[0], dados[1], dados[i]);
-            this.lista.get(i).addDado(dado);            
-        }
-    }
-    
-    public void addElementosEstacoesAutomaticas(String[] dados) throws ParseException, NumberFormatException{
-        
-        for(int i = 2; i < dados.length; i++){
-            Dados dado = new Dados(dados[0], (dados[1].split(" ")[0]), dados[i]);
             this.lista.get(i).addDado(dado);            
         }
     }
@@ -442,11 +427,12 @@ public class Info {
     
     @Override
     public String toString() {
-        return "Info{" + "\n Nome = " + this.estacao.getNome()
-                       + "\n Codigo Estacao = " + this.estacao.getCodigo()
-                       + "\n Latitude = " + this.estacao.getLatitude()
-                       + "\n Longitude = " + this.estacao.getLongitude()
-                       + "\n Altitude = " + this.estacao.getAltitude()
+        return "Info{" + "\n Nome = " + this.cidade
+                       + "\n Codigo Estacao = " + this.codigo 
+                       + "\n Latitude = " + this.latitude 
+                       + "\n Longitude = " + this.longitude 
+                       + "\n Altitude = " + this.altitude 
+                       + "\n Situacao = " + this.situacao 
                        + "\n Data Inicial = " + this.getDataInicialBR()
                        + "\n Data Final = " + this.getDataFinalBR()
                        + "\n Periodicidade da Medicao = " + this.periodicidade//obs 
@@ -532,43 +518,7 @@ public class Info {
         return lista.isEmpty();
     }
     
-    private String converterDataBRUTC(String data) throws ParseException{
-               
-        DateFormat dataUTC = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat dataBR = new SimpleDateFormat("yyyy/MM/dd");
-        
-        return dataUTC.format(dataBR.parse(data));
-    }
-    
-    public void atualizaDataInicial (String data){
-        DateFormat dateFormate;
-        
-        if (data.contains("-")) {
-            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
-        }
-        try {
-            this.dataInicial = dateFormate.parse(data.toString());
-        } catch (ParseException ex) {
-            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
-        }
-    }
-    
-        public void atualizaDataFinal (String data){
-        DateFormat dateFormate;
-        
-        if (data.contains("-")) {
-            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
-        }
-        try {
-            this.dataFinal = dateFormate.parse(data.toString());
-        } catch (ParseException ex) {
-            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
-        }
-    }
+
     
 //    public void listarMedicao(){
 //        System.out.println(this.toString());

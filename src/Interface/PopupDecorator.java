@@ -40,11 +40,7 @@ public class PopupDecorator {
     private Boolean somaPesos;
     private JFrame janela;
     
-    private CtrlGeral ctrlGeral;
-    
-    public PopupDecorator(CtrlGeral ctrlGeral) {
-        
-        this.ctrlGeral = ctrlGeral;
+    public PopupDecorator() {
         
         this.fundo = new JPanel(new GridLayout());
         this.panelBTNs = new JPanel();
@@ -279,9 +275,9 @@ public class PopupDecorator {
             JOptionPane.showMessageDialog(null,"Soma de pesos diferente de 1.");
         }else{
             //aqui deve exportar a lista de pesos
-            this.ctrlGeral.getMedicao().getMetodologiaAplicada().setLista(this.getListaPesos());
-            System.out.println(this.ctrlGeral.getMedicao().getMetodologiaAplicada().toString());
-            this.ctrlGeral.gerarMetAR();
+            CtrlGeral.getMedicao().getMetodologiaAplicada().setLista(this.getListaPesos());
+            System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
+            CtrlGeral.gerarMetAR();
             this.janela.dispose();
         }
     }
