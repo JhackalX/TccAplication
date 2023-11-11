@@ -57,18 +57,16 @@ public class Coluna {
                 subLista.add(this.getDado(i));
             }
         }
-
         return subLista;
     }
 
     public List<Float> getAllDados() {
 
         List<Float> allLista = new ArrayList<Float>();
-        
+
         for(int i = 0; i < this.dados.size(); i++){                
             allLista.add(this.getDado(i).getValorF());
-        }
-        
+        }       
         return allLista;
     }
 
@@ -97,39 +95,29 @@ public class Coluna {
         Dados dado = new Dados();
         dado.setData(Obj.getData());
         dado.setPeriodo(Obj.getPeriodo());
-        dado.setValor(Obj.getValor());
-        
+        dado.setValor(Obj.getValor()); 
         //System.out.println(dado.getData()+","+dado.getPeriodo()+","+dado.getValor());
         if(this.isEmpty()){
                 this.dados.add(dado);
-
-//                this.atualizarIntervaloData();
         }else{
             //System.out.println("entrou aqui");
             if(!dados.contains(dado)){
                 this.dados.add(dado);
                 this.ordenarLista();
-
-//                this.atualizarIntervaloData();
             }else{
                 System.out.println("elemento ja existe na lista...");
             }    
         }
-        //this.listarMedicao();
     }
     
     public void editarDado(Dados Obj, int index){
         this.getDado(index).setData(Obj.getData());
         this.getDado(index).setPeriodo(Obj.getPeriodo());
         this.getDado(index).setValor(Obj.getValor());
-
-//        this.atualizarIntervaloData();
     }
     
     public void removeDado(Dados Obj){
         this.dados.remove(Obj);
-
-//        this.atualizarIntervaloData();
     }
 
     //exclui todas as medicoes de valor null
@@ -139,7 +127,6 @@ public class Coluna {
                 this.dados.remove(i);
             }
         } 
-//        this.atualizarIntervaloData();
     }
     
     //ordenação de lista

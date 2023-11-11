@@ -24,7 +24,6 @@ public class Dados implements Comparable<Dados> {
     private int periodo;
     private Float valor;
     
-
     public Dados() {
     }
 
@@ -55,14 +54,11 @@ public class Dados implements Comparable<Dados> {
         }else{
             this.valor = Float.parseFloat(valor.replace(',', '.'));
         }
-        
         this.periodo = Integer.parseInt(periodo);
     }
 
     public Date getData(){
-        //DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         return data;
-        //return dateFormate.parse(this.data.toString());
     }
     
     public String getDataBr(){
@@ -71,9 +67,7 @@ public class Dados implements Comparable<Dados> {
     }
 
     public void setData(Date data){
-        //DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         this.data = data;
-        //this.data = dateFormate.parse(data.toString());
     }
     
     public void setData(String data){
@@ -226,6 +220,5 @@ public class Dados implements Comparable<Dados> {
                 }
             }
         }           
-    } 
-    
+    }    
 }

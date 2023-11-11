@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.lang.Math;
-import javax.swing.JOptionPane;
 /**
  *
  * @author jacka
@@ -175,11 +173,22 @@ public class Validacao {
     }
     
     //Função que cria lista organizada e ordenada
+    //Sobre hashset:
+    //*Quando você adiciona um objeto ao HashSet, 
+    // o hashcode desse objeto é calculado e usado 
+    // para determinar onde o objeto deve ser armazenado 
+    // internamente.
+    //*Se dois objetos são considerados iguais pelo método 
+    // equals, eles terão o mesmo hashcode e não poderão 
+    // ambos ser armazenados no HashSet.
+    //*Quando você verifica a presença de um objeto ou o remove, 
+    // o HashSet calcula o hashcode do objeto para rapidamente 
+    // encontrar a localização dele e fazer a operação necessária.
     public void organizarEordenar(){
 
         Set<Float> aux = new HashSet<>();
         aux.addAll(this.valor);
-        
+
         this.ordenada.addAll(aux);
 
         this.ordenarLista();              
@@ -220,29 +229,26 @@ public class Validacao {
     
     //checa se a serie é estacionaria
     public boolean isEstacionaria(){
-        return !(this.coefSp >= 0);
-//    if(this.coefSp >= 0){
-//        return false;
-//    }else{
-//        return true;
-//        }  
+        return !(this.coefSp >= 0);  
     }
-       
+    
+    //Relata o resultado do estado do coeficiente de Spearman   
     public String Resultado(){
 
         if(this.coefSp >= 0){
-            return "n: " + this.valor.size() + 
-                   ", Tendencia: " + this.tendencia +
-                   ", Coef. de Spearman: " + Math.abs(this.coefSp) +
-                   ", A Série temporal não é estacionaria.";
+            return "\n n: " + this.valor.size() + 
+                   "\n Tendencia: " + this.tendencia +
+                   "\n Coef. de Spearman: " + Math.abs(this.coefSp) +
+                   "\n A Série temporal não é estacionaria.";
         }else{
-            return "n: " + this.valor.size() + 
-                   ", Tendencia: " + this.tendencia +
-                   ", Coef. de Spearman: -" + Math.abs(this.coefSp) +
-                   ", A Série temporal é estacionaria.";            
+            return "\n n: " + this.valor.size() + 
+                   "\n Tendencia: " + this.tendencia +
+                   "\n Coef. de Spearman: -" + Math.abs(this.coefSp) +
+                   "\n A Série temporal é estacionaria.";            
         }
     } 
-
+    
+    //para testes
     public void imprirRelatorio(){
 
         System.out.println("n: " + this.valor.size());

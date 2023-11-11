@@ -118,8 +118,9 @@ public class VisaoAuxiliarDecorator {
         }
         this.initTable(createObjectDataModel(coluna), 
                            this.list, 
-                                new int[]{29, 30, 31},
-                   30);        
+                                new int[]{696, 720, 744},
+                   720);
+        this.tabela.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     }
     
     private void initTable(TableModel novoModelo, ArrayList<Employee> lista, int[] pSizes, int defaultPageSize){
@@ -565,7 +566,7 @@ public class VisaoAuxiliarDecorator {
         this.paginatedDecorator.setNewDataModel(createObjectDataModel(DTO.CtrlGeral.getColuna()),
                                                 createDataProvider(this.list),
                                                 new int[]{720, 744});
-
+        this.paginatedDecorator.adjustColumnWidths();
     }
     
     private void salvarBActionPerformed(ActionEvent evt) {

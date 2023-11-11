@@ -5,6 +5,7 @@
 package Tabela;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 /**
@@ -164,7 +166,35 @@ public class PaginatedTableDecorator<T> {
         
         this.objectTableModel = newModel;
         this.table.setModel(newModel);
-        
+        //função de ajuste de tamanho de titulo da coluna
+        //this.adjustColumnWidths();
         paginate();
     }
+    public void adjustColumnWidths(){
+        TableModel model = table.getModel();
+        
+        for(int column = 0; column < model.getColumnCount(); column++){
+            int width = 50;
+            for(int row = 0; row < model.getRowCount(); row++){
+                TableCellRenderer render = table.getCellRenderer(row, column);
+                Component comp = table.prepareRenderer(render, row, column);
+                width = Math.max(comp.getPreferredSize().width + 1, width);
+            }
+            
+            TableCellRenderer headerRenderer = table.getTableHeader().getDefaultRenderer();
+            Component headerComp = headerRenderer.getTableCellRendererComponent(table,
+                                                                           model.getColumnName(column),
+                                                                        false,
+                                                                         false,
+                                                                             0,
+                                                                                column);
+            width = Math.max(width, headerComp.getPreferredSize().width + 1);
+            
+            table.getColumnModel().getColumn(column).setPreferredWidth(width);
+        }
+        table.revalidate();
+    }
+    
+    
+    
 }

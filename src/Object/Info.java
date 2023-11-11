@@ -69,7 +69,6 @@ public class Info {
         this.metodologiaAplicada = metodologiaAplicada;
         this.dataCriacao = dataCriacao;
     }
-
     
     //leitura de inicial
     public Info(String cidade, 
@@ -206,8 +205,7 @@ public class Info {
     public void setLista(List<Coluna> lista) {
         this.lista = lista;
     }
-    
-        
+            
     public int getColunaCount() {
         if (this.lista == null){
             return 1;
@@ -215,6 +213,7 @@ public class Info {
             return this.lista.size();
         }
     }
+    
     public int getLinhaCount() {
         if (this.lista == null){
             return 0;
@@ -224,7 +223,6 @@ public class Info {
     }
     
     public String[] getColuna() {
-        System.out.println("-------------------------------");
         if (!this.lista.isEmpty()){
             String[] colunas = new String[this.lista.size()];
             for(int i = 0; i < this.lista.size(); i++){
@@ -242,13 +240,13 @@ public class Info {
         if(this.getColunaCount() == 1){
             linha.add("vazio");
             return linha;
-        }else{       
+        }else{            
             for(int i = 0; i < this.getColunaCount(); i++){
                 if(i == 0){
-                    //linha[i] = this.getLista(3).getDado(index).getDataBr();
+                    linha.add(this.getLista(3).getDado(index).getDataBr());
                 }else{
                     if(i == 1){
-                        //linha[i] = "" + this.getLista(3).getDado(index).getPeriodo();
+                        linha.add(""+this.getLista(3).getDado(index).getPeriodo());
                     }else{
                         linha.add(this.getLista(i).getDado(index).getValor());
                     }
@@ -339,8 +337,7 @@ public class Info {
     public List<Float> subListaIndex(int coluna, int inicio, int fim){
         
         List<Dados> subDados = this.getLista(coluna).getSubDadosIndex(inicio, fim);
-        List<Float> subLista = new ArrayList<Float>();
-        
+        List<Float> subLista = new ArrayList<Float>();   
 //                System.out.println("-------------------------------------");
         for(int i = 0; i < subDados.size(); i++){
             if(!subDados.get(i).getValor().equalsIgnoreCase("null")){
@@ -357,8 +354,7 @@ public class Info {
         
         List<Dados> subDados = this.getLista(coluna).getSubDadosIndex(inicio, fim);
         List<Float> subLista = new ArrayList<Float>();
-        
-//                System.out.println("-------------------------------------");
+
         for(int i = 0; i < subDados.size(); i++){
             subLista.add(subDados.get(i).getValorF());
         }
@@ -381,26 +377,7 @@ public class Info {
         Date data = new Date();
         this.dataCriacao = data;
     }
-
-//    public List<Dados> getLista() {
-//        return lista;
-//    }
-//    
-//    public Dados getDado(int index) {
-//        return lista.get(index);
-//    }
-//
-//    public void setLista(List<Dados> lista) {
-//        this.lista = lista;
-// 
-//        this.atualizarIntervaloData();
-//    }
     
-//    public void atualizarIntervaloData(){
-//        this.setDataInicial();
-//        this.setDataFinal();   
-//    }
-
     public int getInicDay (){
         return (dataInicial.getDay()+1);
     }

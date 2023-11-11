@@ -27,64 +27,7 @@ import javax.swing.JOptionPane;
  * @author jacka
  */
 public class Funcionalidades {
-    
-//    public static String relatorio(Info obj){
-//        Info novo;
-//        novo = obj;
-//        int qtDados = novo.getLista().size();
-//        int qtNull = contNull(novo);
-//        String relat = mesNull(novo);
-//        return "Quantidade de dados: " + qtDados + 
-//               "\nQuantidade de lacunas: " + qtNull +
-//                relat;
-//    }
-//
-//    public static int contNull(Info obj){
-//        Info novo = obj;
-//        int cont = 0;
-//        for(int i = 0; i < novo.getLista().size(); i++){
-//            if(novo.getLista().get(i).getValor().equalsIgnoreCase("null")){
-//                cont++;
-//            }
-//        }
-//        return cont;
-//    }
-//    
-//    public static String contNull(Info obj, int mes, int ano){
-//        Info novo = obj;
-//        int cont = 0;
-//        for(int i = 0; i < novo.getLista().size(); i++){
-//            if(novo.getLista().get(i).getValor().equalsIgnoreCase("null") && 
-//               novo.getLista().get(i).getMonth() == mes && 
-//               novo.getLista().get(i).getYear() == ano){
-//                cont++;
-//            }
-//        }
-//        return "Mês: "+ mes + 
-//               "/" + ano + 
-//               "....... Quantidade: " + cont;
-//    }
-//    
-//    public static String mesNull(Info obj){
-//        Info novo = obj;
-//        String relat;
-//        int ano = 0;
-//        int mes = 0;
-//        for(int i = 0; i < novo.getLista().size(); i++){
-//            
-//            if(novo.getLista().get(i).getValor().equalsIgnoreCase("null")){
-//                mes = novo.getLista().get(i).getData().getMonth()+1;
-//                ano = novo.getLista().get(i).getData().getYear()+1900;
-//                //System.out.println(contNull(novo, mes, ano));
-//            }    
-//            while((novo.getLista().get(i+1).getData().getMonth()+1 == mes) && ((i + 3) < novo.getLista().size())){
-//                i = i+1;        
-//            }
-//        }
-//        return contNull(novo, mes, ano);
-//    }
-
-    
+ 
     public static Info lerArquivo(String path) throws FileNotFoundException, ParseException, IOException{
         try(BufferedReader ler = new BufferedReader(new FileReader(path))){
            
@@ -146,48 +89,5 @@ public class Funcionalidades {
         String[] campos = linha.trim().split(";");
         cidade.addElementos(campos);
     }
-//    
-////Dados-------------------------------------------------------------------------
-//    public static List<Float> geraLista(List<Object> lista){
-//        List<Float> valores = new ArrayList<Float>();
-//        for(int index = 0; index < lista.size(); index++){
-//            if(((Dados)lista.get(index)).getValor().equals("null")){
-//                valores.add(null);
-//            }else{
-//                valores.add(Float.parseFloat(((Dados)lista.get(index)).getValor()));
-//            }
-//        }
-//        return valores;
-//    }    
-//    
-//    public static void atualizaDados(List<Object> lista, List<Float> valores){
-//        for(int index = 0; index < lista.size(); index++){
-//            if(!((Dados)lista.get(index)).getValor().equals(""+valores.get(index))){
-//                ((Dados)lista.get(index)).setValor(valores.get(index));
-//            }
-//        }
-//    }
-//
-//    public static List<String> getObject(List<Object> lista, int index){
-//        
-//        List<String> obj = new ArrayList<String>();
-//        obj.add(((Dados)lista.get(index)).getDataBr());
-//        obj.add(""+((Dados)lista.get(index)).getPeriodo());
-//        obj.add(((Dados)lista.get(index)).getValor().replace('.', ','));        
-//        return obj;
-//    }
-//    
-////INFO--------------------------------------------------------------------------    
-//    public static List<Object> geraListaD(Object objeto){
-//        List<Object> valores = new ArrayList<Object>();
-//        valores.addAll(((Info)(objeto)).getLista());
-//        return valores;
-//    }
-//    
-//    public static String[] geraColuna(Object objeto){
-//        String[] coluna;
-//        coluna = ((Info)(objeto)).getColuna();
-//        return coluna;
-//    }
-    
+   
 }

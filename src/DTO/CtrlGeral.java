@@ -43,7 +43,7 @@ public class CtrlGeral{
             colunas.add("vazio");
             return colunas;           
         }else{
-            for(int i = 2; i < medicao.getColuna().length; i++){
+            for(int i = 0; i < medicao.getColuna().length; i++){
                 colunas.add(medicao.getColuna(i));
             }
 //            medicao.imprimirColuna();
@@ -215,7 +215,7 @@ public class CtrlGeral{
                 Employee e = new Employee();
 //                System.out.println(medicao.getLinha(i));
 //                e.setRow(meses);
-                System.out.println("Quantidade de elementos da linha "+ i +" eh: " + medicao.getLinha(i).size());
+//                System.out.println("Quantidade de elementos da linha "+ i +" eh: " + medicao.getLinha(i).size());
                 e.setLine(medicao.getLinha(i));
 //                System.out.println(e.getLine());
                 lista.add(e);

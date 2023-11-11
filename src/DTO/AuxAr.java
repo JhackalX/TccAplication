@@ -22,10 +22,9 @@ import java.util.List;
 public class AuxAr {
     //pesos e coeficiente
     private List<Float> pesos;
-    //lista de dados
+    //lista de dados, apenas valores numéricos para contabilidades e formulas
     private List<Float> dados;
-    
-    //listas de dados auto-regressivo
+    //listas de dados auto-Medias moveis ponderadas
     private List<Float> autoAr;
     //lista de erros
     private List<Float> erroAr;
@@ -33,14 +32,14 @@ public class AuxAr {
     //seu erro será nulo, e isso tendencia o mape
     private List<Integer> subsAr; 
     private List<Integer> copiaAr;
-    //vetor que contem intervalos de mês
+    //vetor que contem apendices de intervalos de mês
     private Guia guia;    
-    //soma
+    //soma de valores nulos geral
     private int somaNulls;
-    
-    private Float madAR;
-    private Float maeAR;
-    private Float mapeAR;
+    //variaveis para acumular erros e valores para o documento texto
+//    private Float madAR;
+//    private Float maeAR;
+//    private Float mapeAR;
 
     private List<Integer> nullMensal;
     private List<Integer> subsMensal;
@@ -59,13 +58,15 @@ public class AuxAr {
         this.subsAr = new ArrayList<Integer>();
         this.copiaAr = new ArrayList<Integer>();
         //valores acumulados  
-        this.madAR = Float.parseFloat("0");
-        this.maeAR = Float.parseFloat("0");
-        this.mapeAR = Float.parseFloat("0");
+//        this.madAR = Float.parseFloat("0");
+//        this.maeAR = Float.parseFloat("0");
+//        this.mapeAR = Float.parseFloat("0");
         this.madListaAR = new ArrayList<Float>();
         this.maeListaAR = new ArrayList<Float>();
         this.mapeListaAR = new ArrayList<Float>();
+        
         this.somaNulls = this.contNull(this.dados);
+        
         this.guia = guia; 
         
         this.preencherAutoAR();
@@ -73,27 +74,12 @@ public class AuxAr {
         this.subsMensal = this.contListaQtdSub();
         
         this.calculaErro();
-        //teste-----------------------------------------------------------------
-//        System.out.println("-----------------------------------------------");
-//        System.out.println(this.autoAr);
-//        System.out.println("-----------------------------------------------");
-//        System.out.println(this.dados);
-        //----------------------------------------------------------------------
-        //teste-----------------------------------------------------------------
-//        this.relatAnalise();
-//        System.out.println("-----------------------------------------------");
-//        System.out.println(this.erroAr);
-//        System.out.println("-----------------------------------------------");
-//        System.out.println("Vetor de substituições: "+this.subsAr);
-//        System.out.println("-----------------------------------------------");
-//        System.out.println("vetor de copias de valores: "+this.copiaAr);
-        //----------------------------------------------------------------------
         this.nElementMensal = this.contListaQtdErro();        
-        this.arMAD();
+//        this.arMAD();
         //System.out.println(this.madAR);
-        this.arMAE();
+//        this.arMAE();
         //System.out.println(this.maeAR);
-        this.arMAPE();
+//        this.arMAPE();
         //System.out.println(this.arMAPE());
         this.relatorio();
         
@@ -135,29 +121,29 @@ public class AuxAr {
         this.subsAr = subsAr;
     }
 
-    public String getMadAR() {
-        return ""+madAR;
-    }
-
-    public void setMadAR(String madAR) {
-        this.madAR = Float.parseFloat(madAR);
-    }
-
-    public String getMaeAR() {
-        return ""+maeAR;
-    }
-
-    public void setMaeAR(String maeAR) {
-        this.maeAR = Float.parseFloat(maeAR);
-    }
-
-    public String getMapeAR() {
-        return ""+mapeAR;
-    }
-
-    public void setMapeAR(String mapeAR) {
-        this.mapeAR = Float.parseFloat(mapeAR);
-    }
+//    public String getMadAR() {
+//        return ""+madAR;
+//    }
+//
+//    public void setMadAR(String madAR) {
+//        this.madAR = Float.parseFloat(madAR);
+//    }
+//
+//    public String getMaeAR() {
+//        return ""+maeAR;
+//    }
+//
+//    public void setMaeAR(String maeAR) {
+//        this.maeAR = Float.parseFloat(maeAR);
+//    }
+//
+//    public String getMapeAR() {
+//        return ""+mapeAR;
+//    }
+//
+//    public void setMapeAR(String mapeAR) {
+//        this.mapeAR = Float.parseFloat(mapeAR);
+//    }
 
     public int getNullMensal(int index) {
         return nullMensal.get(index);
@@ -174,9 +160,6 @@ public class AuxAr {
     //------Funções Administrativas entre vetores--------
     private void relatorio() {
         System.out.println("***********************************************");
-//        System.out.println("Desvio Absoluto Medio: " + this.getMadES());
-//        System.out.println("Erro Absoluto Medio: " + this.getMaeES());
-//        System.out.println("Erro Absoluto Medio percentual: " + this.getMapeES() + "%");
         System.out.println("QTD lacunas totais Antes: " + this.somaNulls);
         System.out.println("QTD lacunas totais Depois: " + this.contNull(this.autoAr));
         System.out.println("QTD substituida: " + this.subsAr.size());
@@ -193,8 +176,6 @@ public class AuxAr {
         System.out.println("Tamanho Mae Lista: "+ this.maeListaAR.size() + " valores: " + this.maeListaAR);
         System.out.println("Tamanho Mape Lista: "+ this.mapeListaAR.size() + " valores: " + this.mapeListaAR);
         System.out.println("***********************************************");
-//        System.out.println(this.dados);
-//        System.out.println(this.autoSmoot);
     }
     
     //função para teste
@@ -329,33 +310,33 @@ public class AuxAr {
     }
     
     //Desvio Absoluto Médio
-    private void arMAD() {
-        float abs = somaErroABS(this.erroAr, this.subsAr);
-        //int cont = this.contNull(this.autoAr);
-        float mad = calculaMAD(abs, 
-                            this.erroAr.size(), 
-                             this.subsAr.size(), 
-                            this.copiaAr.size());
-        this.setMadAR(""+mad);    
-    }
+//    private void arMAD() {
+//        float abs = somaErroABS(this.erroAr, this.subsAr);
+//        //int cont = this.contNull(this.autoAr);
+//        float mad = calculaMAD(abs, 
+//                            this.erroAr.size(), 
+//                             this.subsAr.size(), 
+//                            this.copiaAr.size());
+//        this.setMadAR(""+mad);    
+//    }
 
     //Erro Médio Absoluto
-    private void arMAE() {
-       float absn = somaErroABSNormalizada(this.dados, 
-                                            this.erroAr,
-                                            this.subsAr);
-        //int cont = this.contNull(this.autoAr);
-        float mae = calculaMAE(absn, 
-                            this.erroAr.size(), 
-                             this.subsAr.size(), 
-                            this.copiaAr.size());
-        this.setMaeAR(""+mae);
-    }
+//    private void arMAE() {
+//       float absn = somaErroABSNormalizada(this.dados, 
+//                                            this.erroAr,
+//                                            this.subsAr);
+//        //int cont = this.contNull(this.autoAr);
+//        float mae = calculaMAE(absn, 
+//                            this.erroAr.size(), 
+//                             this.subsAr.size(), 
+//                            this.copiaAr.size());
+//        this.setMaeAR(""+mae);
+//    }
 
     //Erro Absoluto Médio Percentual
-    private void arMAPE() {
-       this.setMapeAR(calculaMAPE(this.getMaeAR()).toString());        
-    }
+//    private void arMAPE() {
+//       this.setMapeAR(calculaMAPE(this.getMaeAR()).toString());        
+//    }
     
     //contador de elementos na lista de erro mensal
     private List<Integer> contListaNull(List<Float> lista) {

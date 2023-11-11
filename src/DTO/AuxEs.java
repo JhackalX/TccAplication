@@ -36,9 +36,9 @@ public class AuxEs {
     //soma
     private int somaNulls;
     
-    private Float madES;
-    private Float maeES;
-    private Float mapeES;
+//    private Float madES;
+//    private Float maeES;
+//    private Float mapeES;
     
     private List<Integer> nullMensal;
     private List<Integer> subsMensal;
@@ -60,9 +60,9 @@ public class AuxEs {
         this.subsEs = new ArrayList<Integer>();
         //valores acumulados
         
-        this.madES = Float.parseFloat("0");               
-        this.maeES = Float.parseFloat("0");                
-        this.mapeES = Float.parseFloat("0");
+//        this.madES = Float.parseFloat("0");               
+//        this.maeES = Float.parseFloat("0");                
+//        this.mapeES = Float.parseFloat("0");
         this.madListaES = new ArrayList<Float>();
         this.maeListaES = new ArrayList<Float>();
         this.mapeListaES = new ArrayList<Float>();
@@ -74,22 +74,13 @@ public class AuxEs {
         this.subsMensal = this.contListaQtdSub();
  
         this.calculaErro();
-        //teste-----------------------------------------------------------------
-//        System.out.println("-----------------------------------------------");
-//        System.out.println(this.autoSmoot);
-        //----------------------------------------------------------------------
-        //teste-----------------------------------------------------------------
-//        System.out.println("-----------------------------------------------");
-//        System.out.println(this.erroEs);
-//        System.out.println("-----------------------------------------------");
-//        System.out.println(this.subsEs);
-        //----------------------------------------------------------------------
+
         this.nElementMensal = this.contListaQtdErro();
-        this.esMAD();
+//        this.esMAD();
         //System.out.println(this.madES);
-        this.esMAE();
+//        this.esMAE();
         //System.out.println(this.maeES);
-        this.esMAPE();
+//        this.esMAPE();
         //System.out.println(this.esMAPE());
 
         this.madListaES = this.esListaMAD();
@@ -124,29 +115,29 @@ public class AuxEs {
         this.erroEs = erroEs;
     }
 
-    public String getMadES() {
-        return ""+madES;
-    }
-
-    public void setMadES(String madES) {
-        this.madES = Float.parseFloat(madES);
-    }
-
-    public String getMaeES() {
-        return ""+maeES;
-    }
-
-    public void setMaeES(String maeES) {
-        this.maeES = Float.parseFloat(maeES);
-    }
-
-    public String getMapeES() {
-        return ""+mapeES;
-    }
-
-    public void setMapeES(String mapeES) {
-        this.mapeES = Float.parseFloat(mapeES);
-    }
+//    public String getMadES() {
+//        return ""+madES;
+//    }
+//
+//    public void setMadES(String madES) {
+//        this.madES = Float.parseFloat(madES);
+//    }
+//
+//    public String getMaeES() {
+//        return ""+maeES;
+//    }
+//
+//    public void setMaeES(String maeES) {
+//        this.maeES = Float.parseFloat(maeES);
+//    }
+//
+//    public String getMapeES() {
+//        return ""+mapeES;
+//    }
+//
+//    public void setMapeES(String mapeES) {
+//        this.mapeES = Float.parseFloat(mapeES);
+//    }
 
     public int getNullMensal(int index) {
         return nullMensal.get(index);
@@ -160,14 +151,9 @@ public class AuxEs {
         return nElementMensal.get(index);
     }
 
-
-    
     //------Funções Administrativas entre vetores--------
     public void relatorio(){
         System.out.println("***********************************************");
-//        System.out.println("Desvio Absoluto Medio: " + this.getMadES());
-//        System.out.println("Erro Absoluto Medio: " + this.getMaeES());
-//        System.out.println("Erro Absoluto Medio percentual: " + this.getMapeES() + "%");
         System.out.println("QTD lacunas totais Antes: " + this.somaNulls);
         System.out.println("QTD lacunas totais Depois: " + this.contNull(this.autoSmoot));
         System.out.println("QTD substituida: " + this.subsEs.size());
@@ -184,10 +170,9 @@ public class AuxEs {
         System.out.println("Tamanho Mae Lista: "+ this.maeListaES.size() + " valores: " + this.maeListaES);
         System.out.println("Tamanho Mape Lista: "+ this.mapeListaES.size() + " valores: " + this.mapeListaES);
         System.out.println("***********************************************");
-//        System.out.println(this.dados);
-//        System.out.println(this.autoSmoot);
     }
-
+    
+    //função de texte a remover
     public void relatorioMensal(){
 
 
@@ -256,7 +241,6 @@ public class AuxEs {
     //verifica se eh possivel trocar valor null
     //obedece as regras das 3 substituições
     public boolean trocaValorNull(int index){
-        //---------------------------------------------------//
         return !(this.subsEs.contains(index-1) && 
                 this.subsEs.contains(index-2) &&
                 this.subsEs.contains(index-3));
@@ -355,31 +339,31 @@ public class AuxEs {
     //claculo de erro
     
     //Desvio Absoluto Médio
-    public void esMAD(){
-        float abs = somaErroABS(this.erroEs, this.subsEs);
-        int cont = this.contNull(this.autoSmoot);
-        float mad = calculaMAD(abs, 
-                            this.erroEs.size(), 
-                            this.subsEs.size(), 
-                            cont);
-        this.setMadES(""+mad);
-    }
+//    public void esMAD(){
+//        float abs = somaErroABS(this.erroEs, this.subsEs);
+//        int cont = this.contNull(this.autoSmoot);
+//        float mad = calculaMAD(abs, 
+//                            this.erroEs.size(), 
+//                            this.subsEs.size(), 
+//                            cont);
+//        this.setMadES(""+mad);
+//    }
 
     //Erro Médio Absoluto
-    public void esMAE(){
-        float absn = somaErroABSNormalizada(this.dados, this.erroEs, this.subsEs);
-        int cont = this.contNull(this.autoSmoot);
-        float mae = calculaMAE(absn, 
-                            this.erroEs.size(), 
-                            this.subsEs.size(), 
-                            cont);
-        this.setMaeES(""+mae);
-    }
+//    public void esMAE(){
+//        float absn = somaErroABSNormalizada(this.dados, this.erroEs, this.subsEs);
+//        int cont = this.contNull(this.autoSmoot);
+//        float mae = calculaMAE(absn, 
+//                            this.erroEs.size(), 
+//                            this.subsEs.size(), 
+//                            cont);
+//        this.setMaeES(""+mae);
+//    }
     
     //Erro Absoluto Médio Percentual
-    public void esMAPE(){
-        this.setMapeES(calculaMAPE(this.getMaeES()).toString());        
-    }
+//    public void esMAPE(){
+//        this.setMapeES(calculaMAPE(this.getMaeES()).toString());        
+//    }
     
     //Lista Mensal de Desvio Absoluto Médio
     public List<Float> esListaMAD(){
@@ -422,9 +406,7 @@ public class AuxEs {
 //                ano++;
 //            }            
         }
-        
         return lista;
-        
     }
     
     //Lista Mensal de Erro Médio Absoluto
@@ -467,7 +449,6 @@ public class AuxEs {
 //                ano++;
 //            }            
         }
-        
         return lista;
     }
    

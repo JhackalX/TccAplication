@@ -9,6 +9,8 @@ package DTO;
  * @author jacka
  */
 public class Marcador {
+    //vide classe Guia, acumula idices do inicio do mes e indice do fim do mes
+    //OBS:poderia ser mais rapido se fosse implementado como arvore binaria.
     private int inicio;
     private int fim;
 

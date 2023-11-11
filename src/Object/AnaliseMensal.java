@@ -63,7 +63,6 @@ public class AnaliseMensal {
         this.qtdNull = 0;
         this.qtdSubs = 0;
         this.qtdElementos = 0;
-        
     }
 
     public void setErros(String mad, 
@@ -72,7 +71,6 @@ public class AnaliseMensal {
         this.mad = mad;
         this.mae = mae;
         this.mape = mape;
-        
     }
 
     public void setEstatisca(int qtdNull, 
@@ -82,7 +80,6 @@ public class AnaliseMensal {
         this.qtdNull = qtdNull;
         this.qtdSubs = qtdSubs;
         this.qtdElementos = qtdElementos;
-        
     }
      
     public String getMes() {

@@ -64,7 +64,6 @@ public class ListaClassificacao {
         dado.setTendencia(Obj.getTendencia());
         
         this.analiseMensal.add(dado);
-
     }
     
     public void editarClassificador(AnaliseMensal Obj, int index){
@@ -88,7 +87,7 @@ public class ListaClassificacao {
         this.analiseMensal.remove(Obj);
     }
 
-    public void imprimirListaErro(){
+    public void imprimirDadosMensais(){
         System.out.println("Info{\n coluna = " + this.titulo);
         for(int i = 0; i < this.analiseMensal.size(); i++ ){
             System.out.println(this.getClassificador(i).imprimir());

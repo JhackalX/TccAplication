@@ -7,10 +7,7 @@ package Object;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author jacka
- */
+//Classe a ser extinta, apenas para testes
 public class Funcionalidades {
     public static List gerarListaAnaliseMensais(){
         

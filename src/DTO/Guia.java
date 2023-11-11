@@ -14,7 +14,9 @@ import java.util.Objects;
  * @author jacka
  */
 public class Guia {
-    
+    //criada para acumular idices de inicio e final de mês
+    //para facilitar a obtenção de dados para constar no documento texto
+    // e formulas geradas para analises.
     private List<Marcador> apendice;
 
     public Guia(List<Marcador> apendice) {

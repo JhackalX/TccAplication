@@ -7,8 +7,6 @@ package DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 /**
  *
  * @author jacka
