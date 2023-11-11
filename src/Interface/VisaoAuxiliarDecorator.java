@@ -71,7 +71,11 @@ public class VisaoAuxiliarDecorator {
                                     "Maio", "Junho", "Julho", "Agosto", 
                                     "Setembro", "Outubro", "Novembro", "Dezembro"};
     
-    public VisaoAuxiliarDecorator(){
+    
+    private CtrlGeral ctrlGeral;
+    
+    public VisaoAuxiliarDecorator(CtrlGeral ctrlGeral){
+        this.ctrlGeral = ctrlGeral;
         this.initComponents();
     }
     
@@ -520,7 +524,7 @@ public class VisaoAuxiliarDecorator {
     private void panelDetalhes(){
         this.panelBtn();
         this.panelInfo();
-        this.StatusTab(CtrlGeral.getListaClassificacoes());
+        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
         
         this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
         
@@ -565,14 +569,14 @@ public class VisaoAuxiliarDecorator {
 //        this.tabela.setTableHeader(null);
         
 //        ((ObjectTableModel)this.tabDataModel).updateColumnNames(DTO.CtrlGeral.getColuna());
-        System.out.println("Numero de colunas:" + DTO.CtrlGeral.getColuna().size());
+        System.out.println("Numero de colunas:" + this.ctrlGeral.getColuna().size());
 //        this.tabela.setTableHeader(new JTableHeader(this.tabela.getColumnModel()));
         this.list = null;
-        this.list = (ArrayList<Employee>) DTO.CtrlGeral.gerarDadosTabela();
+        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabela();
 //        this.tabDataModel = this.paginatedDecorator.resetTable(DTO.CtrlGeral.getColuna(), list);
 //        this.dataProvider = createDataProvider(this.list);
         
-        this.paginatedDecorator.updateDataAndPageSize(DTO.CtrlGeral.getColuna(),
+        this.paginatedDecorator.updateDataAndPageSize(this.ctrlGeral.getColuna(),
                                                            this.list,
                                                                  new int[]{720, 744},
                                                    720);
@@ -602,7 +606,7 @@ public class VisaoAuxiliarDecorator {
         janela.setVisible(true);
         janela.setLayout(new BorderLayout());
         
-        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, CtrlGeral.getListaClassificacoes(), 2));
+        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, this.ctrlGeral.getListaClassificacoes(), 2));
         
         janela.add(jScrollPanePopup);
         janela.repaint();

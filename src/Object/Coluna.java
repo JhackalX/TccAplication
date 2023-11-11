@@ -108,7 +108,7 @@ public class Coluna {
             //System.out.println("entrou aqui");
             if(!dados.contains(dado)){
                 this.dados.add(dado);
-                this.ordenarLista();
+                //this.ordenarLista();
 
 //                this.atualizarIntervaloData();
             }else{
@@ -149,6 +149,8 @@ public class Coluna {
        while (troca){
            troca = false;
            for(int i = 0; i < this.dados.size()-1; i++){
+               
+               
                if(this.getDado(i).compareTo(this.getDado(i+1)) > 0){
                    //auxiliar recebe o valor maior
                    aux.setData(this.getDado(i).getData());
