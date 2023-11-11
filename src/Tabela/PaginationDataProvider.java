@@ -14,6 +14,6 @@ public interface PaginationDataProvider<T> {
     
 
     int getTotalRowCount();
-    List<T> getRows(int StartIndex, int endIndex);
+    List<T> getRowsBetweenIdices(int startIndex, int endIndex);
     void clearData();
 }

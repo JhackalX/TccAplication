@@ -562,6 +562,7 @@ public class VisaoAuxiliarDecorator {
     
     private void setTableBActionPerformed(ActionEvent evt) {
 
+<<<<<<< HEAD
 //        this.paginatedDecorator.clearTable();
 //        this.dataProvider = null;
 //        this.paginatedDecorator = null;
@@ -593,6 +594,15 @@ public class VisaoAuxiliarDecorator {
 //        Funcionalidades.adjustColumnWidths(tabela);
         
 //        DTO.CtrlGeral.gerarDadosTabela();
+=======
+        System.out.println("Numero de colunas:" + DTO.CtrlGeral.getColuna().size());
+        this.list = null;
+        this.list = (ArrayList<Employee>) DTO.CtrlGeral.gerarDadosTabela();
+        
+        this.paginatedDecorator.setNewDataModel(createObjectDataModel(DTO.CtrlGeral.getColuna()),
+                                                createDataProvider(this.list),
+                                                new int[]{720, 744});
+>>>>>>> origin/capirotinho
 
     }
     
