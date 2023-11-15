@@ -6,10 +6,12 @@ package Interface;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -61,6 +63,7 @@ public class RecuperarDecorator {
     private JScrollPane jScrollPaneTabela;
     private JTextArea jTextAreaAjuda;    
     private JTable jTableBanco;
+    private PopupSelectDecorator popup;
     
     public RecuperarDecorator() {
 
@@ -105,6 +108,7 @@ public class RecuperarDecorator {
         
         this.dataCriacaoFTF = new JFormattedTextField();
         this.jTableBanco = new JTable();
+        this.popup = new PopupSelectDecorator();
         
         this.btAvancar = new JButton();
         this.btVoltar = new JButton();
@@ -373,9 +377,20 @@ public class RecuperarDecorator {
 
         this.btAvancar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btAvancar.setText("Avançar");
-
+        this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                
+                JFrame janela = new JFrame();                
+                popup.PopupSelectReady(4, janela);
+                janela.setVisible(true);
+                janela.repaint();
+                janela.pack();
+                janela.show();
+            }
+        });
+                
         this.btVoltar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        this.btVoltar.setText("Voltar");
+        this.btVoltar.setText("Voltar");         
 
         javax.swing.GroupLayout BtnLayout = new javax.swing.GroupLayout(this.jPanelBtn);
         this.jPanelBtn.setLayout(BtnLayout);

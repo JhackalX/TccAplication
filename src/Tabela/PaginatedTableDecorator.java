@@ -170,6 +170,7 @@ public class PaginatedTableDecorator<T> {
         //this.adjustColumnWidths();
         paginate();
     }
+    //função de ajuste de espaçamento de colunas
     public void adjustColumnWidths(){
         TableModel model = table.getModel();
         

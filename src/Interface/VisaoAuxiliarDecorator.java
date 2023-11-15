@@ -100,11 +100,8 @@ public class VisaoAuxiliarDecorator {
         this.avancarBtn = new JButton();
         this.salvarBtn = new JButton();
         this.voltarBtn = new JButton();
+
         String[] coluna = {"id" , "Posição", "Temperatura", "Pressão"};
-//        this.tabela = new JTable(createObjectDataModel(DTO.CtrlGeral.getColuna()));
-//        Funcionalidades.adjustColumnWidths(tabela);
-//        this.tabela = new JTable();
-//        this.list = new ArrayList<Employee>();
         this.lista = null;
         this.list = new ArrayList<Employee>();
         
@@ -383,13 +380,6 @@ public class VisaoAuxiliarDecorator {
     private void panelTable(){
         //introduz o layout a tabela a variavel
         this.tabela.setAutoCreateRowSorter(false);
-        
-        
-
-        
-//        PaginationDataProvider<Employee> dataProvider = createDataProvider(this.list);
-//        PaginatedTableDecorator<Employee> paginatedDecorator = PaginatedTableDecorator.decorate(this.tabela,
-//              dataProvider, new int[]{29, 30, 31}, 30);
                
         //configura o painel onde a tabela é inserida
         this.jPanelTable.setBackground(new java.awt.Color(54, 63, 73));

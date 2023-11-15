@@ -22,6 +22,7 @@ public class TccAplication {
 //        Window teste = new Window();
         JFrame janela = new JFrame();     
         WindowDecorator teste = Interface.WindowDecorator.decorator(janela);
+        janela.setDefaultCloseOperation(janela.EXIT_ON_CLOSE);
         janela.show();
     }
     

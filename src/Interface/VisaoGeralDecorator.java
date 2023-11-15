@@ -67,7 +67,10 @@ public class VisaoGeralDecorator {
                                     "Maio", "Junho", "Julho", "Agosto", 
                                     "Setembro", "Outubro", "Novembro", "Dezembro"};
     private TableModel tabDataModel;
-        
+    private ArrayList<Employee> list;
+    private PaginatedTableDecorator<Employee> paginatedDecorator;
+    private PaginationDataProvider<Employee> dataProvider;
+    
     public VisaoGeralDecorator(){
         this.initComponents();  
     }
@@ -95,16 +98,33 @@ public class VisaoGeralDecorator {
         this.btnSalvar = new JButton();
         this.btnVoltar = new JButton();
         
-        this.jTabbedPaneColunas = new JTabbedPane();        
-//        String[] coluna = {"id" , "Posição", "Temperatura", "Pressão"};                 
+        this.jTabbedPaneColunas = new JTabbedPane();                         
         String[] coluna = {"id" , "Posição", "Temperatura", "Pressão"};
-//        this.tabela = new JTable(createObjectDataModel(DTO.CtrlGeral.getColuna()));
-        this.tabDataModel = createObjectDataModel(coluna);
-        this.tabela = new JTable(this.tabDataModel);
-//        this.tabela = new JTable(createObjectDataModel(null));
         this.lista = null;
+        this.list = new ArrayList<Employee>();
+        
+        for (int i = 1; i <= 500; i++) {
+            Employee e = new Employee();
+            e.addLine("" + i);
+            e.addLine("" + i);
+            e.addLine(i + "ºC");
+            e.addLine(i + "PA");
+            list.add(e);
+        }
+        this.initTable(createObjectDataModel(coluna), 
+                           this.list, 
+                                new int[]{696, 720, 744},
+                   720);
+        this.tabela.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
     }
+    
+    private void initTable(TableModel novoModelo, ArrayList<Employee> lista, int[] pSizes, int defaultPageSize){
+        this.tabela = new JTable(novoModelo);
+        this.dataProvider = createDataProvider(lista);
+        this.paginatedDecorator = PaginatedTableDecorator.decorate(tabela,
+                this.dataProvider,pSizes , 30);
+    }   
     
     public JPanel visaoGeralReady(){
 
@@ -121,20 +141,7 @@ public class VisaoGeralDecorator {
     private void panelTable(){
 
         //introduz o layout a tabela a variavel
-//        this.tabela = new JTable(createObjectDataModel(CtrlGeral.getMedicao().getColuna()));
-        this.tabela.setAutoCreateRowSorter(true);
-        ArrayList<Employee> list = new ArrayList<Employee>();
-        for (int i = 1; i <= 500; i++) {
-            Employee e = new Employee();
-            e.addLine("" + i);
-            e.addLine("" + i);
-            e.addLine(i + "ºC");
-            e.addLine(i + "PA");
-            list.add(e);
-        }
-        PaginationDataProvider<Employee> dataProvider = createDataProvider(list);
-        PaginatedTableDecorator<Employee> paginatedDecorator = PaginatedTableDecorator.decorate(this.tabela,
-              dataProvider, new int[]{29, 30, 31}, 30);
+        this.tabela.setAutoCreateRowSorter(false);
                
         //configura o painel onde a tabela é inserida
         this.jPanelTable.setBackground(new java.awt.Color(54, 63, 73));
@@ -174,7 +181,7 @@ public class VisaoGeralDecorator {
         this.btnAvancar.setText("Avançar");
 
         this.btnSalvar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.btnSalvar.setText("Salvar");
+        this.btnSalvar.setText("Atualizar");
         
         this.btnVoltar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.btnVoltar.setText("Proximo"); 
@@ -182,7 +189,7 @@ public class VisaoGeralDecorator {
         this.btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 //salvarBActionPerformed(evt);
-                salvarBActionPerformedAltered(evt);
+                setTableBActionPerformed(evt);
             }
         });        
     }
@@ -576,6 +583,18 @@ public class VisaoGeralDecorator {
      
     }
 
+    private void setTableBActionPerformed(ActionEvent evt) {
+
+        System.out.println("Numero de colunas:" + DTO.CtrlGeral.getColuna().size());
+        this.list = null;
+        this.list = (ArrayList<Employee>) DTO.CtrlGeral.gerarDadosTabela();
+        
+        this.paginatedDecorator.setNewDataModel(createObjectDataModel(DTO.CtrlGeral.getColuna()),
+                                                createDataProvider(this.list),
+                                                new int[]{720, 744});
+        this.paginatedDecorator.adjustColumnWidths();
+    }    
+    
     private void salvarBActionPerformed(ActionEvent evt) {
         JFrame janela = new JFrame();
         TableShowDecorator popup = new TableShowDecorator();
