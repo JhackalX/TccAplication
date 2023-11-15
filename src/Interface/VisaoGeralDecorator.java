@@ -206,7 +206,6 @@ public class VisaoGeralDecorator {
         
         while((pivor + 1 < lista.size()) && 
             (lista.get(pivor).getIntAno() == lista.get(pivor + 1).getIntAno())){
-            //System.out.println(lista.get(pivor).impprimir());
             pivor++;
         }
         return pivor;
