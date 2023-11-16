@@ -1,0 +1,2 @@
+#ignora arquivos bin gerados na pasta classes
+build/classes/?[$][0-9].class
