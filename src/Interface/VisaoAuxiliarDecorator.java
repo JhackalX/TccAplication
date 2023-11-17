@@ -71,7 +71,10 @@ public class VisaoAuxiliarDecorator {
                                     "Maio", "Junho", "Julho", "Agosto", 
                                     "Setembro", "Outubro", "Novembro", "Dezembro"};
     
-    public VisaoAuxiliarDecorator(){
+    private CtrlGeral ctrlGeral;
+    
+    public VisaoAuxiliarDecorator(CtrlGeral ctrlGeral){
+        this.ctrlGeral = ctrlGeral;
         this.initComponents();
     }
     
@@ -520,7 +523,7 @@ public class VisaoAuxiliarDecorator {
     private void panelDetalhes(){
         this.panelBtn();
         this.panelInfo();
-        this.StatusTab(CtrlGeral.getListaClassificacoes());
+        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
         
         this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
         
@@ -558,37 +561,13 @@ public class VisaoAuxiliarDecorator {
     
     private void setTableBActionPerformed(ActionEvent evt) {
 
-//        this.paginatedDecorator.clearTable();
-//        this.dataProvider = null;
-//        this.paginatedDecorator = null;
-        
-//        this.tabela.setTableHeader(null);
-        
-//        ((ObjectTableModel)this.tabDataModel).updateColumnNames(DTO.CtrlGeral.getColuna());
-        System.out.println("Numero de colunas:" + DTO.CtrlGeral.getColuna().size());
-//        this.tabela.setTableHeader(new JTableHeader(this.tabela.getColumnModel()));
+        System.out.println("Numero de colunas:" + this.ctrlGeral.getColuna().size());
         this.list = null;
-        this.list = (ArrayList<Employee>) DTO.CtrlGeral.gerarDadosTabela();
-//        this.tabDataModel = this.paginatedDecorator.resetTable(DTO.CtrlGeral.getColuna(), list);
-//        this.dataProvider = createDataProvider(this.list);
+        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabela();
         
-        this.paginatedDecorator.updateDataAndPageSize(DTO.CtrlGeral.getColuna(),
-                                                           this.list,
-                                                                 new int[]{720, 744},
-                                                   720);
-//        this.initTable(this.paginatedDecorator.resetTable(DTO.CtrlGeral.getColuna(), list), 
-//                           this.list, 
-//                                new int[]{720, 744},
-//                   720);        
-        
-//         ((ObjectTableModel)this.tabDataModel).updateData(this.list);
-
-//         this.paginatedDecorator = PaginatedTableDecorator.decorate(this.tabela,
-//              this.dataProvider, new int[]{29, 30, 31}, 30);
-         //((ObjectTableModel)this.tabDataModel).updateData(DTO.CtrlGeral.gerarDadosTabela());
-//        Funcionalidades.adjustColumnWidths(tabela);
-        
-//        DTO.CtrlGeral.gerarDadosTabela();
+        this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlGeral.getColuna()),
+                                                createDataProvider(this.list),
+                                                new int[]{720, 744});
 
     }
     
@@ -602,7 +581,7 @@ public class VisaoAuxiliarDecorator {
         janela.setVisible(true);
         janela.setLayout(new BorderLayout());
         
-        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, CtrlGeral.getListaClassificacoes(), 2));
+        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, this.ctrlGeral.getListaClassificacoes(), 2));
         
         janela.add(jScrollPanePopup);
         janela.repaint();

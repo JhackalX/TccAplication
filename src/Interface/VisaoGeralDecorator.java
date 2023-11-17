@@ -62,13 +62,15 @@ public class VisaoGeralDecorator {
     private List<ListaClassificacao> lista;
     private JTable tabela;
 
+    private CtrlGeral ctrlGeral;
     
     private final String meses[] = {"Janeiro", "Fervereiro", "Março", "Abril", 
                                     "Maio", "Junho", "Julho", "Agosto", 
                                     "Setembro", "Outubro", "Novembro", "Dezembro"};
     private TableModel tabDataModel;
         
-    public VisaoGeralDecorator(){
+    public VisaoGeralDecorator(CtrlGeral ctrlGeral){
+        this.ctrlGeral = ctrlGeral;
         this.initComponents();  
     }
     
@@ -537,7 +539,7 @@ public class VisaoGeralDecorator {
     private void panelDetalhes(){
         
         this.panelBtn();
-        this.StatusTab(CtrlGeral.getListaClassificacoes());
+        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
         
         this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
         GroupLayout detalhesLayout = new GroupLayout(this.jPanelDetalhes);
@@ -586,7 +588,7 @@ public class VisaoGeralDecorator {
         janela.setVisible(true);
         janela.setLayout(new BorderLayout());
         
-        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, CtrlGeral.getListaClassificacoes(), 1));
+        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, this.ctrlGeral.getListaClassificacoes(), 1));
         
         janela.add(jScrollPanePopup);
         janela.repaint();

@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,10 +21,12 @@ import java.util.logging.Logger;
 
 
 public class Dados implements Comparable<Dados> {
+    
+    private String id;    
     private Date data;
     private int periodo;
     private Float valor;
-    
+    private String sensor;
 
     public Dados() {
     }
@@ -41,7 +44,13 @@ public class Dados implements Comparable<Dados> {
     }
     
     public Dados(String data, String periodo, String valor){
-        DateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormate;
+        
+        if (data.contains("-")) {
+            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
+        }
         
         try {
             this.data = dateFormate.parse(data.toString());
@@ -50,10 +59,10 @@ public class Dados implements Comparable<Dados> {
             this.data = null;
         }
         
-        if(valor.equalsIgnoreCase("null")){
+        if(valor.equalsIgnoreCase("null") || valor.equalsIgnoreCase("-9999")|| valor.isBlank() || valor.isEmpty() ){
             this.valor = null;
         }else{
-            this.valor = Float.parseFloat(valor.replace(',', '.'));
+            this.valor = Float.valueOf(valor.replace(',', '.'));
         }
         
         this.periodo = Integer.parseInt(periodo);
@@ -83,6 +92,38 @@ public class Dados implements Comparable<Dados> {
         } catch (ParseException ex) {
             Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex); 
         }
+    }
+    
+    public void setDataBR(String data){
+        DateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            setData(dateFormate.parse(data));
+        } catch (ParseException ex) {
+            Logger.getLogger(Dados.class.getName()).log(Level.SEVERE, null, ex); 
+        }
+    }
+    
+    public void setId (String dataBr, int periodo, Float valor, Sensor sensor, String codEstacao){
+        String entradaHash = (dataBr + Float.toString(valor) + Integer.toString(periodo) + Integer.toString(sensor.getId()));
+        System.out.println("Definindo hash para: "  + entradaHash);
+        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
+        System.out.println("Hash gerada: " + this.id);
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    public void setSensor(String sensor){
+        this.sensor = sensor;
+    }
+    
+    public String getSensor(){
+        return this.sensor;
+    }
+    
+    public String getId(){
+        return this.id;
     }
 
     public int getPeriodo() {
@@ -227,5 +268,6 @@ public class Dados implements Comparable<Dados> {
             }
         }           
     } 
+    
     
 }

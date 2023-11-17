@@ -4,6 +4,7 @@
  */
 package tccaplication;
 
+import DTO.CtrlGeral;
 import Interface.WindowDecorator;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
@@ -18,10 +19,12 @@ public class TccAplication {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-//        Window teste = new Window();
+        CtrlGeral ctrlGeral = new CtrlGeral();
+        
         JFrame janela = new JFrame();     
-        WindowDecorator teste = Interface.WindowDecorator.decorator(janela);
+        
+        WindowDecorator teste = Interface.WindowDecorator.decorator(janela, ctrlGeral);
+        
         janela.show();
     }
     
