@@ -72,10 +72,8 @@ public class ImportarDecorator {
     private JScrollPane jScrollPaneAjuda;
     private JTextArea jTextAreaAjuda;
     
-    private CtrlGeral ctrlGeral;
-    
-    public ImportarDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;       
+    public ImportarDecorator() {
+               
         this.initComponets();
         this.configureInfoTextFields();
         
@@ -622,18 +620,18 @@ public class ImportarDecorator {
 //        this.habilitarPainel(2, false);
 //    }    
     private void btImportarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException, IOException {                                           
-            this.ctrlGeral.setMedicao(lerArquivo(camField.getText()));
+            CtrlGeral.setMedicao(lerArquivo(camField.getText()));
 //            CtrlGeral
-            this.insertInfoTextFields(this.ctrlGeral.getMedicao().getEstacao().getNome(), 
-                                  this.ctrlGeral.getMedicao().getEstacao().getCodigo(), 
-                                   this.ctrlGeral.getMedicao().getEstacao().getLatitude().toString(),
-                                   this.ctrlGeral.getMedicao().getEstacao().getSituacao(), 
-                                   this.ctrlGeral.getMedicao().getEstacao().getAltitude().toString(), 
-                                  this.ctrlGeral.getMedicao().getEstacao().getLongitude().toString(),
-                                 this.ctrlGeral.getMedicao().getDataInicialBR(), 
-                                  this.ctrlGeral.getMedicao().getDataFinalBR(), 
-                               this.ctrlGeral.getMedicao().getPeriodicidade(), 
-                                 this.ctrlGeral.getMedicao().getDataCriacaoBR());
+            this.insertInfoTextFields(CtrlGeral.getMedicao().getCidade(), 
+                                  CtrlGeral.getMedicao().getCodigo(), 
+                                   CtrlGeral.getMedicao().getLatitude(),
+                                   CtrlGeral.getMedicao().getSituacao(), 
+                                   CtrlGeral.getMedicao().getAltitude(), 
+                                  CtrlGeral.getMedicao().getLongitude(),
+                                 CtrlGeral.getMedicao().getDataInicialBR(), 
+                                  CtrlGeral.getMedicao().getDataFinalBR(), 
+                               CtrlGeral.getMedicao().getPeriodicidade(), 
+                                 CtrlGeral.getMedicao().getDataCriacaoBR());
             //lerArquivo(camField.getText());
             //tabelaTM.setModel(modelo);
 //            System.out.println(modelo.getLista());

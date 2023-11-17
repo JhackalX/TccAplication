@@ -29,10 +29,14 @@ public class DataProvider<T> implements PaginationDataProvider<T>{
     }
 
     @Override
-    public List<T> getRowsBetweenIdices(int startIndex, int endIndex) {
-        
-        endIndex = Math.min(endIndex, data.size());
-        return new ArrayList<>(data.subList(startIndex, endIndex));
+    public List<T> getRows(int StartIndex, int endIndex) {
+        List<T> rows = new ArrayList<>();
+        for(int index = StartIndex; index < endIndex; index++){
+            if(index < data.size()){
+                rows.add(data.get(index));
+            }
+        }
+        return rows;
     }
 
     @Override

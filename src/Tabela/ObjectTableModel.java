@@ -22,6 +22,11 @@ public abstract class ObjectTableModel<T> extends AbstractTableModel {
         this.refreshTab();
     }
 
+    public void addRow(T row){
+        objectRows.add(row);
+        fireTableRowsInserted(objectRows.size() - 1, objectRows.size() - 1);
+    }
+
     public void addColumn(String[] columnName){
         if(columnName.length > 0){
             for(int i = 0; i < columnName.length; i++){
@@ -29,22 +34,7 @@ public abstract class ObjectTableModel<T> extends AbstractTableModel {
             }            
         }
         this.refreshTab();
-    }
-
-    public void addColumn(ArrayList<String> columnName){
-        if(columnName.size() > 0){
-            for(int i = 0; i < columnName.size(); i++){
-                this.addColumn(columnName.get(i));            
-            }            
-        }
-        this.refreshTab();
-    }
-    
-    public void addRow(T row){
-        objectRows.add(row);
-        fireTableRowsInserted(objectRows.size() - 1, objectRows.size() - 1);
-    }
-
+    }    
 
     public void removeColumn(int index){
         if(!this.columnNames.isEmpty()){
@@ -61,7 +51,11 @@ public abstract class ObjectTableModel<T> extends AbstractTableModel {
     }    
 
     public void removeAllColumn(){
-        columnNames.clear();
+        if(!this.columnNames.isEmpty()){
+            for(int i = 0; i < this.columnNames.size(); i++){
+                this.removeColumn(i);            
+            }            
+        }
         this.refreshTab();
     }    
 
@@ -86,21 +80,9 @@ public abstract class ObjectTableModel<T> extends AbstractTableModel {
 
 //verificar a linha comentada poruque está dando erro    
     public void clearAll(){
-        this.clearData();//passivel de se comentada
-        this.clearColumn();
-        this.refreshTab();
-    }
-
-//limpa dados da coluna    
-    public void clearColumn(){
-        this.columnNames.clear();
-//        this.refreshTab();
-    }
-
-//limpa dados da tabela    
-    public void clearData(){
         this.objectRows.clear();//linha passivel de ser comentada
-//        fireTableDataChanged();
+        this.columnNames.clear();
+        fireTableStructureChanged();
     }
     
     public void updateColumnNames(List<String> newColumns){

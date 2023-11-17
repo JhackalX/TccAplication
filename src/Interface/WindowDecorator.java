@@ -4,7 +4,6 @@
  */
 package Interface;
 
-import DTO.CtrlGeral;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.GroupLayout;
@@ -38,11 +37,7 @@ public class WindowDecorator {
     private JScrollPane jScrollPaneVisaoAuxiliar;
     private JScrollPane jScrollPaneResultados;
     
-    private CtrlGeral ctrlGeral;
-    
-    private WindowDecorator(JFrame janela, CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
-        
+    private WindowDecorator(JFrame janela) {
         this.initComponets();
 
         janela.setSize(1200, 600);
@@ -63,9 +58,9 @@ public class WindowDecorator {
         
     }
     
-    public static WindowDecorator decorator (JFrame janela, CtrlGeral ctrlGeral) {
-     
-        WindowDecorator decorate = new WindowDecorator(janela, ctrlGeral);
+    public static WindowDecorator decorator (JFrame janela) {
+        
+        WindowDecorator decorate = new WindowDecorator(janela);
         
         return decorate;
     }
@@ -176,7 +171,7 @@ public class WindowDecorator {
     }
     
     private void montarImportar(){
-        ImportarDecorator importar = new ImportarDecorator(this.ctrlGeral);
+        ImportarDecorator importar = new ImportarDecorator();
         JPanel jPanelImportar = importar.ImportarReady();
 
         GroupLayout importarLayout = new GroupLayout(this.importar);
@@ -201,7 +196,7 @@ public class WindowDecorator {
     }
     
     private void montarVisaoGeral(){
-        VisaoGeralDecorator visaoGeral = new VisaoGeralDecorator(this.ctrlGeral);
+        VisaoGeralDecorator visaoGeral = new VisaoGeralDecorator();
         JPanel jPanelVisaoGeral = visaoGeral.visaoGeralReady();        
 
         GroupLayout visaoGeralLayout = new GroupLayout(this.visaoGeral);
@@ -227,7 +222,7 @@ public class WindowDecorator {
     }
     
     private void montarMetodologias(){ 
-        MetodologiaDecorator metodologia = new MetodologiaDecorator(this.ctrlGeral);
+        MetodologiaDecorator metodologia = new MetodologiaDecorator();
         JPanel jPanelMetodologia = metodologia.metodologiaReady();
         
         GroupLayout metodologialLayout = new GroupLayout(this.metodologias);
@@ -253,7 +248,7 @@ public class WindowDecorator {
     
     private void montarVisaoAuxiliar(){
         
-        VisaoAuxiliarDecorator visaoAuxiliar = new VisaoAuxiliarDecorator(this.ctrlGeral);
+        VisaoAuxiliarDecorator visaoAuxiliar = new VisaoAuxiliarDecorator();
         JPanel jPanelVisaoAuxiliar = visaoAuxiliar.visaoAuxiliarReady();
         
         GroupLayout visaoAuxiliarLayout = new GroupLayout(this.visaoAuxiliar);

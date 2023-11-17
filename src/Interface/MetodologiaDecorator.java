@@ -59,11 +59,8 @@ public class MetodologiaDecorator {
     
     private ButtonGroup buttonGroupOpcoes;
 
-    private CtrlGeral ctrlGeral;
     
-    
-    public MetodologiaDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
+    public MetodologiaDecorator() {
         this.initComponents();
     }
     
@@ -177,7 +174,7 @@ public class MetodologiaDecorator {
         this.jRadioButtonOpcao1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 opcao1FocusGained(evt);
-                //CtrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(0);
+                CtrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(0);
 //                System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
             }
         });        
@@ -189,7 +186,7 @@ public class MetodologiaDecorator {
         this.jRadioButtonOpcao2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 opcao2FocusGained(evt);
-                //CtrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(1);
+                CtrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(1);
 //                System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
             }
         });
@@ -434,13 +431,11 @@ public class MetodologiaDecorator {
     private void opcao1FocusGained(FocusEvent evt) {
         this.mostrarDescricaoAr(true);
         this.mostrarDescricaoEs(false);
-        this.ctrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(0);
     }    
 
     private void opcao2FocusGained(FocusEvent evt) {
         this.mostrarDescricaoAr(false);
-        this.mostrarDescricaoEs(true);   
-        this.ctrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(1);
+        this.mostrarDescricaoEs(true);    
     }
     
     private void mostrarDescricaoAr(boolean entrada) {
@@ -487,7 +482,7 @@ public class MetodologiaDecorator {
     }
     private void avancarBtnPesosActionPerformed(ActionEvent evt) {
         JFrame janela = new JFrame();
-        PopupDecorator popup = new PopupDecorator(this.ctrlGeral);
+        PopupDecorator popup = new PopupDecorator();
         JScrollPane jScrollPanePopup = new JScrollPane();
         
         janela.setSize(447,312);
@@ -503,9 +498,9 @@ public class MetodologiaDecorator {
     }    
     
     private void avancarBtnCoefActionPerformed(ActionEvent evt) {
-        this.ctrlGeral.getMedicao().getMetodologiaAplicada().setCoef(this.jTextFieldcoef.getText());
+        CtrlGeral.getMedicao().getMetodologiaAplicada().setCoef(this.jTextFieldcoef.getText());
 //        System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
-        this.ctrlGeral.gerarMetEs();
+        CtrlGeral.gerarMetEs();
 
     }    
     
