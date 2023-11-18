@@ -1,5 +1,5 @@
 #ignora arquivos bin gerados na pasta classes
-build/classes/*[$]*.class
+build/classes/**/*[$]*.class
 build/classes/.netbeans_automatic_build
 build/classes/.netbeans_update_resources
 

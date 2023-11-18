@@ -62,6 +62,7 @@ public class VisaoGeralDecorator {
     private List<ListaClassificacao> lista;
     private JTable tabela;
 
+    private CtrlGeral ctrlGeral;
     
     private final String meses[] = {"Janeiro", "Fervereiro", "Março", "Abril", 
                                     "Maio", "Junho", "Julho", "Agosto", 
@@ -70,8 +71,9 @@ public class VisaoGeralDecorator {
     private ArrayList<Employee> list;
     private PaginatedTableDecorator<Employee> paginatedDecorator;
     private PaginationDataProvider<Employee> dataProvider;
-    
-    public VisaoGeralDecorator(){
+        
+    public VisaoGeralDecorator(CtrlGeral ctrlGeral){
+        this.ctrlGeral = ctrlGeral;
         this.initComponents();  
     }
     
@@ -98,7 +100,7 @@ public class VisaoGeralDecorator {
         this.btnSalvar = new JButton();
         this.btnVoltar = new JButton();
         
-        this.jTabbedPaneColunas = new JTabbedPane();                         
+        this.jTabbedPaneColunas = new JTabbedPane();                     
         String[] coluna = {"id" , "Posição", "Temperatura", "Pressão"};
         this.lista = null;
         this.list = new ArrayList<Employee>();
@@ -124,7 +126,7 @@ public class VisaoGeralDecorator {
         this.dataProvider = createDataProvider(lista);
         this.paginatedDecorator = PaginatedTableDecorator.decorate(tabela,
                 this.dataProvider,pSizes , 30);
-    }   
+    } 
     
     public JPanel visaoGeralReady(){
 
@@ -142,7 +144,7 @@ public class VisaoGeralDecorator {
 
         //introduz o layout a tabela a variavel
         this.tabela.setAutoCreateRowSorter(false);
-               
+                
         //configura o painel onde a tabela é inserida
         this.jPanelTable.setBackground(new java.awt.Color(54, 63, 73));
         GroupLayout jPanelTableLayout = new GroupLayout(this.jPanelTable);
@@ -181,14 +183,14 @@ public class VisaoGeralDecorator {
         this.btnAvancar.setText("Avançar");
 
         this.btnSalvar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.btnSalvar.setText("Atualizar");
+        this.btnSalvar.setText("Refresh");
         
         this.btnVoltar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.btnVoltar.setText("Proximo"); 
         
         this.btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //salvarBActionPerformed(evt);
+//                salvarBActionPerformedAltered(evt);
                 setTableBActionPerformed(evt);
             }
         });        
@@ -206,6 +208,7 @@ public class VisaoGeralDecorator {
         
         while((pivor + 1 < lista.size()) && 
             (lista.get(pivor).getIntAno() == lista.get(pivor + 1).getIntAno())){
+            //System.out.println(lista.get(pivor).impprimir());
             pivor++;
         }
         return pivor;
@@ -543,7 +546,7 @@ public class VisaoGeralDecorator {
     private void panelDetalhes(){
         
         this.panelBtn();
-        this.StatusTab(CtrlGeral.getListaClassificacoes());
+        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
         
         this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
         GroupLayout detalhesLayout = new GroupLayout(this.jPanelDetalhes);
@@ -581,18 +584,18 @@ public class VisaoGeralDecorator {
         this.fundo.add(this.jPanelDetalhes, BorderLayout.CENTER);
      
     }
-
+    
     private void setTableBActionPerformed(ActionEvent evt) {
 
-        System.out.println("Numero de colunas:" + DTO.CtrlGeral.getColuna().size());
+        System.out.println("Numero de colunas:" + this.ctrlGeral.getColuna().size());
         this.list = null;
-        this.list = (ArrayList<Employee>) DTO.CtrlGeral.gerarDadosTabela();
+        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabela();
         
-        this.paginatedDecorator.setNewDataModel(createObjectDataModel(DTO.CtrlGeral.getColuna()),
+        this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlGeral.getColuna()),
                                                 createDataProvider(this.list),
                                                 new int[]{720, 744});
         this.paginatedDecorator.adjustColumnWidths();
-    }    
+    }
     
     private void salvarBActionPerformed(ActionEvent evt) {
         JFrame janela = new JFrame();
@@ -604,7 +607,7 @@ public class VisaoGeralDecorator {
         janela.setVisible(true);
         janela.setLayout(new BorderLayout());
         
-        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, CtrlGeral.getListaClassificacoes(), 1));
+        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, this.ctrlGeral.getListaClassificacoes(), 1));
         
         janela.add(jScrollPanePopup);
         janela.repaint();

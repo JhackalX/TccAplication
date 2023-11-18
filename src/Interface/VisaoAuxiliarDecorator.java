@@ -10,7 +10,6 @@ import Object.ListaClassificacao;
 import Tabela.Employee;
 import static Tabela.Funcionalidades.createDataProvider;
 import static Tabela.Funcionalidades.createObjectDataModel;
-import Tabela.ObjectTableModel;
 import Tabela.PaginatedTableDecorator;
 import Tabela.PaginationDataProvider;
 import java.awt.BorderLayout;
@@ -28,7 +27,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 
 /**
@@ -71,7 +69,10 @@ public class VisaoAuxiliarDecorator {
                                     "Maio", "Junho", "Julho", "Agosto", 
                                     "Setembro", "Outubro", "Novembro", "Dezembro"};
     
-    public VisaoAuxiliarDecorator(){
+    private CtrlGeral ctrlGeral;
+    
+    public VisaoAuxiliarDecorator(CtrlGeral ctrlGeral){
+        this.ctrlGeral = ctrlGeral;
         this.initComponents();
     }
     
@@ -100,7 +101,6 @@ public class VisaoAuxiliarDecorator {
         this.avancarBtn = new JButton();
         this.salvarBtn = new JButton();
         this.voltarBtn = new JButton();
-
         String[] coluna = {"id" , "Posição", "Temperatura", "Pressão"};
         this.lista = null;
         this.list = new ArrayList<Employee>();
@@ -380,7 +380,7 @@ public class VisaoAuxiliarDecorator {
     private void panelTable(){
         //introduz o layout a tabela a variavel
         this.tabela.setAutoCreateRowSorter(false);
-               
+                      
         //configura o painel onde a tabela é inserida
         this.jPanelTable.setBackground(new java.awt.Color(54, 63, 73));
         GroupLayout jPanelTableLayout = new GroupLayout(this.jPanelTable);
@@ -511,7 +511,7 @@ public class VisaoAuxiliarDecorator {
     private void panelDetalhes(){
         this.panelBtn();
         this.panelInfo();
-        this.StatusTab(CtrlGeral.getListaClassificacoes());
+        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
         
         this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
         
@@ -549,11 +549,11 @@ public class VisaoAuxiliarDecorator {
     
     private void setTableBActionPerformed(ActionEvent evt) {
 
-        System.out.println("Numero de colunas:" + DTO.CtrlGeral.getColuna().size());
+        System.out.println("Numero de colunas:" + this.ctrlGeral.getColuna().size());
         this.list = null;
-        this.list = (ArrayList<Employee>) DTO.CtrlGeral.gerarDadosTabela();
+        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabela();
         
-        this.paginatedDecorator.setNewDataModel(createObjectDataModel(DTO.CtrlGeral.getColuna()),
+        this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlGeral.getColuna()),
                                                 createDataProvider(this.list),
                                                 new int[]{720, 744});
         this.paginatedDecorator.adjustColumnWidths();
@@ -569,7 +569,7 @@ public class VisaoAuxiliarDecorator {
         janela.setVisible(true);
         janela.setLayout(new BorderLayout());
         
-        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, CtrlGeral.getListaClassificacoes(), 2));
+        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, this.ctrlGeral.getListaClassificacoes(), 2));
         
         janela.add(jScrollPanePopup);
         janela.repaint();
