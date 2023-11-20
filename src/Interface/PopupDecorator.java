@@ -48,7 +48,6 @@ public class PopupDecorator {
         this.avancarBtn = new JButton();
         this.limparBtn = new JButton();
         this.voltarBtn = new JButton();
-  
     }
         
     public JPanel PopupReady(int Qtd, JFrame janela) {
@@ -108,8 +107,7 @@ public class PopupDecorator {
     private void configureBtn() {
         
         this.limparBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        this.limparBtn.setText("Limpar");
-        
+        this.limparBtn.setText("Limpar");       
         this.limparBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 limparBtnActionPerformed(evt);
@@ -118,7 +116,6 @@ public class PopupDecorator {
         
         this.voltarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.voltarBtn.setText("Voltar");
-
         this.voltarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 voltarBtnActionPerformed(evt);
@@ -126,8 +123,7 @@ public class PopupDecorator {
         });        
         
         this.avancarBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        this.avancarBtn.setText("Avançar");
-        
+        this.avancarBtn.setText("Avançar");        
         this.avancarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 avancarBtnActionPerformed(evt);

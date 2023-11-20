@@ -4,12 +4,22 @@
  */
 package Interface;
 
+import DTO.CtrlGeral;
+import Object.Info;
+import TableBD.ButtonEditor;
+import TableBD.ButtonRenderer;
+import TableBD.ObjectTableModelBD;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -64,12 +74,16 @@ public class RecuperarDecorator {
     private JTextArea jTextAreaAjuda;    
     private JTable jTableBanco;
     private PopupSelectDecorator popup;
+    private CtrlGeral ctrlGeral;
     
-    public RecuperarDecorator() {
-
+    //para teste
+    private ArrayList<Info> listInfos;
+    
+    public RecuperarDecorator(CtrlGeral ctrlGeral) {
+        this.ctrlGeral = ctrlGeral;
         this.initComponets();
-        this.configureInfoFields();        
-        
+        this.configureInfoFields();
+        configureTable();
     }
     
     public void initComponets(){
@@ -107,25 +121,53 @@ public class RecuperarDecorator {
         this.jLabelPeriodMedicao = new JLabel();
         
         this.dataCriacaoFTF = new JFormattedTextField();
-        this.jTableBanco = new JTable();
-        this.popup = new PopupSelectDecorator();
+//        this.jTableBanco = new JTable();
+        this.popup = new PopupSelectDecorator(this.ctrlGeral);
         
         this.btAvancar = new JButton();
         this.btVoltar = new JButton();
         
-        this.jScrollPaneTabela.setViewportView(this.jTableBanco);
+        
     }
     
-    public JPanel RecuperarReady() {
+    public JPanel RecuperarReady(){
 
         this.panelAjuda();
         this.panelInfo();
         
         this.configureFundo();
-        
+
         return this.fundo;    
     }
+    private void populateInfo() throws ParseException{
+        this.listInfos = new ArrayList<Info>();
+        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
+        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
+        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
+    }
+    private void configureTable(){
+        try {
+            this.populateInfo();
+//            System.out.println(this.listInfos.get(0).toString());
+        } catch (ParseException ex) {
+            Logger.getLogger(RecuperarDecorator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ObjectTableModelBD modelo = new ObjectTableModelBD(listInfos);
+        this.jTableBanco = new JTable(modelo);
+        
+        this.jTableBanco.getColumn("Selecionar:").setCellRenderer(new ButtonRenderer());
+        this.jTableBanco.getColumn("Selecionar:").setCellEditor(new ButtonEditor(
+                                                                         new JCheckBox(),
+                                                                         modelo,
+                                                                    this.jTableBanco));
 
+        this.jTableBanco.getColumn("Excluir:").setCellRenderer(new ButtonRenderer());
+        this.jTableBanco.getColumn("Excluir:").setCellEditor(new ButtonEditor(
+                                                                      new JCheckBox(),
+                                                                      modelo,
+                                                                 this.jTableBanco));
+        this.jScrollPaneTabela.setViewportView(this.jTableBanco);
+    }
     
     //Iniciliza e escreve o painel ajuda da janela
     private void panelAjuda(){
@@ -381,7 +423,7 @@ public class RecuperarDecorator {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 
                 JFrame janela = new JFrame();                
-                popup.PopupSelectReady(4, janela);
+                popup.PopupSelectReady(1, janela);
                 janela.setVisible(true);
                 janela.repaint();
                 janela.pack();

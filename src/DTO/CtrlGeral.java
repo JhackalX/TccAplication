@@ -29,7 +29,6 @@ public class CtrlGeral{
         this.ctrlDao =  new CtrlDao(config.getCaminhoBasesEstacoes());
         this.medicao = new Info();
         this.listaClassificacao = new ArrayList<ListaClassificacao>();
-     
     }
 
     public Info getMedicao() {

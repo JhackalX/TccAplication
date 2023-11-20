@@ -38,6 +38,7 @@ public class VisaoGeralDecorator {
     
     private JPanel fundo;
     private JPanel jPanelBtn;
+    private JPanel jPanelTabbedButton;
     private JPanel jPanelTable;
     private JPanel jPanelAjuda;
     private JPanel jPanelDetalhes;
@@ -55,8 +56,9 @@ public class VisaoGeralDecorator {
     
     private JTabbedPane jTabbedPaneColunas;
     
+    private JButton btnTabbed;
     private JButton btnAvancar;
-    private JButton btnSalvar;
+    private JButton btnRefresh;
     private JButton btnVoltar;
     
     private List<ListaClassificacao> lista;
@@ -85,19 +87,21 @@ public class VisaoGeralDecorator {
         this.jPanelBtn = new JPanel();        
         this.jPanelTable = new JPanel();
         this.jPanelStatus = new JPanel();
+        this.jPanelTabbedButton = new JPanel();
         
         this.jScrollPaneDetalhes = new JScrollPane();
         this.jScrollPaneAjuda1 = new JScrollPane();
         this.jScrollPaneAjuda2 = new JScrollPane();
         this.jScrollPaneAjuda3 = new JScrollPane();
         this.jScrollPaneStatus = new JScrollPane();
-               
+        
         this.jTextAreaAjuda1 = new JTextArea();
         this.jTextAreaAjuda2 = new JTextArea();
         this.jTextAreaAjuda3 = new JTextArea();
         
+        this.btnTabbed = new JButton();
         this.btnAvancar = new JButton();
-        this.btnSalvar = new JButton();
+        this.btnRefresh = new JButton();
         this.btnVoltar = new JButton();
         
         this.jTabbedPaneColunas = new JTabbedPane();                     
@@ -133,6 +137,8 @@ public class VisaoGeralDecorator {
         this.panelTable();
 
         this.panelDetalhes();
+        
+        this.panelTabbedButton();
         
         this.panelFundo();
         
@@ -178,20 +184,29 @@ public class VisaoGeralDecorator {
     }
     
     private void configureBtns(){
+        this.btnTabbed.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        this.btnTabbed.setText("Tabela de valores");
         
         this.btnAvancar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.btnAvancar.setText("Avançar");
 
-        this.btnSalvar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.btnSalvar.setText("Refresh");
+        this.btnRefresh.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        this.btnRefresh.setText("Refresh");
         
         this.btnVoltar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.btnVoltar.setText("Proximo"); 
+        this.btnVoltar.setText("Voltar"); 
         
-        this.btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+        this.btnRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
 //                salvarBActionPerformedAltered(evt);
                 setTableBActionPerformed(evt);
+            }
+        });        
+
+        this.btnTabbed.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarBActionPerformed(evt);
+                //setTableBActionPerformed(evt);
             }
         });        
     }
@@ -487,7 +502,7 @@ public class VisaoGeralDecorator {
                     .addGroup(btnLayout.createSequentialGroup()
                         .addGroup(btnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(this.btnAvancar)
-                            .addComponent(this.btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(this.btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -495,7 +510,7 @@ public class VisaoGeralDecorator {
             btnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(this.btnSalvar)
+                .addComponent(this.btnRefresh)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(this.btnAvancar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -504,13 +519,65 @@ public class VisaoGeralDecorator {
         );
         
     }
+    
+    private void panelTabbedButton(){
+        jPanelTabbedButton.setBorder(javax.swing.BorderFactory.createTitledBorder("Painel de Status:"));
+        
+        this.jPanelTabbedButton.setBackground(new java.awt.Color(255, 255, 255));
+        javax.swing.GroupLayout jPanelTabbedButtonLayout = new javax.swing.GroupLayout(jPanelTabbedButton);
+        jPanelTabbedButton.setLayout(jPanelTabbedButtonLayout);
+        
+        jPanelTabbedButtonLayout.setHorizontalGroup(
+            jPanelTabbedButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTabbedButtonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnTabbed, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelTabbedButtonLayout.setVerticalGroup(
+            jPanelTabbedButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTabbedButtonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnTabbed, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                .addContainerGap())
+        );        
+    }
+    
+    private void panelDetalhes(){
+        
+        this.panelBtn();
+        this.panelAjuda();
+        this.StatusTab(ctrlGeral.getListaClassificacoes());
 
-//    private void panelDetalhes(){
-//        
-//        this.panelBtn();
-//        this.panelAjuda();
-//        this.StatusTab(CtrlGeral.getListaClassificacoes());
-//        
+        this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
+        GroupLayout jPanelDetalhesLayout = new GroupLayout(this.jPanelDetalhes);
+        this.jPanelDetalhes.setLayout(jPanelDetalhesLayout);
+
+        jPanelDetalhesLayout.setHorizontalGroup(
+            jPanelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDetalhesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelTabbedButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(117, 117, 117))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalhesLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanelDetalhesLayout.setVerticalGroup(
+            jPanelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDetalhesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDetalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelTabbedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );  
+        
 //        this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
 //        GroupLayout detalhesLayout = new GroupLayout(this.jPanelDetalhes);
 //        this.jPanelDetalhes.setLayout(detalhesLayout);
@@ -538,44 +605,44 @@ public class VisaoGeralDecorator {
 //                .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 //                .addContainerGap())
 //        );
-//
-//        this.jScrollPaneDetalhes.setViewportView(this.jPanelDetalhes);
-//
-//    }
-
-    private void panelDetalhes(){
-        
-        this.panelBtn();
-        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
-        
-        this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
-        GroupLayout detalhesLayout = new GroupLayout(this.jPanelDetalhes);
-        this.jPanelDetalhes.setLayout(detalhesLayout);
- 
-        detalhesLayout.setHorizontalGroup(
-            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(detalhesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(this.jTabbedPaneColunas, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(this.jPanelBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        detalhesLayout.setVerticalGroup(
-            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(detalhesLayout.createSequentialGroup()
-                .addGap(0, 0, 1)
-                .addComponent(this.jTabbedPaneColunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(0, Short.MAX_VALUE))
-            .addGroup(detalhesLayout.createSequentialGroup()
-                .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
 
         this.jScrollPaneDetalhes.setViewportView(this.jPanelDetalhes);
 
     }
+
+//    private void panelDetalhes(){
+//        
+//        this.panelBtn();
+//        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
+//        
+//        this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
+//        GroupLayout detalhesLayout = new GroupLayout(this.jPanelDetalhes);
+//        this.jPanelDetalhes.setLayout(detalhesLayout);
+// 
+//        detalhesLayout.setHorizontalGroup(
+//            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addContainerGap()
+//                .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                .addGroup(detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(this.jPanelBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                .addContainerGap())
+//        );
+//        detalhesLayout.setVerticalGroup(
+//            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addGap(0, 0, 1)
+//                .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addContainerGap(0, Short.MAX_VALUE))
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addContainerGap())
+//        );
+//
+//        this.jScrollPaneDetalhes.setViewportView(this.jPanelDetalhes);
+//
+//    }
     
     //Configura o painel de fundo da aba
     private void panelFundo(){

@@ -4,7 +4,10 @@
  */
 package Interface;
 
+import DTO.CtrlGeral;
+import DTO.EstacoesListaDeAnos;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -52,16 +55,20 @@ public class PopupSelectDecorator {
     private JTextField jTextFieldUf;
     private JTextField jTextFieldRegiao;
     //ComboBoxs
-    private JComboBox<String> jComboBoxCodEst;
+    private JComboBox<EstacoesListaDeAnos> jComboBoxCodEst;
     private JComboBox<String> jComboBoxAnoEst;
     //propriedades de auxilio
-    private ArrayList<String> listAnos;
-    private ArrayList<String> listEstacoes;
+    private ArrayList<EstacoesListaDeAnos> listEstacoes;
+//    private ArrayList<String> listAnos;
+//    private ArrayList<String> listEstacoes;
     private JFrame janela;
     
-    public PopupSelectDecorator() {
+    private CtrlGeral ctrlGeral;
+    
+    public PopupSelectDecorator(CtrlGeral ctrlGeral) {
+        this.ctrlGeral = ctrlGeral;
         this.initGeralComponets();
-        this.configureComboBox();
+//        this.configureComboBox();
         this.configureButtonPane();
     }
     
@@ -69,6 +76,7 @@ public class PopupSelectDecorator {
         switch (op){
             case 1:
                 this.configureLambelsAndTextFilds1();
+                this.configureComboBox();
                 this.configureInfo1Panel();
                 this.configureInfoButtons();
      
@@ -86,29 +94,29 @@ public class PopupSelectDecorator {
                 this.janela = janela;
 
                 break;
-            case 2:
                 
-                this.configureLambelsAndTextFilds2();
-                this.configureInfo2Panel();
-                this.configureInfoButtons();
-     
-                javax.swing.GroupLayout layout2 = new javax.swing.GroupLayout(janela.getContentPane());
-                janela.getContentPane().setLayout(layout2);
-                layout2.setHorizontalGroup(
-                    layout2.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                );
-                layout2.setVerticalGroup(
-                    layout2.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                );
+//            case 2:               
+//                this.configureLambelsAndTextFilds2();
+//                this.configureComboBox();
+//                this.configureInfo2Panel();
+//                this.configureInfoButtons();
+//     
+//                javax.swing.GroupLayout layout2 = new javax.swing.GroupLayout(janela.getContentPane());
+//                janela.getContentPane().setLayout(layout2);
+//                layout2.setHorizontalGroup(
+//                    layout2.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(jPanelInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                );
+//                layout2.setVerticalGroup(
+//                    layout2.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(jPanelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                );
+//                
+//                this.janela = janela;                               
+//                
+//                break;
                 
-                this.janela = janela;                               
-                
-                break;
-            default:
-                
-                
+            default:                               
                 this.configureLambelsAndTextFilds3();
                 this.configureInfo3Panel();
                 this.configureInfoButtons();
@@ -130,40 +138,82 @@ public class PopupSelectDecorator {
                 
         
     }
+    //função para teste
 
+    private void popularTeste(){
+        this.listEstacoes = new ArrayList<EstacoesListaDeAnos>();
+        EstacoesListaDeAnos novo = new EstacoesListaDeAnos();
+        this.listEstacoes.add(novo);
+        this.listEstacoes.get(0).setNomeEstacao("estacao 1");
+        this.listEstacoes.get(0).addAnos("2010");
+        this.listEstacoes.get(0).addAnos("2011");
+        this.listEstacoes.get(0).addAnos("2012");
+        this.listEstacoes.get(0).addAnos("2013");
+        this.listEstacoes.get(0).addAnos("2014");
+        this.listEstacoes.add(new EstacoesListaDeAnos());
+        this.listEstacoes.get(1).setNomeEstacao("estacao 2");
+        this.listEstacoes.get(1).addAnos("2010");
+        this.listEstacoes.add(new EstacoesListaDeAnos());
+        this.listEstacoes.get(2).setNomeEstacao("estacao 3");
+        this.listEstacoes.get(2).addAnos("2010");
+        this.listEstacoes.get(2).addAnos("2011");
+        this.listEstacoes.get(2).addAnos("2014");
+        this.listEstacoes.add(new EstacoesListaDeAnos());
+        this.listEstacoes.get(3).setNomeEstacao("estacao 4");
+        this.listEstacoes.get(3).addAnos("2010");
+        this.listEstacoes.get(3).addAnos("2012");
+        this.listEstacoes.get(3).addAnos("2013");
+        this.listEstacoes.get(3).addAnos("2014");
+    }
+    
     //inicia componetes constantes na janela 
     private void initGeralComponets() {
         this.jPanelInfo = new JPanel();
         this.jPaneButtons = new JPanel();
 
-        this.listAnos = new ArrayList<String>();
-        this.listEstacoes = new ArrayList<String>();
-
+        this.listEstacoes = new ArrayList<EstacoesListaDeAnos>();
+        this.popularTeste();
         this.jButtonCancel = new JButton();
         this.jButtonOk = new JButton();
         this.jButtonOk.setText("OK");
         this.jButtonCancel.setText("Cancelar");
-
-        this.jComboBoxCodEst = new JComboBox<String>();
+        
+        this.jComboBoxCodEst = new JComboBox<EstacoesListaDeAnos>();    
         this.jComboBoxAnoEst = new JComboBox<String>();
+       
     }
-
+    //atualiza anos de estudo conforme muda o nome da estação
+    private void atualizarComboBoxAnos(EstacoesListaDeAnos estacao) {
+        jComboBoxAnoEst.removeAllItems();
+        if (estacao != null) {
+            for (String ano : estacao.getListAnos()) {
+                this.jComboBoxAnoEst.addItem(ano);
+            }
+        }
+    }
+    
+// seta as listas para combox
+    public void setListasEstacoes(ArrayList<EstacoesListaDeAnos> listEstacoes){
+        this.listEstacoes = listEstacoes;
+    }
+//    public void setListasAnos(ArrayList<String> listAnos){
+//        this.listAnos = listAnos;
+//    }
+    
     //configura os comboBox
     private void configureComboBox() {
 
-        if (!listEstacoes.isEmpty()) {
-            this.jComboBoxCodEst.removeAllItems();
-            for (String estacoes : listEstacoes) {
-                jComboBoxCodEst.addItem(estacoes);
+        this.jComboBoxCodEst.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                EstacoesListaDeAnos estacaoSelecionada = (EstacoesListaDeAnos) jComboBoxCodEst.getSelectedItem();
+                atualizarComboBoxAnos(estacaoSelecionada);
             }
-        }
+        });
 
-        if (!listAnos.isEmpty()) {
-            this.jComboBoxAnoEst.removeAllItems();
-            for (String anos : listAnos) {
-                jComboBoxAnoEst.addItem(anos);
-            }
-        }
+        for (EstacoesListaDeAnos estacao : this.listEstacoes) {
+            this.jComboBoxCodEst.addItem(estacao);
+        } 
     }
 
     //retorna os itens selecionados
@@ -625,7 +675,6 @@ public class PopupSelectDecorator {
         jTextFieldUf.setText(uf);
     }
     
-    //não ta fufando pq?
     private void jButtonCancelActionPerformed(ActionEvent evt) {
         this.janela.dispose();
     }

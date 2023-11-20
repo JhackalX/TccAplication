@@ -72,9 +72,9 @@ public class WindowDecorator {
     
     private void initAbas(){
 
-        this.montarInicio();
-        this.montarRecuperar();
-        this.montarImportar();
+//        this.montarInicio();
+        this.montarImportar();//Agora importar csv vem primeiro, vai pro banco de dados
+        this.montarRecuperar();//Se recupera do banco de dados
         this.montarVisaoGeral();
         this.montarMetodologias();
         this.montarVisaoAuxiliar();
@@ -108,6 +108,31 @@ public class WindowDecorator {
     private void montarTabPanel(){
         this.painelTab.setTabPlacement(JTabbedPane.LEFT);
         this.painelTab.setFont(new Font("Tahoma", 1, 12)); // NOI18N 
+        
+//        this.painelTab.add("Inicio", this.jScrollPaneInicio);
+//        this.painelTab.add("Importar", this.jScrollPaneImportar);
+//        this.painelTab.add("Recuperar", this.jScrollPaneRecuperar);
+//        this.painelTab.add("Visão Geral", this.jScrollPaneVisaoGeral);
+//        this.painelTab.add("Metodologias", this.jScrollPaneMetodologias);
+//        this.painelTab.add("Visão Auxiliar", this.jScrollPaneVisaoAuxiliar);
+//        this.painelTab.add("Resultados", this.jScrollPaneResultados);
+
+        this.painelTab.add("Importar", this.importar);
+        this.painelTab.add("Recuperar", this.recuperar);
+        this.painelTab.add("Visão Geral", this.jScrollPaneVisaoGeral);
+        this.painelTab.add("Metodologias", this.metodologias);
+        this.painelTab.add("Visão Auxiliar", this.jScrollPaneVisaoAuxiliar);
+        this.painelTab.add("Resultados", this.jScrollPaneResultados);
+        // set original
+        // 0 --> true
+        // 1 a 6 --> false
+        this.painelTab.setEnabledAt(0, true);       
+        this.painelTab.setEnabledAt(1, true);       
+        this.painelTab.setEnabledAt(2, true);       
+        this.painelTab.setEnabledAt(3, true);       
+        this.painelTab.setEnabledAt(4, true);       
+        this.painelTab.setEnabledAt(5, true);       
+//        this.painelTab.setEnabledAt(6, true);
         
         this.initAbas();
     }
@@ -147,11 +172,11 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );        
-        this.painelTab.add("Inicio", this.inicio);
+//        this.painelTab.add("Inicio", this.inicio);
     }
 
     private void montarRecuperar() {
-        RecuperarDecorator recuperar = new RecuperarDecorator();
+        RecuperarDecorator recuperar = new RecuperarDecorator(this.ctrlGeral);
         JPanel jPanelRecuperar = recuperar.RecuperarReady();
 
         GroupLayout recuperarLayout = new GroupLayout(this.recuperar);
@@ -172,11 +197,11 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );        
-        this.painelTab.add("Recuperar", this.recuperar);        
+//        this.painelTab.add("Recuperar", this.recuperar);        
     }
     
     private void montarImportar(){
-        ImportarDecorator importar = new ImportarDecorator(this.ctrlGeral);
+        ImportarDecorator importar = new ImportarDecorator(this.ctrlGeral, this.painelTab);
         JPanel jPanelImportar = importar.ImportarReady();
 
         GroupLayout importarLayout = new GroupLayout(this.importar);
@@ -197,7 +222,7 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );        
-        this.painelTab.add("Importar", this.importar);
+//        this.painelTab.add("Importar", this.importar);
     }
     
     private void montarVisaoGeral(){
@@ -223,7 +248,7 @@ public class WindowDecorator {
                               Short.MAX_VALUE)
         );   
 
-        this.painelTab.add("Visão Geral", this.jScrollPaneVisaoGeral);
+//        this.painelTab.add("Visão Geral", this.jScrollPaneVisaoGeral);
     }
     
     private void montarMetodologias(){ 
@@ -248,7 +273,7 @@ public class WindowDecorator {
                               Short.MAX_VALUE)
         ); 
 
-        this.painelTab.add("Metodologias", this.metodologias);
+//        this.painelTab.add("Metodologias", this.metodologias);
     }
     
     private void montarVisaoAuxiliar(){
@@ -274,7 +299,7 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );
-        this.painelTab.add("Visão Auxiliar", this.jScrollPaneVisaoAuxiliar);
+//        this.painelTab.add("Visão Auxiliar", this.jScrollPaneVisaoAuxiliar);
     }
     
     private void montarResultados(){
@@ -300,7 +325,7 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );
-        this.painelTab.add("Resultados", this.resultados);
+//        this.painelTab.add("Resultados", this.resultados);
     }
 
 }

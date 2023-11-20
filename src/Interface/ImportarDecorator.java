@@ -23,6 +23,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
@@ -71,11 +72,14 @@ public class ImportarDecorator {
     private JFormattedTextField dataCriacaoFTF;
     private JScrollPane jScrollPaneAjuda;
     private JTextArea jTextAreaAjuda;
-    
+    //variaveis 
     private CtrlGeral ctrlGeral;
+    private JTabbedPane painelTab;
     
-    public ImportarDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;       
+    public ImportarDecorator(CtrlGeral ctrlGeral, JTabbedPane painelTab) {
+        this.ctrlGeral = ctrlGeral;
+        this.painelTab = painelTab;
+        
         this.initComponets();
         this.configureInfoTextFields();
         
@@ -408,7 +412,12 @@ public class ImportarDecorator {
         
         this.btAvancar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btAvancar.setText("Avançar");
-
+        this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btAvancarActionPerformed(evt);
+            }
+        });
+        
         this.btVoltar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btVoltar.setText("Voltar");
     }
@@ -608,19 +617,21 @@ public class ImportarDecorator {
        this.btImportar.setVisible(true);
        this.btAvancar.setVisible(true);
     }
-//    private void btAvancarActionPerformed(ActionEvent evt) {
-//        this.focusPainel(3);
-//        this.habilitarPainel(3, true);
-//        this.habilitarPainel(1, false);
+    
+    private void btAvancarActionPerformed(ActionEvent evt) {
+//        this.focusPainel(1);
+//        this.habilitarPainel(0, false);
+//        this.habilitarPainel(1, true);
 //        this.habilitarPainel(2, false);
-//    }
+    }
 //
 //    private void btVoltarActionPerformed(ActionEvent evt) {
 //        this.focusPainel(0);
 //        this.habilitarPainel(0, true);
 //        this.habilitarPainel(1, false);
 //        this.habilitarPainel(2, false);
-//    }    
+//    }
+    
     private void btImportarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException, IOException {                                           
             this.ctrlGeral.setMedicao(lerArquivo(camField.getText()));
 //            CtrlGeral
@@ -641,5 +652,15 @@ public class ImportarDecorator {
             //pop.setVisible(true);
         
        
+    }
+    
+    private void focusPainel(int tabIndex) {
+        //deve ser assim que funfa...
+        this.painelTab.setSelectedIndex(tabIndex);                            
+    }
+    
+    private void habilitarPainel(int tabIndex, boolean enable) {
+        //deve ser assim que funfa...
+        this.painelTab.setEnabledAt(tabIndex, enable);                            
     }
 }

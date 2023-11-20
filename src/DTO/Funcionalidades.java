@@ -151,15 +151,15 @@ public class Funcionalidades {
         String[] line9 = arquivo.readLine().split(":");
 
         medicao = new Info(
-                                   nomeEstacao,
-                               line2[1].trim(),
-                               line3[1].trim(),
-                               line4[1].trim(),
-                               line5[1].trim(),
-                               line6[1].trim(),
-                               line7[1].trim(),
-                               line8[1].trim(),
-                               line9[1].trim());
+                                nomeEstacao,
+                          line2[1].trim(),
+                         line3[1].trim(),
+                        line4[1].trim(),
+                         line5[1].trim(),
+                         line6[1].trim(),
+                       line7[1].trim(),
+                        line8[1].trim(),
+                     line9[1].trim());
 
         return medicao;
 
