@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -608,14 +609,27 @@ public class ImportarDecorator {
     private void btAbrirActionPerformed(java.awt.event.ActionEvent evt) {                                        
        
        JFileChooser arquivo = new JFileChooser();
-       FileNameExtensionFilter filtro = new FileNameExtensionFilter("csv","CSV");
+       FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivos CSV","csv");
        arquivo.setFileFilter(filtro);
-       arquivo.showOpenDialog(null);
-       File arq = arquivo.getSelectedFile();
-       String arqNome = arq.getAbsolutePath();
-       this.camField.setText(arqNome);
-       this.btImportar.setVisible(true);
-       this.btAvancar.setVisible(true);
+       
+       int result = arquivo.showOpenDialog(null);
+       if(result == JFileChooser.APPROVE_OPTION){
+           File arq = arquivo.getSelectedFile();
+           String arqNome = arq.getAbsolutePath();
+           if(arq.exists() && arq.canRead()){
+               this.camField.setText(arqNome);
+               this.btImportar.setVisible(true);
+               this.btAvancar.setVisible(true);               
+           }else{
+               JOptionPane.showMessageDialog(null,
+                                                   "Erro ao ler o arquivo.", 
+                                                    "Erro",
+                                                JOptionPane.ERROR_MESSAGE);
+               
+           }
+       }else{
+           System.out.println("Seleção de arquivo cancelada.");
+       }
     }
     
     private void btAvancarActionPerformed(ActionEvent evt) {

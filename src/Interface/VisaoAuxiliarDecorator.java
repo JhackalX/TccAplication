@@ -38,6 +38,7 @@ public class VisaoAuxiliarDecorator {
     private JPanel fundo;
     private JPanel jPanelTable;
     private JPanel jPanelDetalhes;
+    private JPanel jPanelTabbedButton;
     private JPanel jPanelBtn;
     private JPanel jPanelInfo;
     private JPanel jPanelStatus;
@@ -55,6 +56,7 @@ public class VisaoAuxiliarDecorator {
     
     private JTabbedPane jTabbedPaneColunas;
     
+    private JButton btnTabbed;
     private JButton avancarBtn;
     private JButton salvarBtn;
     private JButton voltarBtn;
@@ -84,6 +86,7 @@ public class VisaoAuxiliarDecorator {
         this.jPanelInfo = new JPanel();
         this.jPanelBtn = new JPanel();
         this.jPanelStatus = new JPanel();
+        this.jPanelTabbedButton = new JPanel();
 
         this.jScrollPaneInfo1 = new JScrollPane();
         this.jScrollPaneInfo2 = new JScrollPane();
@@ -98,6 +101,7 @@ public class VisaoAuxiliarDecorator {
         
         this.jTabbedPaneColunas = new JTabbedPane();
         
+        this.btnTabbed = new JButton();
         this.avancarBtn = new JButton();
         this.salvarBtn = new JButton();
         this.voltarBtn = new JButton();
@@ -131,6 +135,7 @@ public class VisaoAuxiliarDecorator {
         //this.panelStatus();
         this.panelTable();
         this.panelDetalhes();
+        this.panelTabbedButton();
         
         this.panelFundo();
         
@@ -138,27 +143,30 @@ public class VisaoAuxiliarDecorator {
     }
 
     private void configureBtns(){
+        this.btnTabbed.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        this.btnTabbed.setText("Tabela de valores");
+        
         this.avancarBtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.avancarBtn.setText("Avançar");
 
-        this.salvarBtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.salvarBtn.setText("Salvar");        
+        this.salvarBtn.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        this.salvarBtn.setText("Refresh");        
 
         this.voltarBtn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.voltarBtn.setText("Voltar");     
         
         this.salvarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvarBActionPerformed(evt);
+                setTableBActionPerformed(evt);                
+
             }
         });   
 
-        this.voltarBtn.addActionListener(new java.awt.event.ActionListener() {
+        this.btnTabbed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setTableBActionPerformed(evt);
+                salvarBActionPerformed(evt);
             }
         });   
-        
         
     }
 
@@ -446,7 +454,29 @@ public class VisaoAuxiliarDecorator {
                 .addContainerGap())
         );        
     } 
-
+    private void panelTabbedButton(){
+        jPanelTabbedButton.setBorder(javax.swing.BorderFactory.createTitledBorder("Painel de Status:"));
+        
+        this.jPanelTabbedButton.setBackground(new java.awt.Color(255, 255, 255));
+        javax.swing.GroupLayout jPanelTabbedButtonLayout = new javax.swing.GroupLayout(jPanelTabbedButton);
+        jPanelTabbedButton.setLayout(jPanelTabbedButtonLayout);
+        
+        jPanelTabbedButtonLayout.setHorizontalGroup(
+            jPanelTabbedButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTabbedButtonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnTabbed, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelTabbedButtonLayout.setVerticalGroup(
+            jPanelTabbedButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTabbedButtonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnTabbed, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                .addContainerGap())
+        );       
+    }
+    
     private void panelInfo(){
         this.configureAjuda();
 
@@ -521,25 +551,30 @@ public class VisaoAuxiliarDecorator {
             detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detalhesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(this.jTabbedPaneColunas, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(this.jPanelInfo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jPanelBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanelTabbedButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(172, 172, 172)
+                .addComponent(jPanelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         detalhesLayout.setVerticalGroup(
             detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detalhesLayout.createSequentialGroup()
-                .addGap(0, 0, 1)
-                .addComponent(this.jTabbedPaneColunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(0, Short.MAX_VALUE))
-            .addGroup(detalhesLayout.createSequentialGroup()
-                .addComponent(this.jPanelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        ); 
+                .addGroup(detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(detalhesLayout.createSequentialGroup()
+                        .addGap(256, 256, 256)
+                        .addComponent(jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(detalhesLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(detalhesLayout.createSequentialGroup()
+                                .addComponent(jPanelTabbedButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jPanelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+ 
     }
 
     private void panelFundo(){

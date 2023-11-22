@@ -6,15 +6,18 @@
 package DTO;
 
 import DTO.Validacao;
+import Object.Coluna;
 import Object.Info;
 import Object.Dados;
 import Object.Dados;
 import Object.Estacao;
 import Object.Info;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -297,7 +300,38 @@ public class Funcionalidades {
         } 
     }
     
+public static void gerarCsv(Info info, String pathFile){
+    try(BufferedWriter bw = new BufferedWriter(new FileWriter(pathFile))){
+        bw.write("Nome: " + info.getEstacao().getNome() + "\n");
+        bw.write("Codigo Estacao: " + info.getEstacao().getCodigo() + "\n");
+        bw.write("Latitude: " + info.getEstacao().getLatitude() + "\n");
+        bw.write("Longitude: " + info.getEstacao().getLongitude() + "\n");
+        bw.write("Altitude: " + info.getEstacao().getAltitude() + "\n");
+        bw.write("Situacao: " + info.getEstacao().getSituacao() + "\n");
+        bw.write("Data Inicial: " + info.getDataInicialBR() + "\n");
+        bw.write("Data Final: " + info.getDataFinalBR() + "\n");
+        bw.write("Periodicidade da Medicao: " + info.getPeriodicidade() + "\n");
+        bw.newLine();
+        
+        for (Coluna coluna : info.getLista()){
+            bw.write(coluna.getTitulo() + ";");
+        }
+        bw.write("\n");
+        int linhaCount = info.getLinhaCount();
+        for(int index = 0; index < linhaCount; index++){
+            List<String> linha = info.getLinha(index);
+            for(String valor : linha){
+                bw.write(valor + ";");
+            }
+            bw.write("\n");
+        }
+        
+    }catch (IOException e){
+        e.printStackTrace();
+    }
+    //Escrevendo cabeçalho
     
+}    
 //    
 ////Dados-------------------------------------------------------------------------
 //    public static List<Float> geraLista(List<Object> lista){

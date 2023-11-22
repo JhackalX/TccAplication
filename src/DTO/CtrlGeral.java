@@ -96,12 +96,10 @@ public class CtrlGeral{
         for(int a = 2; a < medicao.getColunaCount(); a++){
             lista.add(new AuxEs(medicao.getLista(a).getAllDados(), 
                                  medicao.getMetodologiaAplicada().getCoef(),
-                                     guia));
-            
+                                     guia));   
         }
 
         for(int coluna = 0; coluna < listaClassificacao.size(); coluna++){
-
             for(int index = 0; index < guia.getApendice().size(); index++){
 
                 listaClassificacao.get(coluna).getClassificador(index).setErros(
@@ -112,10 +110,13 @@ public class CtrlGeral{
                                                                    lista.get(coluna).getNullMensal(index), 
                                                                    lista.get(coluna).getSubsMensal(index), 
                                                                 lista.get(coluna).getElementosMensal(index));
-
             }
         }
-
+        
+       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(lista.get(coluna-2).getDados());            
+        }
+       
         for(int i = 2; i < listaClassificacao.size(); i++){
             System.out.println("=======================================");
             System.out.println(listaClassificacao.get(i).getTitulo());
@@ -136,11 +137,9 @@ public class CtrlGeral{
             lista.add(new AuxAr(medicao.getMetodologiaAplicada().getPesos(),
                                 medicao.getLista(a).getAllDados(),  
                                      guia));
-            
         }
 
         for(int coluna = 0; coluna < listaClassificacao.size(); coluna++){
-
             for(int index = 0; index < guia.getApendice().size(); index++){
 
                 listaClassificacao.get(coluna).getClassificador(index).setErros(
@@ -151,10 +150,13 @@ public class CtrlGeral{
                                                                    lista.get(coluna).getNullMensal(index), 
                                                                    lista.get(coluna).getSubsMensal(index), 
                                                                 lista.get(coluna).getElementosMensal(index));
-
             }
         }
-
+        
+       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(lista.get(coluna-2).getDados());            
+        }
+       
         for(int i = 2; i < listaClassificacao.size(); i++){
             System.out.println("=======================================");
             System.out.println(listaClassificacao.get(i).getTitulo());

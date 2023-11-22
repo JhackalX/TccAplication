@@ -4,11 +4,18 @@
  */
 package Interface;
 
+import DTO.CtrlGeral;
+import static DTO.Funcionalidades.gerarCsv;
+import java.awt.event.ActionEvent;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -28,8 +35,10 @@ class ResultadosDecorator {
     private JCheckBox jCheckBoxOpcao3;
     
     private JScrollPane jScrollPaneRelatorio;
+    private CtrlGeral ctrlGeral;
     
-    public ResultadosDecorator() {
+    public ResultadosDecorator(CtrlGeral ctrlGeral){
+        this.ctrlGeral = ctrlGeral;
         this.initComponets();
         this.configureOpcaoCheckBox();
         this.configureTextArea();
@@ -142,6 +151,13 @@ class ResultadosDecorator {
     private void configureBtn() {
         this.btSair.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btSair.setText("Sair");
+        
+        this.btSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSairActionPerformed(evt);
+            }
+
+        });        
     }
 
     private void configureFundo() {
@@ -176,5 +192,37 @@ class ResultadosDecorator {
                 .addContainerGap())
         );
     }
-    
+
+    private void btSairActionPerformed(ActionEvent evt) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Escolha o local para salvar o arquivo");
+        //filtro
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("ArquivosCSV", "csv");
+        fileChooser.setFileFilter(filter);
+        //configura para o modo de salvar arquivo
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        
+        int userSelection = fileChooser.showSaveDialog(null);
+        String path = "";
+        if (userSelection == JFileChooser.APPROVE_OPTION){
+            path = fileChooser.getSelectedFile().getAbsolutePath();
+            
+            if(!path.endsWith("csv")){
+                path += ".csv";
+            }
+            System.out.println("Arquivo a ser salvo: " + path);
+        }
+        
+        if(this.jCheckBoxOpcao1.isSelected()){
+            
+        }
+        if(this.jCheckBoxOpcao2.isSelected() && (!path.equalsIgnoreCase(""))){
+            gerarCsv(ctrlGeral.getMedicao(), path);
+                               
+        }
+        if(this.jCheckBoxOpcao3.isSelected()){
+            
+        }
+    }    
 }

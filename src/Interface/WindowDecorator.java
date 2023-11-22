@@ -304,7 +304,7 @@ public class WindowDecorator {
     
     private void montarResultados(){
         
-        ResultadosDecorator resultados = new ResultadosDecorator();
+        ResultadosDecorator resultados = new ResultadosDecorator(this.ctrlGeral);
         JPanel jPanelResultados = resultados.ResultadoReady();
         
         GroupLayout resultadoLayout = new GroupLayout(this.resultados);

@@ -43,5 +43,5 @@ public class Funcionalidades {
 
             tableColumn.setPreferredWidth(preferredWidth);
         }
-    }
+    }   
 }
