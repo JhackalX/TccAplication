@@ -506,6 +506,7 @@ public class MetodologiaDecorator {
         this.ctrlGeral.getMedicao().getMetodologiaAplicada().setCoef(this.jTextFieldcoef.getText());
 //        System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
         this.ctrlGeral.gerarMetEs();
+        this.ctrlGeral.imputarValoresEs();
 
     }    
     

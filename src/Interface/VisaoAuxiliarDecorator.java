@@ -161,6 +161,13 @@ public class VisaoAuxiliarDecorator {
 
             }
         });   
+        
+        this.voltarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setVoltarBActionPerformed(evt);                
+
+            }
+        });   
 
         this.btnTabbed.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -586,12 +593,15 @@ public class VisaoAuxiliarDecorator {
 
         System.out.println("Numero de colunas:" + this.ctrlGeral.getColuna().size());
         this.list = null;
-        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabela();
+        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabelaImputados();
         
         this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlGeral.getColuna()),
                                                 createDataProvider(this.list),
                                                 new int[]{720, 744});
         this.paginatedDecorator.adjustColumnWidths();
+    }
+    private void setVoltarBActionPerformed(ActionEvent evt) {
+        this.ctrlGeral.reSetMedicao();
     }
     
     private void salvarBActionPerformed(ActionEvent evt) {

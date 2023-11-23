@@ -193,36 +193,47 @@ class ResultadosDecorator {
         );
     }
 
-    private void btSairActionPerformed(ActionEvent evt) {
+    private String dialogSalvarFile(){
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Escolha o local para salvar o arquivo");
         //filtro
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("ArquivosCSV", "csv");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos CSV", "csv");
         fileChooser.setFileFilter(filter);
         //configura para o modo de salvar arquivo
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
         
-        int userSelection = fileChooser.showSaveDialog(null);
-        String path = "";
-        if (userSelection == JFileChooser.APPROVE_OPTION){
-            path = fileChooser.getSelectedFile().getAbsolutePath();
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
+            String path = fileChooser.getSelectedFile().getAbsolutePath();
             
-            if(!path.endsWith("csv")){
+            if(!path.endsWith(".csv")){
                 path += ".csv";
             }
             System.out.println("Arquivo a ser salvo: " + path);
+            return path;
+        }
+        return "";
+    }
+    
+    private void btSairActionPerformed(ActionEvent evt) {
+        
+        String path = "";
+        //abre o painel de dialogo caso uma das premissas sejam verdadeiras
+        if(this.jCheckBoxOpcao2.isSelected() || this.jCheckBoxOpcao3.isSelected()){
+            path = this.dialogSalvarFile();
         }
         
         if(this.jCheckBoxOpcao1.isSelected()){
-            
+            //gravar no banco de dados
+            //codigo a fazer
         }
+        
         if(this.jCheckBoxOpcao2.isSelected() && (!path.equalsIgnoreCase(""))){
-            gerarCsv(ctrlGeral.getMedicao(), path);
-                               
+            gerarCsv(ctrlGeral.getMedicao(), path);              
         }
+        
         if(this.jCheckBoxOpcao3.isSelected()){
-            
+            //gerar arquivo .txt com o mesmo nome e no mesmo caminho que o .csv
         }
     }    
 }

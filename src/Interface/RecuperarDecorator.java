@@ -14,12 +14,15 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -51,8 +54,9 @@ public class RecuperarDecorator {
     private JLabel jLabelSituacao;
     private JLabel jLabelAltitude;
     private JLabel jLabelLongitude;
-    private JLabel jLabelDataFinal;
-    private JLabel jLabelDataInicial;
+    private JLabel jLabelAnoEst;
+//    private JLabel jLabelDataFinal;
+//    private JLabel jLabelDataInicial;
     private JLabel jLabelPeriodMedicao;
        
     private JButton btAvancar;
@@ -64,10 +68,11 @@ public class RecuperarDecorator {
     private JTextField jTextFieldSituacao;
     private JTextField jTextFieldAltitude;
     private JTextField jTextFieldLongitude;
-    private JTextField jTextFieldDataInicial;
-    private JTextField jTextFieldDataFinal;
+//    private JTextField jTextFieldDataInicial;
+//    private JTextField jTextFieldDataFinal;
     private JTextField jTextFieldPeriodMedicao;
-      
+    
+    private JComboBox jComboBoxAnoEst;
     private JFormattedTextField dataCriacaoFTF;
     private JScrollPane jScrollPaneAjuda;
     private JScrollPane jScrollPaneTabela;
@@ -97,6 +102,8 @@ public class RecuperarDecorator {
         this.jScrollPaneAjuda = new JScrollPane();
         this.jScrollPaneTabela = new JScrollPane();
         this.jTextAreaAjuda = new JTextArea();
+        this.jComboBoxAnoEst = new JComboBox();
+        
         
         this.jTextFieldNome = new JTextField();
         this.jTextFieldCodEstacao = new JTextField();
@@ -104,8 +111,8 @@ public class RecuperarDecorator {
         this.jTextFieldSituacao = new JTextField();
         this.jTextFieldAltitude = new JTextField();
         this.jTextFieldLongitude = new JTextField();
-        this.jTextFieldDataInicial = new JTextField();
-        this.jTextFieldDataFinal = new JTextField();
+//        this.jTextFieldDataInicial = new JTextField();
+//        this.jTextFieldDataFinal = new JTextField();
         this.jTextFieldPeriodMedicao = new JTextField();
         
         this.jLabelDataCriacao = new JLabel();
@@ -116,9 +123,10 @@ public class RecuperarDecorator {
         this.jLabelSituacao = new JLabel();
         this.jLabelAltitude = new JLabel();
         this.jLabelLongitude = new JLabel();
-        this.jLabelDataFinal = new JLabel();
-        this.jLabelDataInicial = new JLabel();
+//        this.jLabelDataFinal = new JLabel();
+//        this.jLabelDataInicial = new JLabel();
         this.jLabelPeriodMedicao = new JLabel();
+        this.jLabelAnoEst = new JLabel();
         
         this.dataCriacaoFTF = new JFormattedTextField();
 //        this.jTableBanco = new JTable();
@@ -144,7 +152,11 @@ public class RecuperarDecorator {
         listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
         listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
         listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
+        listInfos.get(0).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019")));
+        listInfos.get(1).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019", "2020")));
+        listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
     }
+    
     private void configureTable(){
         try {
             this.populateInfo();
@@ -220,7 +232,16 @@ public class RecuperarDecorator {
                                   Short.MAX_VALUE))
         );
     }
-
+    
+    private void atualizarComboBoxAnos(List<String> listAnos) {
+        jComboBoxAnoEst.removeAllItems();
+        if (listAnos != null) {
+            for (String ano : listAnos) {
+                this.jComboBoxAnoEst.addItem(ano);
+            }
+        }
+    }
+    
     //Iniciliza e escreve o painel info da janela
     private void panelInfo(){
         
@@ -235,142 +256,82 @@ public class RecuperarDecorator {
                                                               java.awt.Font("Tahoma", 1, 11))
         );
         
-        GroupLayout jPanelInfoLayout = new GroupLayout(this.jPanelInfo);
-        this.jPanelInfo.setLayout(jPanelInfoLayout);
+        javax.swing.GroupLayout jPanelInfoLayout = new javax.swing.GroupLayout(jPanelInfo);
+        jPanelInfo.setLayout(jPanelInfoLayout);
         jPanelInfoLayout.setHorizontalGroup(
-            jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInfoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelInfoLayout.createSequentialGroup()
                         .addGap(56, 56, 56)
-                        .addComponent(this.jLabelNome)
+                        .addComponent(jLabelNome)
                         .addGap(18, 18, 18)
-                        .addComponent(this.jTextFieldNome))
+                        .addComponent(jTextFieldNome))
                     .addGroup(jPanelInfoLayout.createSequentialGroup()
-                        .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanelInfoLayout.createSequentialGroup()
-                                .addComponent(this.jLabelCodEstacao)
+                                .addComponent(jLabelCodEstacao)
                                 .addGap(18, 18, 18)
-                                .addComponent(this.jTextFieldCodEstacao, 
-                                                  GroupLayout.PREFERRED_SIZE, 
-                                                 125, 
-                                                  GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextFieldCodEstacao, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanelInfoLayout.createSequentialGroup()
-                                .addComponent(this.jLabelLongitude)
+                                .addComponent(jLabelLongitude)
                                 .addGap(18, 18, 18)
-                                .addComponent(this.jTextFieldLongitude, 
-                                                  GroupLayout.PREFERRED_SIZE, 
-                                                 125, 
-                                                 GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextFieldLongitude, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanelInfoLayout.createSequentialGroup()
-                                .addComponent(this.jLabelLatitude)
+                                .addComponent(jLabelLatitude)
                                 .addGap(18, 18, 18)
-                                .addComponent(this.jTextFieldLatitude, 
-                                                  GroupLayout.PREFERRED_SIZE, 
-                                                 125, 
-                                                 GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                        .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addComponent(this.jLabelAltitude, GroupLayout.Alignment.TRAILING)
-                            .addComponent(this.jLabelSituacao, GroupLayout.Alignment.TRAILING))
+                                .addComponent(jTextFieldLatitude, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                        .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelAltitude, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelSituacao, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                            .addComponent(this.jTextFieldAltitude, 
-                                              GroupLayout.DEFAULT_SIZE, 
-                                             108, 
-                                             Short.MAX_VALUE)
-                            .addComponent(this.jTextFieldSituacao)))
+                        .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldAltitude, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                            .addComponent(jTextFieldSituacao)))
                     .addGroup(jPanelInfoLayout.createSequentialGroup()
-                        .addComponent(this.jLabelPeriodMedicao)
+                        .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelPeriodMedicao)
+                            .addComponent(jLabelAnoEst))
                         .addGap(18, 18, 18)
-                        .addComponent(this.jTextFieldPeriodMedicao))
-                    .addGroup(GroupLayout.Alignment.TRAILING, jPanelInfoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(GroupLayout.Alignment.TRAILING, jPanelInfoLayout.createSequentialGroup()
-                                .addComponent(this.jLabelDataFinal)
-                                .addGap(18, 18, 18)
-                                .addComponent(this.jTextFieldDataFinal, 
-                                                  GroupLayout.PREFERRED_SIZE, 
-                                                 100, 
-                                                  GroupLayout.PREFERRED_SIZE))
-                            .addGroup(GroupLayout.Alignment.TRAILING, jPanelInfoLayout.createSequentialGroup()
-                                .addComponent(this.jLabelDataInicial)
-                                .addGap(18, 18, 18)
-                                .addComponent(this.jTextFieldDataInicial, 
-                                                  GroupLayout.PREFERRED_SIZE, 
-                                                 100, 
-                                                  GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxAnoEst, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldPeriodMedicao))))
                 .addContainerGap())
         );
         jPanelInfoLayout.setVerticalGroup(
-            jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInfoLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.jTextFieldNome, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jLabelNome))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.jLabelCodEstacao)
-                    .addComponent(this.jTextFieldCodEstacao, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jLabelAltitude)
-                    .addComponent(this.jTextFieldAltitude, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.jTextFieldLatitude, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jLabelLatitude)
-                    .addComponent(this.jTextFieldSituacao, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jLabelSituacao))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(this.jLabelLongitude, GroupLayout.Alignment.TRAILING)
-                    .addComponent(this.jTextFieldLongitude, 
-                                  GroupLayout.Alignment.TRAILING, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.jLabelPeriodMedicao)
-                    .addComponent(this.jTextFieldPeriodMedicao, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.jTextFieldDataInicial, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                      GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jLabelDataInicial))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelInfoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.jLabelDataFinal, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                      15, 
-                                      GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jTextFieldDataFinal, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelNome))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelCodEstacao)
+                    .addComponent(jTextFieldCodEstacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelAltitude)
+                    .addComponent(jTextFieldAltitude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldLatitude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelLatitude)
+                    .addComponent(jTextFieldSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelSituacao))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelLongitude, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextFieldLongitude, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPeriodMedicao)
+                    .addComponent(jTextFieldPeriodMedicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelAnoEst)
+                    .addComponent(jComboBoxAnoEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
     }
     
@@ -395,11 +356,14 @@ public class RecuperarDecorator {
         this.jLabelLongitude.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.jLabelLongitude.setText("Longitude:");
 
-        this.jLabelDataFinal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.jLabelDataFinal.setText("Data Final:");
+        this.jLabelAnoEst.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        this.jLabelAnoEst.setText("Selecione o ano de estudo:");
 
-        this.jLabelDataInicial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.jLabelDataInicial.setText("Data Inicial:");
+//        this.jLabelDataFinal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+//        this.jLabelDataFinal.setText("Data Final:");
+//
+//        this.jLabelDataInicial.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+//        this.jLabelDataInicial.setText("Data Inicial:");
         
         this.jLabelPeriodMedicao.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.jLabelPeriodMedicao.setText("Periodicidade da Medição:");
@@ -476,8 +440,8 @@ public class RecuperarDecorator {
         this.jTextFieldSituacao.setEditable(false);
         this.jTextFieldAltitude.setEditable(false);
         this.jTextFieldLongitude.setEditable(false);
-        this.jTextFieldDataInicial.setEditable(false);
-        this.jTextFieldDataFinal.setEditable(false);
+//        this.jTextFieldDataInicial.setEditable(false);
+//        this.jTextFieldDataFinal.setEditable(false);
         this.jTextFieldPeriodMedicao.setEditable(false);
 
     }
@@ -489,10 +453,9 @@ public class RecuperarDecorator {
                                       String Situacao,
                                       String Altitude,
                                       String Longitude,
-                                      String DataInicial,
-                                      String DataFinal,
                                       String PeriodMedicao,
-                                      String DataCriacao){
+                                      String DataCriacao,
+                                      List<String> anos){
         
         this.jTextFieldNome.setText(Nome);
         this.jTextFieldCodEstacao.setText(CodEstacao);
@@ -500,10 +463,11 @@ public class RecuperarDecorator {
         this.jTextFieldSituacao.setText(Situacao);
         this.jTextFieldAltitude.setText(Altitude);
         this.jTextFieldLongitude.setText(Longitude);
-        this.jTextFieldDataInicial.setText(DataInicial);
-        this.jTextFieldDataFinal.setText(DataFinal);
+//        this.jTextFieldDataInicial.setText(DataInicial);
+//        this.jTextFieldDataFinal.setText(DataFinal);
         this.jTextFieldPeriodMedicao.setText(PeriodMedicao);
         this.dataCriacaoFTF.setText(DataCriacao);
+        this.atualizarComboBoxAnos(anos);
     }
     
     //Configura e inicializa o painel de fundo geral

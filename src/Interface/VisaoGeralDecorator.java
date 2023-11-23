@@ -656,7 +656,7 @@ public class VisaoGeralDecorator {
 
         System.out.println("Numero de colunas:" + this.ctrlGeral.getColuna().size());
         this.list = null;
-        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabela();
+        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabelaOriginal();
         
         this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlGeral.getColuna()),
                                                 createDataProvider(this.list),

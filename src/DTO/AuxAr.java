@@ -24,6 +24,7 @@ public class AuxAr {
     private List<Float> pesos;
     //lista de dados, apenas valores numéricos para contabilidades e formulas
     private List<Float> dados;
+    private List<Float> copiaDados;
     //listas de dados auto-Medias moveis ponderadas
     private List<Float> autoAr;
     //lista de erros
@@ -51,7 +52,8 @@ public class AuxAr {
     
     public AuxAr(List<Float> pesos, List<Float> dados, Guia guia) {
         this.pesos = pesos;
-        this.dados = dados;
+        this.dados = new ArrayList<>(dados);
+        this.copiaDados = new ArrayList<>(dados);
         //listas auxiliares
         this.autoAr =  new ArrayList<Float>();
         this.erroAr =  new ArrayList<Float>();
@@ -65,7 +67,7 @@ public class AuxAr {
         this.maeListaAR = new ArrayList<Float>();
         this.mapeListaAR = new ArrayList<Float>();
         
-        this.somaNulls = this.contNull(this.dados);
+        this.somaNulls = this.contNull(this.copiaDados);
         
         this.guia = guia; 
         
@@ -92,7 +94,11 @@ public class AuxAr {
     public List<Float> getDados() {
         return dados;
     }
-
+    
+    public List<Float> getDadosProcessados() {
+        return copiaDados;
+    }
+    
     public void setDados(List<Float> dados) {
         this.dados = dados;
     }
@@ -240,8 +246,8 @@ public class AuxAr {
 
     //Predição-troca o valor null pelo valor predito    
     private void troca(int index) {
-        this.dados.remove(index);
-        this.dados.add(index, this.autoAr.get(index));
+        this.copiaDados.remove(index);
+        this.copiaDados.add(index, this.autoAr.get(index));
         this.subsAr.add(index);
     }
     
@@ -271,18 +277,18 @@ public class AuxAr {
     //------Funções para calculo-------
     //calcula o vetor erroAR   
     private void calculaErro() {
-        for(int index = 0; index < this.dados.size(); index++){        
-            if(this.autoAr.isEmpty() || this.dados.isEmpty()){
+        for(int index = 0; index < this.copiaDados.size(); index++){        
+            if(this.autoAr.isEmpty() || this.copiaDados.isEmpty()){
                 //mensagem para erro de listagem
                 System.out.println("(AuxAr-void calculoErro):lista de dados ou lista de predicao vazias...");
             }else{
                 if((this.autoAr.get(index) == null || 
-                    this.dados.get(index) == null) || 
+                    this.copiaDados.get(index) == null) || 
                     (this.copiaAr.contains(index) ||
                      this.subsAr.contains(index))){
                     this.erroAr.add(null);
                 }else{
-                    this.erroAr.add((this.dados.get(index)-
+                    this.erroAr.add((this.copiaDados.get(index)-
                                      this.autoAr.get(index)));
                 }
             }
@@ -293,7 +299,7 @@ public class AuxAr {
     private void formulaAR(int index) {
         float soma = 0;
         for(int pos = 0; pos < this.pesos.size(); pos++){
-            soma += this.dados.get(index - pos)*this.pesos.get(pos);
+            soma += this.copiaDados.get(index - pos)*this.pesos.get(pos);
         }
         this.autoAr.add(soma);
     }
@@ -445,7 +451,7 @@ public class AuxAr {
 //        int mes = 3;
 //        int ano = 2017; 
         
-        List<Float> absn = somaListaErroABSNormalizada(this.dados,
+        List<Float> absn = somaListaErroABSNormalizada(this.copiaDados,
                                                        this.erroAr,
                                                         this.subsAr,
                                                        this.guia);

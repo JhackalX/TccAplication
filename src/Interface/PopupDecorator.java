@@ -275,6 +275,7 @@ public class PopupDecorator {
             this.ctrlGeral.getMedicao().getMetodologiaAplicada().setLista(this.getListaPesos());
             System.out.println(this.ctrlGeral.getMedicao().getMetodologiaAplicada().toString());
             this.ctrlGeral.gerarMetAR();
+            this.ctrlGeral.imputarValoresAr();
             this.janela.dispose();
         }
     }

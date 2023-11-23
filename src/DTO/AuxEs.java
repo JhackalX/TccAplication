@@ -23,6 +23,7 @@ public class AuxEs {
     private double coefSp;
     //lista de dados
     private List<Float> dados;
+    private List<Float> copiaDados;
 
     //listas de dados auto-regressivo
     private List<Float> autoSmoot;
@@ -53,7 +54,8 @@ public class AuxEs {
         
         this.coefSp =coef;
                 
-        this.dados = dados;
+        this.dados = new ArrayList<>(dados);
+        this.copiaDados = new ArrayList<>(dados);
         //listas auxiliares
         this.autoSmoot = new ArrayList<Float>();
         this.erroEs = new ArrayList<Float>();
@@ -66,7 +68,7 @@ public class AuxEs {
         this.madListaES = new ArrayList<Float>();
         this.maeListaES = new ArrayList<Float>();
         this.mapeListaES = new ArrayList<Float>();
-        this.somaNulls = this.contNull(this.dados);
+        this.somaNulls = this.contNull(this.copiaDados);
         this.guia = guia;
         
         this.preencherAutoSmooth();
@@ -93,6 +95,10 @@ public class AuxEs {
     //Getter e Setter
     public List<Float> getDados() {
         return dados;
+    }
+
+    public List<Float> getDadosProcessados() {
+        return copiaDados;
     }
 
     public void setDados(List<Float> dados) {
@@ -233,8 +239,8 @@ public class AuxEs {
     
     //Predição-troca o valor null pelo valor predito
     public void troca(int index){
-        this.dados.remove(index);
-        this.dados.add(index, this.autoSmoot.get(index));
+        this.copiaDados.remove(index);
+        this.copiaDados.add(index, this.autoSmoot.get(index));
         this.subsEs.add(index);
     }
     
@@ -249,15 +255,15 @@ public class AuxEs {
     //------Funções para calculo-------
     //calcula o vetor erroES
     public void calculaErro(){
-        for(int index = 0; index < this.dados.size(); index++){        
-            if(this.autoSmoot.isEmpty() || this.dados.isEmpty()){
+        for(int index = 0; index < this.copiaDados.size(); index++){        
+            if(this.autoSmoot.isEmpty() || this.copiaDados.isEmpty()){
                 //mensagem para erro de listagem
                 System.out.println("(AuxEs-void calculoErro):lista de dados ou lista de predicao vazias...");
             }else{
-                if(this.autoSmoot.get(index) == null && this.dados.get(index) == null){
+                if(this.autoSmoot.get(index) == null && this.copiaDados.get(index) == null){
                     this.erroEs.add(null);
                 }else{
-                    this.erroEs.add((this.dados.get(index)-this.autoSmoot.get(index)));
+                    this.erroEs.add((this.copiaDados.get(index)-this.autoSmoot.get(index)));
                 }
             }
         }
@@ -266,7 +272,7 @@ public class AuxEs {
     //Equação Exponetial Smooth obs: add null no erro para a logica fazer sentido
     public void formulaES(int index){
         this.autoSmoot.add(this.autoSmoot.get(index-1) + Float.parseFloat
-                          ("" + this.coefSp * (this.dados.get(index-1)-
+                          ("" + this.coefSp * (this.copiaDados.get(index-1)-
                                                this.autoSmoot.get(index-1))));
     }
     
@@ -417,7 +423,7 @@ public class AuxEs {
 //        int mes = 3;
 //        int ano = 2017; 
         
-        List<Float> absn = somaListaErroABSNormalizada(this.dados,
+        List<Float> absn = somaListaErroABSNormalizada(this.copiaDados,
                                                        this.erroEs,
                                                         this.subsEs,
                                                        this.guia);

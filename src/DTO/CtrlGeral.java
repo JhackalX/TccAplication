@@ -19,7 +19,13 @@ import java.util.List;
 public class CtrlGeral{
     
     private Info medicao = null;
+//    private Info copiaMedicao = null;
+    //lista de gerencias
     private List<ListaClassificacao> listaClassificacao = null;
+//    private List<ListaClassificacao> listaClassificacaoDuplicada = null;
+    private List<AuxAr> listaAR = null;
+    private List<AuxEs> listaEs = null;
+    
     private Guia guia = null;
     private CtrlDao ctrlDao;
     private Configuracoes config;
@@ -91,10 +97,10 @@ public class CtrlGeral{
     
     public void gerarMetEs(){
 
-        List<AuxEs> lista = new ArrayList<AuxEs>();
+        this.listaEs = new ArrayList<AuxEs>();
 
         for(int a = 2; a < medicao.getColunaCount(); a++){
-            lista.add(new AuxEs(medicao.getLista(a).getAllDados(), 
+            this.listaEs.add(new AuxEs(medicao.getLista(a).getAllDados(), 
                                  medicao.getMetodologiaAplicada().getCoef(),
                                      guia));   
         }
@@ -103,19 +109,17 @@ public class CtrlGeral{
             for(int index = 0; index < guia.getApendice().size(); index++){
 
                 listaClassificacao.get(coluna).getClassificador(index).setErros(
-                                                lista.get(coluna).esListaMAD().get(index).toString(), 
-                                                lista.get(coluna).esListaMAE().get(index).toString(), 
-                                                lista.get(coluna).esListaMAPE().get(index).toString());
+                                                this.listaEs.get(coluna).esListaMAD().get(index).toString(), 
+                                                this.listaEs.get(coluna).esListaMAE().get(index).toString(), 
+                                                this.listaEs.get(coluna).esListaMAPE().get(index).toString());
                 listaClassificacao.get(coluna).getClassificador(index).setEstatisca(
-                                                                   lista.get(coluna).getNullMensal(index), 
-                                                                   lista.get(coluna).getSubsMensal(index), 
-                                                                lista.get(coluna).getElementosMensal(index));
+                                                                   this.listaEs.get(coluna).getNullMensal(index), 
+                                                                   this.listaEs.get(coluna).getSubsMensal(index), 
+                                                                this.listaEs.get(coluna).getElementosMensal(index));
             }
         }
         
-       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
-            this.medicao.getLista(coluna).atualizaValor(lista.get(coluna-2).getDados());            
-        }
+//        this.imputarValoresEs();
        
         for(int i = 2; i < listaClassificacao.size(); i++){
             System.out.println("=======================================");
@@ -131,10 +135,10 @@ public class CtrlGeral{
     
     public void gerarMetAR(){
 
-        List<AuxAr> lista = new ArrayList<AuxAr>();
+        this.listaAR = new ArrayList<AuxAr>();
 
         for(int a = 2; a < medicao.getColunaCount(); a++){
-            lista.add(new AuxAr(medicao.getMetodologiaAplicada().getPesos(),
+            this.listaAR.add(new AuxAr(medicao.getMetodologiaAplicada().getPesos(),
                                 medicao.getLista(a).getAllDados(),  
                                      guia));
         }
@@ -143,19 +147,17 @@ public class CtrlGeral{
             for(int index = 0; index < guia.getApendice().size(); index++){
 
                 listaClassificacao.get(coluna).getClassificador(index).setErros(
-                                                lista.get(coluna).arListaMAD().get(index).toString(), 
-                                                lista.get(coluna).arListaMAE().get(index).toString(), 
-                                                lista.get(coluna).arListaMAPE().get(index).toString());
+                                                this.listaAR.get(coluna).arListaMAD().get(index).toString(), 
+                                                this.listaAR.get(coluna).arListaMAE().get(index).toString(), 
+                                                this.listaAR.get(coluna).arListaMAPE().get(index).toString());
                 listaClassificacao.get(coluna).getClassificador(index).setEstatisca(
-                                                                   lista.get(coluna).getNullMensal(index), 
-                                                                   lista.get(coluna).getSubsMensal(index), 
-                                                                lista.get(coluna).getElementosMensal(index));
+                                                                   this.listaAR.get(coluna).getNullMensal(index), 
+                                                                   this.listaAR.get(coluna).getSubsMensal(index), 
+                                                                this.listaAR.get(coluna).getElementosMensal(index));
             }
         }
         
-       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
-            this.medicao.getLista(coluna).atualizaValor(lista.get(coluna-2).getDados());            
-        }
+//        this.imputarValoresAr();
        
         for(int i = 2; i < listaClassificacao.size(); i++){
             System.out.println("=======================================");
@@ -168,6 +170,18 @@ public class CtrlGeral{
             }
         }
     }
+    //imputa valores calculados a serie original
+    public void imputarValoresAr(){
+       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(this.listaAR.get(coluna-2).getDadosProcessados());            
+        }        
+    }
+    
+    public void imputarValoresEs(){
+       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(this.listaEs.get(coluna-2).getDadosProcessados());            
+        }       
+    }
     
     public void setMedicao(Info medicao) {
 //        medicao.imprimirColuna();
@@ -175,11 +189,10 @@ public class CtrlGeral{
 //        Tabela.Funcionalidades.setColumn(CtrlGeral.meses);
 //        System.out.println("setMEdicao!!!!!");
         Guia nova = new Guia();
-        nova.gerarGuia(medicao.getLista(2).getDados());
+        nova.gerarGuia(this.medicao.getLista(2).getDados());
         this.setApendice(nova);
 //        apendice.imprimir();
         this.listaClassificacao = setListaClassificacao();
-       
     }
 
     public List<ListaClassificacao> getListaClassificacoes() {
@@ -205,12 +218,16 @@ public class CtrlGeral{
     public Marcador getMarcador(int index) {
         return guia.getMarcador(index);
     }
-
+    
+    public void reSetMedicao(){
+        this.medicao.reSetLista();
+    }
+    
     public void setApendice(Guia apendice) {
         this.guia = apendice;
     }
     //Analizar aqui com mais calma
-    public List<Employee> gerarDadosTabela(){
+    public List<Employee> gerarDadosTabelaOriginal(){
 
         if(medicao == null || medicao.getLinhaCount() == 0){
             return null;
@@ -218,11 +235,22 @@ public class CtrlGeral{
             List<Employee> lista = new ArrayList<Employee>();
             for(int i = 0; i < medicao.getLinhaCount(); i++){
                 Employee e = new Employee();
-//                System.out.println(medicao.getLinha(i));
-//                e.setRow(meses);
-//                System.out.println("Quantidade de elementos da linha "+ i +" eh: " + medicao.getLinha(i).size());
+                e.setLine(medicao.getLinhaOriginal(i));
+                lista.add(e);
+            }
+            return lista;  
+        }
+    }
+    
+    public List<Employee> gerarDadosTabelaImputados(){
+
+        if(medicao == null || medicao.getLinhaCount() == 0){
+            return null;
+        }else{
+            List<Employee> lista = new ArrayList<Employee>();
+            for(int i = 0; i < medicao.getLinhaCount(); i++){
+                Employee e = new Employee();
                 e.setLine(medicao.getLinha(i));
-//                System.out.println(e.getLine());
                 lista.add(e);
             }
             return lista;  

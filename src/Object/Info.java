@@ -34,7 +34,8 @@ public class Info {
     private String periodicidade;//
 
     private List<Coluna> lista;
-    
+    private List<Coluna> copiaLista;
+    private List<String> listaAnos;
     //informção criada pelo sistema
     private Metodologia metodologiaAplicada;//formula aplicada (indice 1 ou 2)    
     private Date dataCriacao;//data gravada da dos dados atual
@@ -44,6 +45,8 @@ public class Info {
         Date data = new Date();
         this.dataCriacao = data;
         this.lista = new ArrayList<Coluna>();
+        this.copiaLista = new ArrayList<Coluna>();
+        this.listaAnos = new ArrayList<String>();
         this.metodologiaAplicada = new Metodologia();
     }
 
@@ -66,6 +69,7 @@ public class Info {
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
         this.lista = lista;
+        this.copiaLista = new ArrayList<Coluna>(lista);
         this.metodologiaAplicada = metodologiaAplicada;
         this.dataCriacao = Date.from(Instant.now());
     }
@@ -97,6 +101,7 @@ public class Info {
         Date data = new Date();
         this.dataCriacao = data;
         this.lista = new ArrayList<Coluna>();
+        this.copiaLista = new ArrayList<Coluna>();
         this.metodologiaAplicada = new Metodologia();
     }
     
@@ -106,6 +111,14 @@ public class Info {
     
     public void setEstacao(Estacao estacao){
         this.estacao = estacao;
+    }
+
+    public List<String> getListaAnos (){
+        return this.listaAnos;
+    }
+    
+    public void setListaAnos(List<String> listaAnos){
+        this.listaAnos = listaAnos;
     }
 
 //    public String getCidade() {
@@ -167,6 +180,7 @@ public class Info {
     //add colunas
     public void addColuna(String titulo) {
         this.lista.add(new Coluna(titulo));
+        this.copiaLista.add(new Coluna(titulo));
     }
     
     //add elementos
@@ -174,6 +188,7 @@ public class Info {
         for(int i = 2; i < dados.length; i++){
             Dados dado = new Dados(dados[0], dados[1], dados[i]);
             this.lista.get(i).addDado(dado);            
+            this.copiaLista.get(i).addDado(dado);            
         }
     }
     
@@ -182,32 +197,41 @@ public class Info {
         for(int i = 2; i < dados.length; i++){
             Dados dado = new Dados(dados[0], (dados[1].split(" ")[0]), dados[i]);
             this.lista.get(i).addDado(dado);            
+            this.copiaLista.get(i).addDado(dado);            
         }
     }
     
     //adiciona uma sequencia de dados(é criada para entrada de linha por linha no CSV)
     public void addColuna(String titulo, List<Dados> lista) {
         this.lista.add(new Coluna(titulo, lista));         
+        this.copiaLista.add(new Coluna(titulo, lista));         
     }
 
     public void excluirColuna(int index) {
         this.lista.remove(index);         
+        this.copiaLista.remove(index);         
     }
 
     public void excluirColuna(Coluna coluna) {
         this.lista.remove(coluna);         
+        this.copiaLista.remove(coluna);         
     }
 
     public void excluirColuna(String titulo) {
         for(int i = 0; i < this.lista.size(); i++){
             if(this.lista.get(i).getTitulo().equalsIgnoreCase(titulo)){
                 this.lista.remove(i);
+                this.copiaLista.remove(i);
             }
         }         
     }
 
     public List<Coluna> getLista() {
         return lista;
+    }
+
+    public List<Coluna> getCopiaLista() {
+        return copiaLista;
     }
 
     public Coluna getLista(int index) {
@@ -218,8 +242,22 @@ public class Info {
         }
     }
 
+    public Coluna getCopiaLista(int index) {
+        if(this.copiaLista == null){
+            return null;
+        }else{
+            return copiaLista.get(index);
+        }
+    }
+
     public void setLista(List<Coluna> lista) {
         this.lista = lista;
+        this.copiaLista = new ArrayList<Coluna>(lista);
+    }
+    
+    //retorna a lista ao seus dados originais
+    public void reSetLista() {
+        this.lista = new ArrayList<Coluna>(this.copiaLista);
     }
             
     public int getColunaCount() {
@@ -271,6 +309,27 @@ public class Info {
             return linha;
         }
     }
+
+    public ArrayList<String> getLinhaOriginal(int index) {
+        ArrayList<String> linha = new ArrayList<String>();
+        if(this.getColunaCount() == 1){
+            linha.add("vazio");
+            return linha;
+        }else{
+            for(int i = 0; i < this.getColunaCount(); i++){
+                if(i == 0){
+                    linha.add(this.getCopiaLista(3).getDado(index).getDataBr());
+                }else{
+                    if(i == 1){
+                        linha.add(""+ this.getCopiaLista(3).getDado(index).getPeriodo());
+                    }else{
+                        linha.add(this.getCopiaLista(i).getDado(index).getValor());
+                    }
+                }
+            } 
+            return linha;
+        }
+    }
     
     public String getColuna(int index) {
         return this.lista.get(index).getTitulo();
@@ -278,16 +337,19 @@ public class Info {
 
     public void setColuna(String coluna, int index) {
         this.lista.get(index).setTitulo(coluna);
+        this.copiaLista.get(index).setTitulo(coluna);
     }
     
     public void setColuna(String[] coluna) {
         if(this.isEmpty()){
             for(int i = 0; i < coluna.length; i++){
                 this.lista.add(new Coluna(coluna[i]));
+                this.copiaLista.add(new Coluna(coluna[i]));
             }           
         }else{
             for(int c = 0; c < coluna.length; c++){
                 this.lista.get(c).setTitulo(coluna[c]);
+                this.copiaLista.get(c).setTitulo(coluna[c]);
             }             
         }
     }
@@ -416,28 +478,28 @@ public class Info {
 //    }
 
     public int getInicDay (){
-        return (dataInicial.getDay()+1);
+        return (lista.get(3).getDado(0).getDay());
     }
     
     public int getInicMonth (){
-        return (dataInicial.getMonth()+1);
+        return (lista.get(3).getDado(0).getMonth());
     }
     
     public int getInicYear (){
-        return (dataInicial.getYear()+1900);
+        return (lista.get(3).getDado(0).getYear());
     }    
 
-    public int getFinDay (){
-        return (dataFinal.getDay()+1);
-    }
-    
-    public int getFinMonth (){
-        return (dataFinal.getMonth()+1);
-    }
-    
-    public int getFinYear (){
-        return (dataFinal.getYear()+1900);
-    }  
+//    public int getFinDay (){
+//        return (dataFinal.getDay()+1);
+//    }
+//    
+//    public int getFinMonth (){
+//        return (dataFinal.getMonth()+1);
+//    }
+//    
+//    public int getFinYear (){
+//        return (dataFinal.getYear()+1900);
+//    }  
     
     @Override
     public String toString() {
