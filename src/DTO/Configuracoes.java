@@ -4,6 +4,7 @@
  */
 package DTO;
 
+import DAO.CtrlDao;
 import java.io.File;
 
 /**
@@ -15,16 +16,21 @@ public final class Configuracoes {
     private String caminhoSistema;
     private String caminhoBaseEstacoes;
     private String camihoUltimoArquivoCarga;
+    private String encoding;
     private boolean IS_WINDOWS;
     private boolean IS_LINUX;
+    
+    private CtrlDao ctrlDao;
 
     public Configuracoes() {        
         this.versaoSistema = Float.valueOf("0.01");
         this.IS_WINDOWS = false;
         this.IS_LINUX = false;
+        this.ctrlDao = ctrlDao;
         this.loadOS();
         this.inicializaAmbiente();
         this.inicializaSistema();
+        
     }
     
     public void verificarDiretorio(String Diretorio) {
@@ -49,7 +55,7 @@ public final class Configuracoes {
             System.out.println("o arquivo " + baseDados + " ja existe.");
         } else {
             System.out.println("O arquivo " + baseDados + " nao existe, criando agora...");
-            DAO.CtrlDao.inicializarBaseDados(baseDados);
+            this.ctrlDao.inicializarBaseDados(baseDados);
         }
     }
     
@@ -97,16 +103,18 @@ public final class Configuracoes {
         System.out.println("OS: " + os);
         if (os.indexOf("Win") >= 0) {
             this.IS_WINDOWS = true;
+            this.encoding = "Cp1252";
         } else if (os.indexOf("Linux") >= 0){
            this.IS_LINUX = true;
+           this.encoding = "utf8";
         }
     }
     
     private void inicializaAmbiente(){
         if (this.IS_WINDOWS) {
-            String raiz = System.getenv("APPDATA");    
-            this.caminhoSistema = new String(raiz + "\\TCC");
-            this.caminhoBaseEstacoes = new String(raiz + "\\TCC\\Estacoes.db");
+            //String raiz = System.getenv("APPDATA");    
+            this.caminhoSistema = new String("C:\\TCC");
+            this.caminhoBaseEstacoes = new String("C:\\TCC\\Estacoes.db");
         } else if (this.IS_LINUX){
             String raiz = System.getenv("HOME");
             System.out.println(raiz);
@@ -114,5 +122,14 @@ public final class Configuracoes {
             this.caminhoBaseEstacoes = new String(raiz + "/TCC/Estacoes.db");          
         } 
     }
+
+    public String getEncoding() {
+        return encoding;
+    }
+
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
+    
     
 }

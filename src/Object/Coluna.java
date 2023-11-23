@@ -15,7 +15,9 @@ import java.util.Objects;
 public class Coluna {
     
     private String titulo;
+    private Sensor sensor;
     private List<Dados> dados;
+    private Info medicaoPai;
 
     public Coluna() {
     }
@@ -27,6 +29,12 @@ public class Coluna {
 
     public Coluna(String titulo) {
         this.titulo = titulo;
+        this.dados = new ArrayList<Dados>();
+    }
+    
+    public Coluna(String titulo, Info medicaoPai) {
+        this.titulo = titulo;
+        this.medicaoPai = medicaoPai;
         this.dados = new ArrayList<Dados>();
     }
 
@@ -42,6 +50,14 @@ public class Coluna {
         this.titulo = titulo;
     }
 
+    public Info getMedicaoPai() {
+        return medicaoPai;
+    }
+
+    public void setMedicaoPai(Info medicaoPai) {
+        this.medicaoPai = medicaoPai;
+    }
+    
     public List<Dados> getDados() {
         return dados;
     }
@@ -78,6 +94,15 @@ public class Coluna {
         this.dados = dados;
     }
 
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+    
+  
     public void atualizaValor(List<Float> valor) {
         System.out.println(this.titulo);
         for(int index = 0; index < valor.size(); index++){
@@ -106,6 +131,8 @@ public class Coluna {
         dado.setData(Obj.getData());
         dado.setPeriodo(Obj.getPeriodo());
         dado.setValor(Obj.getValor()); 
+        dado.setSensor(this.sensor);
+        dado.setId(dado.getDataBr(),dado.getPeriodo(), this.sensor, this.medicaoPai.getEstacao().getCodigo());
         //System.out.println(dado.getData()+","+dado.getPeriodo()+","+dado.getValor());
         if(this.isEmpty()){
                 this.dados.add(dado);
@@ -113,7 +140,7 @@ public class Coluna {
             //System.out.println("entrou aqui");
             if(!dados.contains(dado)){
                 this.dados.add(dado);
-                this.ordenarLista();
+                //this.ordenarLista();
             }else{
                 System.out.println("elemento ja existe na lista...");
             }    

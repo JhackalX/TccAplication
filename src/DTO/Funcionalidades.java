@@ -12,6 +12,7 @@ import Object.Dados;
 import Object.Dados;
 import Object.Estacao;
 import Object.Info;
+import Object.Sensor;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -33,7 +34,9 @@ import javax.swing.JOptionPane;
  * @author jacka
  */
 public class Funcionalidades {
+    private CtrlGeral ctrlGeral;
     
+        
 //    public static String relatorio(Info obj){
 //        Info novo;
 //        novo = obj;
@@ -89,11 +92,13 @@ public class Funcionalidades {
 //        }
 //        return contNull(novo, mes, ano);
 //    }
-
+    public Funcionalidades(CtrlGeral ctrlGeral) {
+        this.ctrlGeral = ctrlGeral;
+    }
     
 
-    public static Info lerArquivo(String path) throws FileNotFoundException, ParseException, IOException{
-        try(BufferedReader arquivo = new BufferedReader(new InputStreamReader(new FileInputStream(path),"Cp1252"))){
+    public Info lerArquivo(String path) throws FileNotFoundException, ParseException, IOException{
+        try(BufferedReader arquivo = new BufferedReader(new InputStreamReader(new FileInputStream(path),this.ctrlGeral.getConfig().getEncoding()))){
             String linhaUm[];
             
             linhaUm = arquivo.readLine().split(":");
@@ -115,18 +120,18 @@ public class Funcionalidades {
         
     }
 //    
-    public static void addDados (String linha, Info cidade) throws ParseException{
+    public void addDados (String linha, Info cidade, Boolean gabarito[]) throws ParseException{
         String[] campos = linha.trim().split(";");
-        cidade.addElementos(campos);
+        cidade.addElementos(campos,gabarito);
     }
 
-    private static void addDadosEstacoesAutomaticas (String linha, Info cidade) throws ParseException{
+    private void addDadosEstacoesAutomaticas (String linha, Info cidade,Boolean gabarito[]) throws ParseException{
         String[] campos = linha.trim().split(";");
-        cidade.addElementosEstacoesAutomaticas(campos);
+        cidade.addElementosEstacoesAutomaticas(campos,gabarito);
     }
     
     // Funes para ler aquivos dow arquivos de estaoes convencionais do site do INMET (Link: https://bdmep.inmet.gov.br/)
-    private static Info lerArquivoEstacoesConvencionais(BufferedReader arquivo, String nomeEstacao) throws ParseException, IOException{
+    private Info lerArquivoEstacoesConvencionais(BufferedReader arquivo, String nomeEstacao) throws ParseException, IOException{
         Info medicao = null;
         
         
@@ -139,7 +144,7 @@ public class Funcionalidades {
         return medicao;
     }
     
-    private static Info lerCabecalhoEstacoesConvencionais(BufferedReader arquivo, Info medicao, String nomeEstacao) throws ParseException, IOException{
+    private Info lerCabecalhoEstacoesConvencionais(BufferedReader arquivo, Info medicao, String nomeEstacao) throws ParseException, IOException{
         
         //Ler cabeçalho da estacao
         
@@ -168,23 +173,32 @@ public class Funcionalidades {
 
     }
     
-    private static Info addDadosEstacoesConvencionais(BufferedReader arquivo, Info medicao) throws IOException, ParseException{
+    private Info addDadosEstacoesConvencionais(BufferedReader arquivo, Info medicao) throws IOException, ParseException{
         //Ler  colunas
-        
+        ArrayList<Sensor> sensores;
+        Boolean gabarito[];
+                
         String line = arquivo.readLine();
         line = arquivo.readLine();
         String[] coluna = line.split(";");
         medicao.setColuna(coluna);
+        
+        sensores = (ArrayList<Sensor>) this.ctrlGeral.listarSensores();
+        
+        gabarito = preencherGabarito(coluna, sensores);
+        
+        medicao = vincularSensoresColunas(medicao, sensores);
+                
         line = arquivo.readLine();
         
         while(line != null){
-                addDados(line, medicao);
+                addDados(line, medicao,gabarito);
                 line = arquivo.readLine();    
             }
         return medicao;
     }
     
-    private static Info lerArquivoEstacoesAutomaticas(BufferedReader arquivo){
+    private Info lerArquivoEstacoesAutomaticas(BufferedReader arquivo){
         Info medicao;
         medicao = null;
         
@@ -195,7 +209,7 @@ public class Funcionalidades {
         return medicao;
     }
     
-    private static Info lerCabecalhoEstacoesAutomaticas(BufferedReader arquivo, Info medicao) {
+    private Info lerCabecalhoEstacoesAutomaticas(BufferedReader arquivo, Info medicao) {
         try {Estacao nova = new Estacao();
             medicao =  new Info();
 
@@ -241,12 +255,12 @@ public class Funcionalidades {
 
 
             //pula linha data de de fudacao
-            arquivo.readLine();
+            linha = arquivo.readLine();
 
             //Ler data Fundação
-    //        campos = linha.split(";");
-    //        nova.setDataFundacao(campos[1]);
-    //        
+            campos = linha.split(";");
+            nova.setDataFundacaoBR(campos[1]);
+            
             nova.setID();
             //Definir estacao
             medicao.setEstacao(nova);
@@ -261,8 +275,10 @@ public class Funcionalidades {
         }
     }
     
-    private static Info addDadosEstacoesAutomaticas(BufferedReader arquivo, Info medicao){
+    private Info addDadosEstacoesAutomaticas(BufferedReader arquivo, Info medicao){
         try{
+            ArrayList<Sensor> sensores;
+            Boolean gabarito[];
             String campos[], linha;
            // ler colunas
             linha = arquivo.readLine();      
@@ -273,18 +289,23 @@ public class Funcionalidades {
             
             System.out.println("Linha: " + linha);
             
+            sensores = (ArrayList<Sensor>) this.ctrlGeral.listarSensores();
+
+            gabarito = preencherGabarito(campos, sensores);
+
+            medicao = vincularSensoresColunas(medicao, sensores);  
+            
+            medicao.getEstacao().setPeriodicidade("Horaria");
+            
+                      
+
             // Ler primeira linha
             linha = arquivo.readLine();
-
-            medicao.setPeriodicidade("Horaria");
-            
-            
-            medicao.atualizaDataInicial(linha.split(";")[0]);
-            
-            System.out.println(linha);
+            medicao.atualizaDataInicial(linha.split(";")[0]); 
+            //System.out.println(linha);
             while(linha != null){ 
                 
-                addDadosEstacoesAutomaticas(linha, medicao);
+                addDadosEstacoesAutomaticas(linha, medicao, gabarito);
                 medicao.atualizaDataFinal(linha.split(";")[0]);
                 
                 linha = arquivo.readLine();    
@@ -300,7 +321,7 @@ public class Funcionalidades {
         } 
     }
     
-public static void gerarCsv(Info info, String pathFile){
+public void gerarCsv(Info info, String pathFile){
     try(BufferedWriter bw = new BufferedWriter(new FileWriter(pathFile))){
         bw.write("Nome: " + info.getEstacao().getNome() + "\n");
         bw.write("Codigo Estacao: " + info.getEstacao().getCodigo() + "\n");
@@ -310,7 +331,7 @@ public static void gerarCsv(Info info, String pathFile){
         bw.write("Situacao: " + info.getEstacao().getSituacao() + "\n");
         bw.write("Data Inicial: " + info.getDataInicialBR() + "\n");
         bw.write("Data Final: " + info.getDataFinalBR() + "\n");
-        bw.write("Periodicidade da Medicao: " + info.getPeriodicidade() + "\n");
+        bw.write("Periodicidade da Medicao: " + info.getEstacao().getPeriodicidade() + "\n");
         bw.newLine();
         
         for (Coluna coluna : info.getLista()){
@@ -331,7 +352,46 @@ public static void gerarCsv(Info info, String pathFile){
     }
     //Escrevendo cabeçalho
     
-}    
+}   
+
+    private Boolean[] preencherGabarito(String[] coluna, ArrayList<Sensor> sensores){
+        String stra, strb;
+        
+        Boolean gabarito[];
+        
+        gabarito = new Boolean[coluna.length];
+        
+        for (int i = 0; i < gabarito.length; i++){
+            gabarito[i] = false;
+        }
+        
+        gabarito[0] = true;
+        gabarito[1] = true;
+        
+        for (int i = 2; i < coluna.length; i++){
+            for(int j = 0; j < sensores.size(); j++){
+                stra = coluna[i];
+                strb = sensores.get(j).getTextoCarga().split("\\(")[0];
+                if (stra.contains(strb)){
+                    gabarito[i] = true;
+                    break;
+                }
+            }
+        }
+        return  gabarito;
+    }
+    
+    private Info vincularSensoresColunas(Info medicao, ArrayList<Sensor> sensores ){
+        for (int c = 0; c < medicao.getColuna().length; c++){
+            for (int s = 0; s < sensores.size(); s++) {
+                if (medicao.getColuna(c).contains(sensores.get(s).getTextoCarga().split("\\(")[0])){
+                    medicao.setSensor(c, sensores.get(s));
+                    break;
+                }
+            }
+        }
+        return medicao;
+    }
 //    
 ////Dados-------------------------------------------------------------------------
 //    public static List<Float> geraLista(List<Object> lista){

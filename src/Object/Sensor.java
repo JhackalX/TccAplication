@@ -12,7 +12,8 @@ public class Sensor {
     private int id;
     private String nome;
     private String unidadeMedida;
-
+    private String TextoCarga;
+    
     public Sensor() {
     }
 
@@ -22,6 +23,21 @@ public class Sensor {
         this.unidadeMedida = unidadeMedida;
     }
 
+        public Sensor(int id, String nome, String unidadeMedida, String TextoCarga) {
+        this.id = id;
+        this.nome = nome;
+        this.unidadeMedida = unidadeMedida;
+        this.TextoCarga = TextoCarga;
+    }
+    
+    public String getTextoCarga() {
+        return TextoCarga;
+    }
+
+    public void setTextoCarga(String TextoCarga) {
+        this.TextoCarga = TextoCarga;
+    }
+    
     public int getId() {
         return id;
     }

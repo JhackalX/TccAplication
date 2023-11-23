@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 import Object.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.sqlite.*;
@@ -26,12 +27,14 @@ public class CtrlDao {
     private EstacaoDAO estacaoDao;
     private DadosDAO dadosDao;
     private ColunaDAO colunaDAO;
+    private SensorDAO sensorDAO;
     
     public CtrlDao(String caminhoBanco) {
         this.caminhoBanco = caminhoBanco;
         this.estacaoDao = new EstacaoDAO(this);
         this.dadosDao = new DadosDAO(this);
         this.colunaDAO = new ColunaDAO(this);
+        this.sensorDAO = new SensorDAO(this);
         this.conectarBanco();
         this.desconectarBanco();
     }
@@ -101,9 +104,11 @@ public class CtrlDao {
                                 "latitude REAL,\n" +
                                 "longitude REAL,\n" +
                                 "altitude REAL,\n" +
+                                "periodicidade TEXT(24),\n" +
+                                "data_cadastro TEXT(16),\n" +
                                 "data_fundacao TEXT(16),\n" +
-                                "uf TEXT(2),\n" +
-                                "regiao TEXT(2),\n" +
+//                                "uf TEXT(2),\n" +
+//                                "regiao TEXT(2),\n" +
                                 "id TEXT(36) PRIMARY KEY UNIQUE" +
                                 ");");
        //Criar tabela de estudos
@@ -121,11 +126,12 @@ public class CtrlDao {
                                 "data_estudo TEXT(16),\n" +
                                 "periodo_estudo INTEGER,\n" +
                                 "valor REAL,\n" +
-                                "sensor TEXT(100),\n" +
                                 "id_estacao INTEGER,\n" +
                                 "id_estudo INTEGER,\n" +
+                                "id_sensor INTEGER,\n" +
                                 "CONSTRAINT id_estacao_fk FOREIGN KEY (id_estacao) REFERENCES tb_estacao(id),\n" +
-                                "CONSTRAINT id_estudo_fk FOREIGN KEY (id_estudo) REFERENCES tb_estudo(id)\n" +
+                                "CONSTRAINT id_estudo_fk FOREIGN KEY (id_estudo) REFERENCES tb_estudo(id),\n" +
+                                "CONSTRAINT id_sensor_fk FOREIGN KEY (id_sensor) REFERENCES tb_sensor(id)\n" +
                                 ");");
        //Criar tabela de dados medidos
         sttmBase.executeUpdate("CREATE TABLE tb_dados_medidos (\n" +
@@ -133,9 +139,10 @@ public class CtrlDao {
                                 "data_medicao TEXT(16),\n" +
                                 "periodo_medicao INTEGER,\n" +
                                 "valor REAL,\n" +
-                                "sensor TEXT(100),\n" +
                                 "id_estacao INTEGER,\n" +
-                                "CONSTRAINT id_estacao_fk FOREIGN KEY (id_estacao) REFERENCES tb_estacao(id)\n" +
+                                "id_sensor INTEGER,\n" +
+                                "CONSTRAINT id_estacao_fk FOREIGN KEY (id_estacao) REFERENCES tb_estacao(id),\n"+
+                                "CONSTRAINT id_sensor_fk FOREIGN KEY (id_sensor) REFERENCES tb_sensor(id)\n" +
                                 ");");
 //       
 //       sttmBase.executeUpdate("pragma journal_mode = WAL;\n" +
@@ -153,20 +160,24 @@ public class CtrlDao {
     }
     
     private static void popularTabelas( Statement sttmBase) throws SQLException {
-//        popularTabelaSensores(conexao);
+        popularTabelaSensores(sttmBase);
     }
     
-    public void gravarEstacao(String nomeEstacao, String codigoEstacao, String ufEstacao, String regiaoEstacao, String dataFundacao, String latitude, String Longitude, String altitude) {
+    public void gravarEstacao(String idEstacao, String nomeEstacao, String codigoEstacao, String dataFundacao, String latitude, String Longitude, String altitude, String periodicidade) {
         this.conectarBanco();
-        this.estacaoDao.gravarEstacao(conexao, nomeEstacao, codigoEstacao, ufEstacao, regiaoEstacao, dataFundacao, latitude, Longitude, altitude);
+        if (dataFundacao == null){
+            this.estacaoDao.gravarEstacaoConvencional(conexao,idEstacao, nomeEstacao, codigoEstacao, latitude, Longitude, altitude, periodicidade);
+        } else {
+            this.estacaoDao.gravarEstacaoAutomatica(conexao, idEstacao, nomeEstacao, codigoEstacao, dataFundacao, latitude, Longitude, altitude, periodicidade);
+        }
         this.desconectarBanco();
     }
     
-    public void gravarDados (String codigoEstacao, String dataMedicao, String peridoMedicao, String valorMedicao, String nomeSensor){
+    public void gravarDados (String codigoEstacao, String dataMedicao, String peridoMedicao, String valorMedicao, String nomeSensor, String idDado){
         String idEstacao;
         this.conectarBanco();
         idEstacao = String.valueOf(this.estacaoDao.getIdEstacao(conexao, codigoEstacao));
-        this.dadosDao.gravarDado(conexao, idEstacao, dataMedicao, peridoMedicao, valorMedicao, nomeSensor);
+        this.dadosDao.gravarDado(conexao, idDado, idEstacao, dataMedicao, peridoMedicao, valorMedicao, nomeSensor);
         this.desconectarBanco();
     }
     
@@ -177,16 +188,48 @@ public class CtrlDao {
         this.dadosDao.gravarListDados(conexao, lista, idEstacao);
         this.desconectarBanco();
     }
+    
+    public void gravarListaColunas (List<Coluna> lista, String codigoEstacao){
+        this.conectarBanco();
+        this.colunaDAO.gravarListaColunas(conexao, lista, codigoEstacao);
+        this.desconectarBanco();
+    }
 
+    public List<Sensor> listarSensores(){
+        ArrayList<Sensor> lista;
+                
+        this.conectarBanco();
+        
+        lista = (ArrayList<Sensor>) this.sensorDAO.listarSensores(conexao);
+        
+        this.desconectarBanco();
+        
+        return lista;
+    }
+    
+    public List<Estacao> listarEstacoes(){
+        ArrayList<Estacao> lista =null;
+        this.conectarBanco();
+        lista = (ArrayList<Estacao>) this.estacaoDao.listarEstacoes(conexao);
+        this.desconectarBanco();
+        return lista;
+    }
+    
+    public List<String>listarAnosDadosMedidosEstacoes( String codigoEstacao){
+        ArrayList<String> lista = null;
+        String idEstacao;
+        this.conectarBanco();
+        idEstacao = this.estacaoDao.getIdEstacao(conexao, codigoEstacao);
+        lista = (ArrayList<String>) this.dadosDao.listarAnosDadosMedidosEstacoes(conexao, idEstacao);
+        this.desconectarBanco();
+        return lista;
+    }
+       
     
     
-    
-    
-    
-    
-    private static void popularTabelaSensores(Connection conexao) throws SQLException{
-        Statement sttm = conexao.createStatement();
-        sttm.executeUpdate(""
+    private static void popularTabelaSensores(Statement sttmBase) throws SQLException{
+        
+        sttmBase.executeUpdate(""
                 +   "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('PRECIPITACAO TOTAL, HORARIO(mm)', 'Precipitação Total', 'mm');\n" +
                     "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARIA(mB)', 'Pressão Atmorférica (Nível Estação)', 'mB');\n" +
                     "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('PRESSAO ATMOSFERICA REDUZIDA NIVEL DO MAR, AUT(mB)', 'Pressão Atmosférica (Nível Mar)', 'mB');\n" +
@@ -202,7 +245,7 @@ public class CtrlDao {
                     "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('UMIDADE REL. MAX. NA HORA ANT. (AUT)(%)', 'Umidade Relativa do Ar Máxima (Última Hora)', '%');\n" +
                     "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('UMIDADE REL. MIN. NA HORA ANT. (AUT)(%)', 'Umidade Relativa do Ar Mínima (Última Hora)', '%');\n" +
                     "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('UMIDADE RELATIVA DO AR, HORARIA(%)', 'Umidade Relativa do Ar', '%');\n" +
-                    "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('VENTO, DIRECAO HORARIA (gr(° (gr))', 'Vento (Direção Horária)', 'gr(° (gr)');\n" +
+                    "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('VENTO, DIRECAO HORARIA (gr)(° (gr))', 'Vento (Direção Horária)', 'gr(° (gr)');\n" +
                     "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('VENTO, RAJADA MAXIMA(m/s)', 'Vento (Rajada Máxima)', 'm/s');\n" +
                     "INSERT INTO tb_sensor(txt_arquivo_carga, nome, unidade_medida) VALUES('VENTO, VELOCIDADE HORARIA(m/s)', 'Vento (Velocidade Horária)', 'm/s');"
                 + "");

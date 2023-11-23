@@ -5,7 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
-import static DTO.Funcionalidades.gerarCsv;
+import DTO.Funcionalidades;
 import java.awt.event.ActionEvent;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -37,12 +37,16 @@ class ResultadosDecorator {
     private JScrollPane jScrollPaneRelatorio;
     private CtrlGeral ctrlGeral;
     
+    private DTO.Funcionalidades funcionalidades;
+    
     public ResultadosDecorator(CtrlGeral ctrlGeral){
         this.ctrlGeral = ctrlGeral;
         this.initComponets();
         this.configureOpcaoCheckBox();
         this.configureTextArea();
         this.configureBtn();
+        
+        this.funcionalidades = new DTO.Funcionalidades(ctrlGeral);
     }
 
     public JPanel ResultadoReady() {
@@ -218,7 +222,7 @@ class ResultadosDecorator {
             
         }
         if(this.jCheckBoxOpcao2.isSelected() && (!path.equalsIgnoreCase(""))){
-            gerarCsv(ctrlGeral.getMedicao(), path);
+            this.funcionalidades.gerarCsv(ctrlGeral.getMedicao(), path);
                                
         }
         if(this.jCheckBoxOpcao3.isSelected()){

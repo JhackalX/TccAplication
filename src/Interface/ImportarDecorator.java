@@ -5,7 +5,8 @@
 package Interface;
 
 import DTO.CtrlGeral;
-import static DTO.Funcionalidades.lerArquivo;
+import DTO.Funcionalidades;
+import Object.Info;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -77,13 +78,15 @@ public class ImportarDecorator {
     private CtrlGeral ctrlGeral;
     private JTabbedPane painelTab;
     
+    private DTO.Funcionalidades funcionalidades;
+    
     public ImportarDecorator(CtrlGeral ctrlGeral, JTabbedPane painelTab) {
         this.ctrlGeral = ctrlGeral;
         this.painelTab = painelTab;
         
         this.initComponets();
         this.configureInfoTextFields();
-        
+        this.funcionalidades = new Funcionalidades(ctrlGeral);
     }
     
     public void initComponets(){
@@ -647,8 +650,29 @@ public class ImportarDecorator {
 //    }
     
     private void btImportarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException, IOException {                                           
-            this.ctrlGeral.setMedicao(lerArquivo(camField.getText()));
-//            CtrlGeral
+        Info medicao = null;
+        
+        if (!camField.getText().toUpperCase().endsWith("CSV")){
+            JOptionPane.showMessageDialog(null, "Por favor selecione um arquivo .CSV para a importação");
+            return;
+        }
+        
+        medicao = this.funcionalidades.lerArquivo(camField.getText());
+        
+        if (medicao == null){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro na importação do arquivo.\n Por favor tente novamente!");
+            return;
+        }
+        
+        
+
+        JOptionPane.showMessageDialog(null, "Leitura Completa!\niniciando carga no Banco de Dados!!");
+        
+        this.ctrlGeral.gravarEstacao(medicao);
+        
+        this.ctrlGeral.gravarListaColunas(medicao);
+        
+        this.ctrlGeral.setMedicao(medicao);
             this.insertInfoTextFields(this.ctrlGeral.getMedicao().getEstacao().getNome(), 
                                   this.ctrlGeral.getMedicao().getEstacao().getCodigo(), 
                                    this.ctrlGeral.getMedicao().getEstacao().getLatitude().toString(),
@@ -657,7 +681,7 @@ public class ImportarDecorator {
                                   this.ctrlGeral.getMedicao().getEstacao().getLongitude().toString(),
                                  this.ctrlGeral.getMedicao().getDataInicialBR(), 
                                   this.ctrlGeral.getMedicao().getDataFinalBR(), 
-                               this.ctrlGeral.getMedicao().getPeriodicidade(), 
+                               this.ctrlGeral.getMedicao().getEstacao().getPeriodicidade(), 
                                  this.ctrlGeral.getMedicao().getDataCriacaoBR());
             //lerArquivo(camField.getText());
             //tabelaTM.setModel(modelo);

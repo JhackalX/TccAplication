@@ -6,9 +6,14 @@ package DTO;
 
 import DAO.CtrlDao;
 import Object.AnaliseMensal;
+import Object.Estacao;
 import Object.Info;
 import Object.ListaClassificacao;
+import Object.Sensor;
 import Tabela.Employee;
+import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,9 +184,24 @@ public class CtrlGeral{
         this.setApendice(nova);
 //        apendice.imprimir();
         this.listaClassificacao = setListaClassificacao();
-       
     }
-
+    public void gravarListaColunas(Info medicao){
+        
+        this.ctrlDao.gravarListaColunas(medicao.getLista(), medicao.getEstacao().getCodigo());
+    }
+    
+    public void gravarEstacao(Info medicao){
+        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFundacao =  null;
+        
+        if (medicao.getEstacao().getDataFundacao() != null){
+            dataFundacao = dateformat.format(medicao.getEstacao().getDataFundacao());
+        }
+        
+        this.ctrlDao.gravarEstacao(medicao.getEstacao().getId(), medicao.getEstacao().getNome(), medicao.getEstacao().getCodigo(), dataFundacao, medicao.getEstacao().getLatitude().toString(), medicao.getEstacao().getLongitude().toString(), medicao.getEstacao().getAltitude().toString(), medicao.getEstacao().getPeriodicidade());
+    }
+    
+  
     public List<ListaClassificacao> getListaClassificacoes() {
         return listaClassificacao;
     }
@@ -227,5 +247,55 @@ public class CtrlGeral{
             }
             return lista;  
         }
-    } 
+    }
+    
+    public List<Info> listarEstacoes(){
+        ArrayList<Info> lista = new ArrayList<>();
+        ArrayList<Estacao> estacoes;
+        Info nova;
+        
+        estacoes = (ArrayList<Estacao>) this.ctrlDao.listarEstacoes();
+        
+        for (int i = 0; i < estacoes.size(); i++){
+            nova = new Info();
+            nova.setEstacao(estacoes.get(i));
+            lista.add(nova);
+        }
+        
+        return lista;
+    }
+
+    
+    public List<String>listarAnosDadosMedidosEstacoes(String codigoEstacao){
+        return this.ctrlDao.listarAnosDadosMedidosEstacoes( codigoEstacao);
+    }
+    
+    public Guia getGuia() {
+        return guia;
+    }
+
+    public void setGuia(Guia guia) {
+        this.guia = guia;
+    }
+
+    public CtrlDao getCtrlDao() {
+        return ctrlDao;
+    }
+
+    public void setCtrlDao(CtrlDao ctrlDao) {
+        this.ctrlDao = ctrlDao;
+    }
+
+    public Configuracoes getConfig() {
+        return config;
+    }
+
+    public void setConfig(Configuracoes config) {
+        this.config = config;
+    }
+    
+    public List<Sensor> listarSensores(){
+        return this.ctrlDao.listarSensores();
+    }
 }
+

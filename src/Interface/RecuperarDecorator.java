@@ -6,6 +6,7 @@ package Interface;
 
 import DTO.CtrlGeral;
 import Object.Info;
+import Object.Estacao;
 import TableBD.ButtonEditor;
 import TableBD.ButtonRenderer;
 import TableBD.ObjectTableModelBD;
@@ -140,10 +141,12 @@ public class RecuperarDecorator {
         return this.fundo;    
     }
     private void populateInfo() throws ParseException{
-        this.listInfos = new ArrayList<Info>();
-        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
-        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
-        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
+        this.listInfos =  (ArrayList<Info>) this.ctrlGeral.listarEstacoes();
+        
+//        this.listInfos = new ArrayList<Info>();
+//        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
+//        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
+//        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
     }
     private void configureTable(){
         try {

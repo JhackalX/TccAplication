@@ -31,7 +31,7 @@ public class Info {
     //private String situacao;//situação
     private Date dataInicial;//data inicial da medição
     private Date dataFinal;//data final da medição
-    private String periodicidade;//
+    //private String periodicidade;//
 
     private List<Coluna> lista;
     
@@ -45,6 +45,7 @@ public class Info {
         this.dataCriacao = data;
         this.lista = new ArrayList<Coluna>();
         this.metodologiaAplicada = new Metodologia();
+        this.estacao = new Estacao();
     }
 
     //pegar do BD
@@ -92,8 +93,8 @@ public class Info {
         this.estacao.setAltitude(Float.parseFloat(altitude));
         this.dataInicial = dateFormate.parse(dataInicial.trim());
         this.dataFinal = dateFormate.parse(dataFinal.trim());
-        this.periodicidade = periodicidade.trim();
-
+        this.estacao.setPeriodicidade( periodicidade.trim());
+        this.estacao.setID();
         Date data = new Date();
         this.dataCriacao = data;
         this.lista = new ArrayList<Coluna>();
@@ -156,13 +157,13 @@ public class Info {
 //        this.situacao = situacao;
 //    }
 
-    public String getPeriodicidade() {
-        return periodicidade;
-    }
-
-    public void setPeriodicidade(String periodicidade) {
-        this.periodicidade = periodicidade;
-    }
+//    public String getPeriodicidade() {
+//        return periodicidade;
+//    }
+//
+//    public void setPeriodicidade(String periodicidade) {
+//        this.periodicidade = periodicidade;
+//    }
    
     //add colunas
     public void addColuna(String titulo) {
@@ -170,18 +171,22 @@ public class Info {
     }
     
     //add elementos
-    public void addElementos(String[] dados) {
+    public void addElementos(String[] dados, Boolean gabarito[]) {
         for(int i = 2; i < dados.length; i++){
-            Dados dado = new Dados(dados[0], dados[1], dados[i]);
-            this.lista.get(i).addDado(dado);            
+            if (gabarito[i]){
+                Dados dado = new Dados(dados[0], dados[1], dados[i]);
+                this.lista.get(i).addDado(dado);    
+            }
         }
     }
     
-    public void addElementosEstacoesAutomaticas(String[] dados) throws ParseException, NumberFormatException{
+    public void addElementosEstacoesAutomaticas(String[] dados, Boolean gabarito[]) throws ParseException, NumberFormatException{
         
         for(int i = 2; i < dados.length; i++){
-            Dados dado = new Dados(dados[0], (dados[1].split(" ")[0]), dados[i]);
-            this.lista.get(i).addDado(dado);            
+            if (gabarito[i]){
+                Dados dado = new Dados(dados[0], (dados[1].split(" ")[0]), dados[i]);
+                this.lista.get(i).addDado(dado);      
+            }
         }
     }
     
@@ -272,6 +277,10 @@ public class Info {
         }
     }
     
+    public void setSensor(int index, Sensor sensor){
+        this.lista.get(index).setSensor(sensor);
+    }
+        
     public String getColuna(int index) {
         return this.lista.get(index).getTitulo();
     }
@@ -283,11 +292,12 @@ public class Info {
     public void setColuna(String[] coluna) {
         if(this.isEmpty()){
             for(int i = 0; i < coluna.length; i++){
-                this.lista.add(new Coluna(coluna[i]));
+                this.lista.add(new Coluna(coluna[i],this));
             }           
         }else{
             for(int c = 0; c < coluna.length; c++){
                 this.lista.get(c).setTitulo(coluna[c]);
+                this.lista.get(c).setMedicaoPai(this);
             }             
         }
     }
@@ -448,7 +458,7 @@ public class Info {
                        + "\n Altitude = " + this.estacao.getAltitude()
                        + "\n Data Inicial = " + this.getDataInicialBR()
                        + "\n Data Final = " + this.getDataFinalBR()
-                       + "\n Periodicidade da Medicao = " + this.periodicidade//obs 
+                       + "\n Periodicidade da Medicao = " + this.estacao.getPeriodicidade()//obs 
                        + '}'; 
     }//obs: ajeitar o toString da lista
 
