@@ -34,63 +34,46 @@ import javax.swing.JOptionPane;
  */
 public class Funcionalidades {
     
-//    public static String relatorio(Info obj){
-//        Info novo;
-//        novo = obj;
-//        int qtDados = novo.getLista().size();
-//        int qtNull = contNull(novo);
-//        String relat = mesNull(novo);
-//        return "Quantidade de dados: " + qtDados + 
-//               "\nQuantidade de lacunas: " + qtNull +
-//                relat;
-//    }
-//
-//    public static int contNull(Info obj){
-//        Info novo = obj;
-//        int cont = 0;
-//        for(int i = 0; i < novo.getLista().size(); i++){
-//            if(novo.getLista().get(i).getValor().equalsIgnoreCase("null")){
-//                cont++;
-//            }
-//        }
-//        return cont;
-//    }
-//    
-//    public static String contNull(Info obj, int mes, int ano){
-//        Info novo = obj;
-//        int cont = 0;
-//        for(int i = 0; i < novo.getLista().size(); i++){
-//            if(novo.getLista().get(i).getValor().equalsIgnoreCase("null") && 
-//               novo.getLista().get(i).getMonth() == mes && 
-//               novo.getLista().get(i).getYear() == ano){
-//                cont++;
-//            }
-//        }
-//        return "Mês: "+ mes + 
-//               "/" + ano + 
-//               "....... Quantidade: " + cont;
-//    }
-//    
-//    public static String mesNull(Info obj){
-//        Info novo = obj;
-//        String relat;
-//        int ano = 0;
-//        int mes = 0;
-//        for(int i = 0; i < novo.getLista().size(); i++){
-//            
-//            if(novo.getLista().get(i).getValor().equalsIgnoreCase("null")){
-//                mes = novo.getLista().get(i).getData().getMonth()+1;
-//                ano = novo.getLista().get(i).getData().getYear()+1900;
-//                //System.out.println(contNull(novo, mes, ano));
-//            }    
-//            while((novo.getLista().get(i+1).getData().getMonth()+1 == mes) && ((i + 3) < novo.getLista().size())){
-//                i = i+1;        
-//            }
-//        }
-//        return contNull(novo, mes, ano);
-//    }
+    public static String relatorioAr(List<AuxAr> auxAr){
+        int nullAcumuladoAntes = 0;
+        int nullAcumuladoDepois = 0;
+        int QtdSubsAcumulado = 0;
+        int nElementosAcumulado = 0;
+        for(int index = 0; index < auxAr.size(); index++ ){
+            nullAcumuladoAntes =+ auxAr.get(index).getSomaNullsAntes();
+            nullAcumuladoDepois =+ auxAr.get(index).getSomaNullsDpois();
+            QtdSubsAcumulado =+ auxAr.get(index).getQtdSubstituido();
+            nElementosAcumulado =+ auxAr.get(index).getQtdElementosProcessados();
+        }
+               
+        return "***********************************************" +
+               "\n QTD lacunas totais Antes: " + nullAcumuladoAntes +
+               "\n QTD lacunas totais Depois: " + nullAcumuladoDepois +
+               "\n QTD substituida: " + QtdSubsAcumulado +
+               "\n Numero de elementos (n): " + nElementosAcumulado +
+               "\n***********************************************";
+    }
 
-    
+    public static String relatorioEs(List<AuxEs> auxEs){
+        int nullAcumuladoAntes = 0;
+        int nullAcumuladoDepois = 0;
+        int QtdSubsAcumulado = 0;
+        int nElementosAcumulado = 0;
+        for(int index = 0; index < auxEs.size(); index++ ){
+            nullAcumuladoAntes =+ auxEs.get(index).getSomaNullsAntes();
+            nullAcumuladoDepois =+ auxEs.get(index).getSomaNullsDpois();
+            QtdSubsAcumulado =+ auxEs.get(index).getQtdSubstituido();
+            nElementosAcumulado =+ auxEs.get(index).getQtdElementosProcessados();
+        }
+               
+        return "***********************************************" +
+               "\n QTD lacunas totais Antes: " + nullAcumuladoAntes +
+               "\n QTD lacunas totais Depois: " + nullAcumuladoDepois +
+               "\n QTD substituida: " + QtdSubsAcumulado +
+               "\n Numero de elementos (n): " + nElementosAcumulado +
+               "\n***********************************************";
+    }
+     
 
     public static Info lerArquivo(String path) throws FileNotFoundException, ParseException, IOException{
         try(BufferedReader arquivo = new BufferedReader(new InputStreamReader(new FileInputStream(path),"Cp1252"))){

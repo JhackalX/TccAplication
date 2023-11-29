@@ -5,58 +5,61 @@
 package Interface;
 
 import DTO.CtrlGeral;
-import static DTO.Funcionalidades.lerArquivo;
+import Object.Info;
+import TableBD.ButtonEditor;
+import TableBD.ButtonRenderer;
+import TableBD.ObjectTableModelBD;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-
-import javax.swing.JFileChooser;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
  * @author jacka
  */
-public class ImportarDecorator {
-    
+public class RecMetodologiaDecorator {
     private JPanel fundo;
+    private JPanel jPanelSuperio;
+    private JPanel jPanelInferior;
     private JPanel jPanelBtn;
     private JPanel jPanelAjuda;
     private JPanel jPanelInfo;
     
     private JLabel jLabelDataCriacao;
     private JLabel jLabelArquivo;
-    private JLabel jLabelExplicacao;
     private JLabel jLabelNome;
     private JLabel jLabelCodEstacao;
     private JLabel jLabelLatitude;
     private JLabel jLabelSituacao;
     private JLabel jLabelAltitude;
     private JLabel jLabelLongitude;
+    private JLabel jLabelAnoEst;
 //    private JLabel jLabelDataFinal;
 //    private JLabel jLabelDataInicial;
     private JLabel jLabelPeriodMedicao;
        
     private JButton btAvancar;
-    private JButton btImportar;
-    private JButton btAbrir;
     private JButton btVoltar;
     
     private JTextField jTextFieldNome;
@@ -68,32 +71,39 @@ public class ImportarDecorator {
 //    private JTextField jTextFieldDataInicial;
 //    private JTextField jTextFieldDataFinal;
     private JTextField jTextFieldPeriodMedicao;
-      
-    private JTextField camField;
+    
+    private JComboBox jComboBoxAnoEst;
     private JFormattedTextField dataCriacaoFTF;
     private JScrollPane jScrollPaneAjuda;
-    private JTextArea jTextAreaAjuda;
-    //variaveis 
+    private JScrollPane jScrollPaneTabela;
+    private JTextArea jTextAreaAjuda;    
+    private JTable jTableBanco;
+    private PopupSelectDecorator popup;
     private CtrlGeral ctrlGeral;
-    private JTabbedPane painelTab;
+    private ObjectTableModelBD model;
+    //para teste
+    private ArrayList<Info> listInfos;
     
-    public ImportarDecorator(CtrlGeral ctrlGeral, JTabbedPane painelTab) {
+    public RecMetodologiaDecorator(CtrlGeral ctrlGeral) {
         this.ctrlGeral = ctrlGeral;
-        this.painelTab = painelTab;
-        
         this.initComponets();
-        this.configureInfoTextFields();
-        
+        this.configureInfoFields();
+        configureTable();
     }
     
     public void initComponets(){
         
         this.fundo = new JPanel();
+        this.jPanelSuperio = new JPanel();
+        this.jPanelInferior = new JPanel();
         this.jPanelBtn = new JPanel();
         this.jPanelAjuda = new JPanel();
         this.jPanelInfo = new JPanel();
         this.jScrollPaneAjuda = new JScrollPane();
+        this.jScrollPaneTabela = new JScrollPane();
         this.jTextAreaAjuda = new JTextArea();
+        this.jComboBoxAnoEst = new JComboBox();
+        
         
         this.jTextFieldNome = new JTextField();
         this.jTextFieldCodEstacao = new JTextField();
@@ -107,7 +117,6 @@ public class ImportarDecorator {
         
         this.jLabelDataCriacao = new JLabel();
         this.jLabelArquivo = new JLabel();
-        this.jLabelExplicacao = new JLabel();
         this.jLabelNome = new JLabel();
         this.jLabelCodEstacao = new JLabel();
         this.jLabelLatitude = new JLabel();
@@ -117,25 +126,100 @@ public class ImportarDecorator {
 //        this.jLabelDataFinal = new JLabel();
 //        this.jLabelDataInicial = new JLabel();
         this.jLabelPeriodMedicao = new JLabel();
+        this.jLabelAnoEst = new JLabel();
         
-        this.camField = new JTextField();
         this.dataCriacaoFTF = new JFormattedTextField();
+//        this.jTableBanco = new JTable();
+        this.popup = new PopupSelectDecorator(this.ctrlGeral);
         
         this.btAvancar = new JButton();
         this.btVoltar = new JButton();
-        this.btImportar = new JButton();
-        this.btAbrir = new JButton();
+        
+        
     }
     
-    public JPanel ImportarReady(){
-        
-        this.panelAjuda();
+    public JPanel RecMetodologiaDecoratorReady(){
+
         this.panelInfo();
+        this.panelAjuda();
         
         this.configureFundo();
+
+        return this.fundo;    
+    }
+    private void populateInfo() throws ParseException{
+        this.listInfos = new ArrayList<Info>();
+        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
+        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
+        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
+        listInfos.get(0).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019")));
+        listInfos.get(1).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019", "2020")));
+        listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
+    }
+    
+    private void configureTextMet(int row){
+        if(row == 1){
+            this.jTextAreaAjuda.setText(" Metodlogia escolhida: " + listInfos.get(row).getMetodologiaAplicada().getMetodologia("1")
+                    + "\n Coeficiente: " + listInfos.get(row).getMetodologiaAplicada().getCoefBR());            
+        }else{
+            this.jTextAreaAjuda.setText(" Metodlogia escolhida: " + listInfos.get(row).getMetodologiaAplicada().getMetodologia("0")
+                    + "\n Pesos: " + listInfos.get(row).getMetodologiaAplicada().getPesosToString());                   
+        }        
+    }
+    
+    private void ConfigureButtonTable(int column){
+        this.jTableBanco.getColumnModel().getColumn(column).setCellRenderer(new ButtonRenderer());
+        this.jTableBanco.getColumnModel().getColumn(column).setCellEditor(new ButtonEditor(new JCheckBox(), this.model, this.jTableBanco));
+    }  
+    
+    private void configureTable(){
+        try {
+            this.populateInfo();
+//            System.out.println(this.listInfos.get(0).toString());
+        } catch (ParseException ex) {
+            Logger.getLogger(RecuperarDecorator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.model = new ObjectTableModelBD(listInfos);
+        this.jTableBanco = new JTable(model);
         
-        return this.fundo;
+        this.jTableBanco.setSurrendersFocusOnKeystroke(true);
+        this.jTableBanco.setRowSelectionAllowed(true);
+        this.jTableBanco.setColumnSelectionAllowed(false);
         
+        this.ConfigureButtonTable(3);
+        this.ConfigureButtonTable(4);
+        
+        if(!(this.listInfos == null || this.listInfos.isEmpty())){            
+            this.jTableBanco.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e){
+                    int row = jTableBanco.rowAtPoint(e.getPoint());
+                    int column = jTableBanco.columnAtPoint(e.getPoint());
+
+                    if(row >= 0 && column >= 0){
+                        if(column == 3){
+                            configureTextMet(row);
+//                            System.out.println("botão selecionar clicado: " + row);//para teste
+                            insertInfoTextFields(listInfos.get(row).getEstacao().getNome(),
+                                             listInfos.get(row).getEstacao().getCodigo(),
+                                              listInfos.get(row).getEstacao().getLatitude().toString(),
+                                              listInfos.get(row).getEstacao().getSituacao(),
+                                              listInfos.get(row).getEstacao().getAltitude().toString(), 
+                                             listInfos.get(row).getEstacao().getLongitude().toString(), 
+                                          listInfos.get(row).getPeriodicidade(),
+                                           listInfos.get(row).getDataCriacaoBR(),
+                                                listInfos.get(row).getListaAnos());
+                        }else if(column == 4){
+                            int confirm = JOptionPane.showConfirmDialog(jTableBanco, "Tem certeza que deseja excluir?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+                            if(confirm == JOptionPane.YES_NO_OPTION){
+                                model.removeInfo(row);
+                                jTableBanco.repaint();
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        this.jScrollPaneTabela.setViewportView(this.jTableBanco);
     }
     
     //Iniciliza e escreve o painel ajuda da janela
@@ -144,7 +228,7 @@ public class ImportarDecorator {
         this.jPanelAjuda.setBackground(new Color(255, 255, 255));
         this.jPanelAjuda.setBorder(BorderFactory.createTitledBorder(
                 null, 
-                "Ajuda:",
+                "Dados configurados:",
                 javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                 javax.swing.border.TitledBorder.DEFAULT_POSITION, 
                 new Font("Tahoma", 1, 12)
@@ -159,13 +243,7 @@ public class ImportarDecorator {
         this.jTextAreaAjuda.setColumns(20);
         this.jTextAreaAjuda.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         this.jTextAreaAjuda.setRows(5);
-        this.jTextAreaAjuda.setText(" Entre com os dados que queira trabalhar no botão"
-                + "\n \"Abrir\" no formato CSV.\n"
-                + "\n A data de criação será preenchida e alterada automaticamente.\n"
-                + "\n Ao clicar no botão importar, espere a leitura e inserção na"
-                + "\n base de dados.\n"
-                + "\n Os campos do quadro \"Info\" será preenchido automaticamente"
-                + "\n após a leitura.\n");
+
 
         
         jPanelAjudaLayout.setHorizontalGroup(
@@ -190,7 +268,16 @@ public class ImportarDecorator {
                                   Short.MAX_VALUE))
         );
     }
-
+    
+    private void atualizarComboBoxAnos(List<String> listAnos) {
+        jComboBoxAnoEst.removeAllItems();
+        if (listAnos != null) {
+            for (String ano : listAnos) {
+                this.jComboBoxAnoEst.addItem(ano);
+            }
+        }
+    }
+    
     //Iniciliza e escreve o painel info da janela
     private void panelInfo(){
         
@@ -205,9 +292,7 @@ public class ImportarDecorator {
                                                               java.awt.Font("Tahoma", 1, 11))
         );
         
-        GroupLayout jPanelInfoLayout = new GroupLayout(this.jPanelInfo);
-        this.jPanelInfo.setLayout(jPanelInfoLayout);
-        
+        javax.swing.GroupLayout jPanelInfoLayout = new javax.swing.GroupLayout(jPanelInfo);
         jPanelInfo.setLayout(jPanelInfoLayout);
         jPanelInfoLayout.setHorizontalGroup(
             jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,9 +327,13 @@ public class ImportarDecorator {
                             .addComponent(jTextFieldAltitude, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                             .addComponent(jTextFieldSituacao)))
                     .addGroup(jPanelInfoLayout.createSequentialGroup()
-                        .addComponent(jLabelPeriodMedicao)
+                        .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabelPeriodMedicao)
+                            .addComponent(jLabelAnoEst))
                         .addGap(18, 18, 18)
-                        .addComponent(jTextFieldPeriodMedicao)))
+                        .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBoxAnoEst, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldPeriodMedicao))))
                 .addContainerGap())
         );
         jPanelInfoLayout.setVerticalGroup(
@@ -274,7 +363,11 @@ public class ImportarDecorator {
                 .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelPeriodMedicao)
                     .addComponent(jTextFieldPeriodMedicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(jPanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelAnoEst)
+                    .addComponent(jComboBoxAnoEst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
     }
     
@@ -299,6 +392,9 @@ public class ImportarDecorator {
         this.jLabelLongitude.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.jLabelLongitude.setText("Longitude:");
 
+        this.jLabelAnoEst.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        this.jLabelAnoEst.setText("Selecione o ano de estudo:");
+
 //        this.jLabelDataFinal.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 //        this.jLabelDataFinal.setText("Data Final:");
 //
@@ -312,49 +408,52 @@ public class ImportarDecorator {
     private void configureFundoLabels(){
         this.jLabelArquivo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.jLabelArquivo.setText("Arquivo:");
-        
-        this.jLabelExplicacao.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.jLabelExplicacao.setText("Entre com o arquivo CSV para que o programa submeta os dados a analise.");
-        this.jLabelExplicacao.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         this.jLabelDataCriacao.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         this.jLabelDataCriacao.setText("Data de criação:");        
     }
     
     private void configureBtns(){
-        this.btAbrir.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.btAbrir.setText("Abrir");
-        this.btAbrir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAbrirActionPerformed(evt);
-            }
-        });
-
-        this.btImportar.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.btImportar.setText("Importar");
-        this.btImportar.setToolTipText("");
-        this.btImportar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    btImportarActionPerformed(evt);
-                } catch (ParseException ex) {
-                    Logger.getLogger(ImportarDecorator.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(ImportarDecorator.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
         
+        this.jPanelBtn.setBackground(new java.awt.Color(255, 255, 255));
+
         this.btAvancar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btAvancar.setText("Avançar");
         this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btAvancarActionPerformed(evt);
+                
+                JFrame janela = new JFrame();                
+                popup.PopupSelectReady(1, janela);
+                janela.setVisible(true);
+                janela.repaint();
+                janela.pack();
+                janela.show();
             }
         });
-        
+                
         this.btVoltar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        this.btVoltar.setText("Voltar");
+        this.btVoltar.setText("Voltar");         
+
+        javax.swing.GroupLayout BtnLayout = new javax.swing.GroupLayout(this.jPanelBtn);
+        this.jPanelBtn.setLayout(BtnLayout);
+        BtnLayout.setHorizontalGroup(
+            BtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BtnLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(this.btVoltar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addComponent(this.btAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        BtnLayout.setVerticalGroup(
+            BtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BtnLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(BtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.btAvancar)
+                    .addComponent(this.btVoltar))
+                .addContainerGap())
+        );
     }
     
     private void ConfigureFundoCamp(){
@@ -367,38 +466,9 @@ public class ImportarDecorator {
                java.text.DateFormat.SHORT))));
        
     }
-    
-    private void ConfigurePanelBtn(){
-        
-        this.configureBtns();
-        
-        this.jPanelBtn.setBackground(new java.awt.Color(255, 255, 255));        
-        javax.swing.GroupLayout PanelBtnLayout = new javax.swing.GroupLayout(this.jPanelBtn);
-        this.jPanelBtn.setLayout(PanelBtnLayout);
-        
-        PanelBtnLayout.setHorizontalGroup(
-            PanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBtnLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(this.btVoltar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, GroupLayout.PREFERRED_SIZE)
-                .addComponent(this.btAvancar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        PanelBtnLayout.setVerticalGroup(
-            PanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelBtnLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelBtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.btAvancar)
-                    .addComponent(this.btVoltar))
-                .addContainerGap())
-        );
-       
-    }
 
     //configura as textFields do painel info
-    private void configureInfoTextFields(){
+    private void configureInfoFields(){
         
         this.jTextFieldNome.setEditable(false);
         this.jTextFieldCodEstacao.setEditable(false);
@@ -419,10 +489,9 @@ public class ImportarDecorator {
                                       String Situacao,
                                       String Altitude,
                                       String Longitude,
-                                      String DataInicial,
-                                      String DataFinal,
                                       String PeriodMedicao,
-                                      String DataCriacao){
+                                      String DataCriacao,
+                                      List<String> anos){
         
         this.jTextFieldNome.setText(Nome);
         this.jTextFieldCodEstacao.setText(CodEstacao);
@@ -434,14 +503,91 @@ public class ImportarDecorator {
 //        this.jTextFieldDataFinal.setText(DataFinal);
         this.jTextFieldPeriodMedicao.setText(PeriodMedicao);
         this.dataCriacaoFTF.setText(DataCriacao);
+        this.atualizarComboBoxAnos(anos);
     }
     
     //Configura e inicializa o painel de fundo geral
-    private void configureFundo(){
+    private void configurePanelSuperior(){
         
         this.configureFundoLabels();
         this.ConfigureFundoCamp();
-        this.ConfigurePanelBtn();
+        
+        this.jPanelSuperio.setBackground(new Color(255, 255, 255));
+        this.jPanelSuperio.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Escolha um arquivo do Banco de Dados na Tabela abaixo:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
+
+        GroupLayout PanelSuperioLayout = new GroupLayout(this.jPanelSuperio);       
+        this.jPanelSuperio.setLayout(PanelSuperioLayout);
+
+        PanelSuperioLayout.setHorizontalGroup(
+            PanelSuperioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 901, Short.MAX_VALUE)
+            .addGroup(PanelSuperioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelSuperioLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(this.jPanelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(18, 18, 18)
+                    .addGroup(PanelSuperioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelSuperioLayout.createSequentialGroup()
+                            .addComponent(this.jLabelDataCriacao)
+                            .addGap(18, 18, 18)
+                            .addComponent(this.dataCriacaoFTF, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        PanelSuperioLayout.setVerticalGroup(
+            PanelSuperioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 247, Short.MAX_VALUE)
+            .addGroup(PanelSuperioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelSuperioLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(PanelSuperioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(this.jPanelInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(PanelSuperioLayout.createSequentialGroup()
+                            .addGroup(PanelSuperioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(this.jLabelDataCriacao)
+                                .addComponent(this.dataCriacaoFTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(18, 18, 18)
+                            .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );    
+
+    }
+
+    private void configurePanelInferior(){
+        
+        this.jPanelInferior.setBackground(new java.awt.Color(54, 63, 73));
+        this.jPanelInferior.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
+                                                                                         "Arquivos Processados em Banco:",
+                                                                                javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
+                                                                                   javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                                                                                             new java.awt.Font("Segoe UI", 1, 18),
+                                                                                             new java.awt.Color(255, 255, 255))); // NOI18N
+                                                                                              
+        GroupLayout PanelInferiorLayout = new GroupLayout(this.jPanelInferior);       
+        this.jPanelInferior.setLayout(PanelInferiorLayout);
+
+        PanelInferiorLayout.setHorizontalGroup(
+            PanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelInferiorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(this.jScrollPaneTabela)
+                .addContainerGap())
+        );
+        PanelInferiorLayout.setVerticalGroup(
+            PanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelInferiorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(this.jScrollPaneTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .addContainerGap())
+        );    
+
+    }
+    
+    private void configureFundo(){
+        
+        this.configurePanelSuperior();
+        this.configurePanelInferior();
+        this.configureBtns();
         
         this.fundo.setBackground(new Color(255, 255, 255));
 
@@ -449,167 +595,30 @@ public class ImportarDecorator {
         this.fundo.setLayout(fundoLayout);
        
         fundoLayout.setHorizontalGroup(
-            fundoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            fundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fundoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(fundoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(GroupLayout.Alignment.TRAILING, 
-                                 fundoLayout.createSequentialGroup()
-                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 
-                                         GroupLayout.DEFAULT_SIZE, 
-                                          Short.MAX_VALUE)
-                        .addComponent(this.jPanelBtn))
+                .addGroup(fundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(fundoLayout.createSequentialGroup()
-                        .addComponent(this.jLabelArquivo)
-                        .addGap(18, 18, 18)
-                        .addGroup(fundoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(fundoLayout.createSequentialGroup()
-                                .addComponent(this.camField)
-                                .addGap(18, 18, 18)
-                                .addComponent(this.btImportar))
-                            .addGroup(fundoLayout.createSequentialGroup()
-                                .addComponent(this.btAbrir, 
-                                                  GroupLayout.PREFERRED_SIZE, 
-                                                 69, 
-                                                  GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addComponent(this.jLabelExplicacao)
-                    .addGroup(fundoLayout.createSequentialGroup()
-                        .addComponent(this.jPanelInfo, 
-                                          GroupLayout.PREFERRED_SIZE, 
-                                         GroupLayout.DEFAULT_SIZE, 
-                                          GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(fundoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(fundoLayout.createSequentialGroup()
-                                .addComponent(this.jLabelDataCriacao)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(this.dataCriacaoFTF, 
-                                                  GroupLayout.PREFERRED_SIZE, 
-                                                 98, 
-                                                  GroupLayout.PREFERRED_SIZE))
-                            .addComponent(this.jPanelAjuda, 
-                                              GroupLayout.PREFERRED_SIZE, 
-                                             GroupLayout.DEFAULT_SIZE, 
-                                              GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
-        );        
-        fundoLayout.setVerticalGroup(
-            fundoLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(fundoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(this.jLabelExplicacao)
-                .addGap(42, 42, 42)
-                .addGroup(fundoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.camField, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE)
-                    .addComponent(this.jLabelArquivo)
-                    .addComponent(this.btImportar))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(this.btAbrir, 
-                                  GroupLayout.PREFERRED_SIZE, 
-                                 30, 
-                                  GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addGroup(fundoLayout.createParallelGroup(GroupLayout.Alignment.LEADING, 
-                                                               false)
-                    .addGroup(fundoLayout.createSequentialGroup()
-                        .addGroup(fundoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(this.jLabelDataCriacao)
-                            .addComponent(this.dataCriacaoFTF, 
-                                              GroupLayout.PREFERRED_SIZE, 
-                                             GroupLayout.DEFAULT_SIZE, 
-                                              GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(this.jPanelAjuda, 
-                                          GroupLayout.DEFAULT_SIZE, 
-                                         GroupLayout.DEFAULT_SIZE, 
-                                          Short.MAX_VALUE))
-                    .addComponent(this.jPanelInfo, 
-                                      GroupLayout.PREFERRED_SIZE, 
-                                     GroupLayout.DEFAULT_SIZE, 
-                                      GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 
-                                 245, 
-                                 Short.MAX_VALUE)
-                .addGroup(fundoLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(this.jPanelBtn))
+                        .addComponent(this.jPanelSuperio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(this.jPanelInferior, javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fundoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-    }
-    
-    private void btAbrirActionPerformed(java.awt.event.ActionEvent evt) {                                        
-       
-       JFileChooser arquivo = new JFileChooser();
-       FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivos CSV","csv");
-       arquivo.setFileFilter(filtro);
-       
-       int result = arquivo.showOpenDialog(null);
-       if(result == JFileChooser.APPROVE_OPTION){
-           File arq = arquivo.getSelectedFile();
-           String arqNome = arq.getAbsolutePath();
-           if(arq.exists() && arq.canRead()){
-               this.camField.setText(arqNome);
-               this.btImportar.setVisible(true);
-               this.btAvancar.setVisible(true);               
-           }else{
-               JOptionPane.showMessageDialog(null,
-                                                   "Erro ao ler o arquivo.", 
-                                                    "Erro",
-                                                JOptionPane.ERROR_MESSAGE);
-               
-           }
-       }else{
-           System.out.println("Seleção de arquivo cancelada.");
-       }
-    }
-    
-    private void btAvancarActionPerformed(ActionEvent evt) {
-//        this.focusPainel(1);
-//        this.habilitarPainel(0, false);
-//        this.habilitarPainel(1, true);
-//        this.habilitarPainel(2, false);
-    }
-//
-//    private void btVoltarActionPerformed(ActionEvent evt) {
-//        this.focusPainel(0);
-//        this.habilitarPainel(0, true);
-//        this.habilitarPainel(1, false);
-//        this.habilitarPainel(2, false);
-//    }
-    
-    private void btImportarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException, IOException {                                           
-            this.ctrlGeral.setMedicao(lerArquivo(camField.getText()));
-//            this.ctrlGeral.setDuplicadaMedicao(lerArquivo(camField.getText()));
-//            CtrlGeral
-            this.insertInfoTextFields(this.ctrlGeral.getMedicao().getEstacao().getNome(), 
-                                  this.ctrlGeral.getMedicao().getEstacao().getCodigo(), 
-                                   this.ctrlGeral.getMedicao().getEstacao().getLatitude().toString(),
-                                   this.ctrlGeral.getMedicao().getEstacao().getSituacao(), 
-                                   this.ctrlGeral.getMedicao().getEstacao().getAltitude().toString(), 
-                                  this.ctrlGeral.getMedicao().getEstacao().getLongitude().toString(),
-                                 this.ctrlGeral.getMedicao().getDataInicialBR(), 
-                                  this.ctrlGeral.getMedicao().getDataFinalBR(), 
-                               this.ctrlGeral.getMedicao().getPeriodicidade(), 
-                                 this.ctrlGeral.getMedicao().getDataCriacaoBR());
-            //lerArquivo(camField.getText());
-            //tabelaTM.setModel(modelo);
-//            System.out.println(modelo.getLista());
-            //pop = new pesosPopup(4);
-            //pop.setVisible(true);
-        
-       
-    }
-    
-    private void focusPainel(int tabIndex) {
-        //deve ser assim que funfa...
-        this.painelTab.setSelectedIndex(tabIndex);                            
-    }
-    
-    private void habilitarPainel(int tabIndex, boolean enable) {
-        //deve ser assim que funfa...
-        this.painelTab.setEnabledAt(tabIndex, enable);                            
-    }
+        fundoLayout.setVerticalGroup(
+            fundoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(fundoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(this.jPanelSuperio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(this.jPanelInferior, javax.swing.GroupLayout.PREFERRED_SIZE,275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+    }    
 }

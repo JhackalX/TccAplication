@@ -48,12 +48,26 @@ public class Metodologia {
         this.coef = Float.parseFloat(coef.replace(',', '.'));
     }
 
-    public String getMetodologia(String opcao) {        
+    public String getMetodologia(String opcao) {
+        if(Integer.parseInt(opcao) == -1){
+            return "null";
+        }
         return this.Opcoes[Integer.parseInt(opcao)];
     }
 
     public int getOpcao() {
         return opcao;
+    }
+    
+    //reorna string com os coeficientes ou os pesos
+    public String getValoresReferentes(int opcao) {
+        if(opcao == 0){
+            return " Pesos: " + getPesosToString();
+        }
+        if(opcao == 1){
+            return " Coeficiente: " + getCoefBR();
+        }
+        return "null";
     }
 
     public void setOpcao(int opcao) {
@@ -74,6 +88,27 @@ public class Metodologia {
 
     public List<Float> getPesos() {
         return pesos;
+    }
+
+    public String getPesosToString() {
+//        System.out.println("entrou aqui getPesosToString()");
+            if (!(pesos == null || pesos.isEmpty())) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+
+            // Itera sobre todos os elementos da lista, exceto o último
+            for (int i = 0; i < pesos.size() - 1; i++) {
+                sb.append(pesos.get(i)).append(", ");
+            }
+
+            // Adiciona o último elemento sem a vírgula
+            sb.append(pesos.get(pesos.size() - 1));
+
+            sb.append("]");
+            return sb.toString();            
+        }
+        
+        return "[]";
     }
 
     public Float getValor(int index) {

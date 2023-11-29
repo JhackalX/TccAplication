@@ -90,9 +90,8 @@ class ResultadosDecorator {
         this.jTextAreaRelatorio.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         this.jTextAreaRelatorio.setForeground(new java.awt.Color(255, 255, 255));
         this.jTextAreaRelatorio.setRows(5);
-
-        this.jScrollPaneRelatorio.setViewportView(this.jTextAreaRelatorio);
-        
+        this.jTextAreaRelatorio.setText(ctrlGeral.gerarRelatorio());
+        this.jScrollPaneRelatorio.setViewportView(this.jTextAreaRelatorio);        
     }
 
     private void panelOpcoes() {        
@@ -221,6 +220,7 @@ class ResultadosDecorator {
         //abre o painel de dialogo caso uma das premissas sejam verdadeiras
         if(this.jCheckBoxOpcao2.isSelected() || this.jCheckBoxOpcao3.isSelected()){
             path = this.dialogSalvarFile();
+            this.jTextAreaRelatorio.setText(ctrlGeral.gerarRelatorio());
         }
         
         if(this.jCheckBoxOpcao1.isSelected()){

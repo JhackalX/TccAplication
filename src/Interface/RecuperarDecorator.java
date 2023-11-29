@@ -12,6 +12,8 @@ import TableBD.ObjectTableModelBD;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,12 +28,14 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -80,7 +84,7 @@ public class RecuperarDecorator {
     private JTable jTableBanco;
     private PopupSelectDecorator popup;
     private CtrlGeral ctrlGeral;
-    
+    private ObjectTableModelBD model;
     //para teste
     private ArrayList<Info> listInfos;
     
@@ -103,7 +107,6 @@ public class RecuperarDecorator {
         this.jScrollPaneTabela = new JScrollPane();
         this.jTextAreaAjuda = new JTextArea();
         this.jComboBoxAnoEst = new JComboBox();
-        
         
         this.jTextFieldNome = new JTextField();
         this.jTextFieldCodEstacao = new JTextField();
@@ -128,6 +131,7 @@ public class RecuperarDecorator {
         this.jLabelPeriodMedicao = new JLabel();
         this.jLabelAnoEst = new JLabel();
         
+        this.listInfos = null;
         this.dataCriacaoFTF = new JFormattedTextField();
 //        this.jTableBanco = new JTable();
         this.popup = new PopupSelectDecorator(this.ctrlGeral);
@@ -147,6 +151,8 @@ public class RecuperarDecorator {
 
         return this.fundo;    
     }
+    
+    
     private void populateInfo() throws ParseException{
         this.listInfos = new ArrayList<Info>();
         listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
@@ -157,6 +163,11 @@ public class RecuperarDecorator {
         listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
     }
     
+    private void ConfigureButtonTable(int column){
+        this.jTableBanco.getColumnModel().getColumn(column).setCellRenderer(new ButtonRenderer());
+        this.jTableBanco.getColumnModel().getColumn(column).setCellEditor(new ButtonEditor(new JCheckBox(), this.model, this.jTableBanco));
+    }
+    
     private void configureTable(){
         try {
             this.populateInfo();
@@ -164,20 +175,45 @@ public class RecuperarDecorator {
         } catch (ParseException ex) {
             Logger.getLogger(RecuperarDecorator.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ObjectTableModelBD modelo = new ObjectTableModelBD(listInfos);
-        this.jTableBanco = new JTable(modelo);
+        this.model = new ObjectTableModelBD(listInfos);
+        this.jTableBanco = new JTable(model);
         
-        this.jTableBanco.getColumn("Selecionar:").setCellRenderer(new ButtonRenderer());
-        this.jTableBanco.getColumn("Selecionar:").setCellEditor(new ButtonEditor(
-                                                                         new JCheckBox(),
-                                                                         modelo,
-                                                                    this.jTableBanco));
+        this.jTableBanco.setSurrendersFocusOnKeystroke(true);
+        this.jTableBanco.setRowSelectionAllowed(true);
+        this.jTableBanco.setColumnSelectionAllowed(false);
+        
+        this.ConfigureButtonTable(3);
+        this.ConfigureButtonTable(4);
+        
+        if(!(this.listInfos == null || this.listInfos.isEmpty())){            
+            this.jTableBanco.addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e){
+                    int row = jTableBanco.rowAtPoint(e.getPoint());
+                    int column = jTableBanco.columnAtPoint(e.getPoint());
 
-        this.jTableBanco.getColumn("Excluir:").setCellRenderer(new ButtonRenderer());
-        this.jTableBanco.getColumn("Excluir:").setCellEditor(new ButtonEditor(
-                                                                      new JCheckBox(),
-                                                                      modelo,
-                                                                 this.jTableBanco));
+                    if(row >= 0 && column >= 0){
+                        if(column == 3){
+//                            System.out.println("botão selecionar clicado: " + row);//para teste
+                            insertInfoTextFields(listInfos.get(row).getEstacao().getNome(),
+                                             listInfos.get(row).getEstacao().getCodigo(),
+                                              listInfos.get(row).getEstacao().getLatitude().toString(),
+                                              listInfos.get(row).getEstacao().getSituacao(),
+                                              listInfos.get(row).getEstacao().getAltitude().toString(), 
+                                             listInfos.get(row).getEstacao().getLongitude().toString(), 
+                                          listInfos.get(row).getPeriodicidade(),
+                                           listInfos.get(row).getDataCriacaoBR(),
+                                                listInfos.get(row).getListaAnos());
+                        }else if(column == 4){
+                            int confirm = JOptionPane.showConfirmDialog(jTableBanco, "Tem certeza que deseja excluir?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+                            if(confirm == JOptionPane.YES_NO_OPTION){
+                                model.removeInfo(row);
+                                jTableBanco.repaint();
+                            }
+                        }
+                    }
+                }
+            });
+        }
         this.jScrollPaneTabela.setViewportView(this.jTableBanco);
     }
     
@@ -202,12 +238,12 @@ public class RecuperarDecorator {
         this.jTextAreaAjuda.setColumns(20);
         this.jTextAreaAjuda.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         this.jTextAreaAjuda.setRows(5);
-        this.jTextAreaAjuda.setText(" Preencha as informações para diferenciar os dados gravados"
-                + "\n no banco de dados.\n"
+        this.jTextAreaAjuda.setText(" Escolha os dados que queira trabalhar na tabela abaixo"
+                + "\n vinda do banco de dados.\n"
                 + "\n A data de criação será preenchida e alterada automaticamente"
-                + "\n toda a vez que a base de dados for alterada ou criada.\n"
-                + "\n O campo titulo do quadro \"Info\" é obrigatório para manter sua"
-                + "\n própria organização.\n");
+                + "\n toda vez que um dados for selecionado, o painel info atualizará.\n"
+                + "\n O campo ano do quadro \"Info\" é obrigatório para começar o"
+                + "\n estudo.\n");
 
         
         jPanelAjudaLayout.setHorizontalGroup(
@@ -383,17 +419,17 @@ public class RecuperarDecorator {
 
         this.btAvancar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btAvancar.setText("Avançar");
-        this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
-                JFrame janela = new JFrame();                
-                popup.PopupSelectReady(1, janela);
-                janela.setVisible(true);
-                janela.repaint();
-                janela.pack();
-                janela.show();
-            }
-        });
+//        this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                
+//                JFrame janela = new JFrame();                
+//                popup.PopupSelectReady(1, janela);
+//                janela.setVisible(true);
+//                janela.repaint();
+//                janela.pack();
+//                janela.show();
+//            }
+//        });
                 
         this.btVoltar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btVoltar.setText("Voltar");         

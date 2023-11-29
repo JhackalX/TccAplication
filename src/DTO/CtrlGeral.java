@@ -113,23 +113,23 @@ public class CtrlGeral{
                                                 this.listaEs.get(coluna).esListaMAE().get(index).toString(), 
                                                 this.listaEs.get(coluna).esListaMAPE().get(index).toString());
                 listaClassificacao.get(coluna).getClassificador(index).setEstatisca(
-                                                                   this.listaEs.get(coluna).getNullMensal(index), 
-                                                                   this.listaEs.get(coluna).getSubsMensal(index), 
-                                                                this.listaEs.get(coluna).getElementosMensal(index));
+                                                                   this.listaEs.get(coluna).getQtdNullMensal(index), 
+                                                                   this.listaEs.get(coluna).getQtdSubsMensal(index), 
+                                                                this.listaEs.get(coluna).getQtdElementosMensal(index));
             }
         }
-        
+        System.out.println(Funcionalidades.relatorioEs(listaEs));
 //        this.imputarValoresEs();
        
         for(int i = 2; i < listaClassificacao.size(); i++){
             System.out.println("=======================================");
             System.out.println(listaClassificacao.get(i).getTitulo());
             System.out.println("=======================================");
-            for(int o = 0; o < guia.getApendice().size(); o++){
-                System.out.println("Erro::==============================");
-                System.out.println(listaClassificacao.get(i).getClassificador(o).imprimir());
-                
-            }
+            
+            System.out.println("Erro Min::==============================");
+            System.out.println(listaEs.get(i-2).getMimMape());
+            System.out.println("Erro Min::==============================");
+            System.out.println(listaEs.get(i-2).getMaxMape());
         }
     }
     
@@ -151,11 +151,12 @@ public class CtrlGeral{
                                                 this.listaAR.get(coluna).arListaMAE().get(index).toString(), 
                                                 this.listaAR.get(coluna).arListaMAPE().get(index).toString());
                 listaClassificacao.get(coluna).getClassificador(index).setEstatisca(
-                                                                   this.listaAR.get(coluna).getNullMensal(index), 
-                                                                   this.listaAR.get(coluna).getSubsMensal(index), 
-                                                                this.listaAR.get(coluna).getElementosMensal(index));
+                                                                   this.listaAR.get(coluna).getQtdNullMensal(index), 
+                                                                   this.listaAR.get(coluna).getQtdSubsMensal(index), 
+                                                                this.listaAR.get(coluna).getQtdElementosMensal(index));
             }
         }
+        System.out.println(Funcionalidades.relatorioAr(listaAR));
         
 //        this.imputarValoresAr();
        
@@ -163,13 +164,35 @@ public class CtrlGeral{
             System.out.println("=======================================");
             System.out.println(listaClassificacao.get(i).getTitulo());
             System.out.println("=======================================");
-            for(int o = 0; o < guia.getApendice().size(); o++){
-                System.out.println("Erro::==============================");
-                System.out.println(listaClassificacao.get(i).getClassificador(o).imprimir());
-                
-            }
+
+            System.out.println("Erro Min::==============================");
+            System.out.println(listaAR.get(i-2).getMimMape());             
+            System.out.println("Erro Max::==============================");
+            System.out.println(listaAR.get(i-2).getMaxMape());             
+            
         }
     }
+    
+    public String gerarRelatorio(){
+        StringBuilder relatorio = new StringBuilder();
+        int opcao = medicao.getMetodologiaAplicada().getOpcao();
+        relatorio.append("=======================================\n");
+        relatorio.append(" Metodologia: " + medicao.getMetodologiaAplicada().getMetodologia("" + opcao)).append("\n");
+        relatorio.append(medicao.getMetodologiaAplicada().getValoresReferentes(opcao)).append("\n");
+        relatorio.append("=======================================\n");        
+        for (int coluna = 2; coluna < listaClassificacao.size(); coluna++) {
+            relatorio.append("=======================================\n");
+            relatorio.append(listaClassificacao.get(coluna).getTitulo()).append("\n");
+            relatorio.append("=======================================\n");
+
+            for (int mes = 0; mes < guia.getApendice().size(); mes++) {
+                relatorio.append("=======================================\n");
+                relatorio.append(listaClassificacao.get(coluna).getClassificador(mes).imprimir()).append("\n");
+            }
+        }
+        return relatorio.toString();        
+    }
+    
     //imputa valores calculados a serie original
     public void imputarValoresAr(){
        for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){

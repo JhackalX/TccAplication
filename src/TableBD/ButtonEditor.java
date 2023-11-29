@@ -35,7 +35,9 @@ public class ButtonEditor extends DefaultCellEditor {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 fireEditingStopped();
+                System.out.println("clicou em algo");
             }
         });
     }
@@ -60,10 +62,17 @@ public class ButtonEditor extends DefaultCellEditor {
     public Object getCellEditorValue(){
         if(isPushed){
             int selectedRow = table.convertRowIndexToModel(table.getEditingRow());
+            System.out.println("selecionou: " + selectedRow + " selecionada.");
+            
             if(label.equals("Excluir:")){
-                model.removeInfo(selectedRow);
+                int confirm = JOptionPane.showConfirmDialog(table, "Tem certeza que deseja excluir?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
+                if(confirm == JOptionPane.YES_NO_OPTION){
+                    model.removeInfo(selectedRow);
+                    table.repaint();                    
+                }
             } else if (label.equals("Selecionar:")){
-                System.out.println("selecionou um trem aqui!!!");
+                table.setRowSelectionInterval(selectedRow, selectedRow);
+//                System.out.println("selecionou: " + selectedRow + " selecionada.");
             }
             //aqui coloca o codigo para tratar o click no botão
             JOptionPane.showMessageDialog(button, label+ " : Ouch!");

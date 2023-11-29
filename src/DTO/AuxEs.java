@@ -14,6 +14,7 @@ import static DTO.CalculoErro.somaErroABS;
 import static DTO.CalculoErro.somaErroABSNormalizada;
 import static DTO.CalculoErro.somaListaErroABS;
 import static DTO.CalculoErro.somaListaErroABSNormalizada;
+import java.util.Collections;
 /**
  *
  * @author jacka
@@ -62,9 +63,6 @@ public class AuxEs {
         this.subsEs = new ArrayList<Integer>();
         //valores acumulados
         
-//        this.madES = Float.parseFloat("0");               
-//        this.maeES = Float.parseFloat("0");                
-//        this.mapeES = Float.parseFloat("0");
         this.madListaES = new ArrayList<Float>();
         this.maeListaES = new ArrayList<Float>();
         this.mapeListaES = new ArrayList<Float>();
@@ -78,12 +76,6 @@ public class AuxEs {
         this.calculaErro();
 
         this.nElementMensal = this.contListaQtdErro();
-//        this.esMAD();
-        //System.out.println(this.madES);
-//        this.esMAE();
-        //System.out.println(this.maeES);
-//        this.esMAPE();
-        //System.out.println(this.esMAPE());
 
         this.madListaES = this.esListaMAD();
         this.maeListaES = this.esListaMAE();
@@ -121,42 +113,42 @@ public class AuxEs {
         this.erroEs = erroEs;
     }
 
-//    public String getMadES() {
-//        return ""+madES;
-//    }
-//
-//    public void setMadES(String madES) {
-//        this.madES = Float.parseFloat(madES);
-//    }
-//
-//    public String getMaeES() {
-//        return ""+maeES;
-//    }
-//
-//    public void setMaeES(String maeES) {
-//        this.maeES = Float.parseFloat(maeES);
-//    }
-//
-//    public String getMapeES() {
-//        return ""+mapeES;
-//    }
-//
-//    public void setMapeES(String mapeES) {
-//        this.mapeES = Float.parseFloat(mapeES);
-//    }
-
-    public int getNullMensal(int index) {
+    public int getQtdNullMensal(int index) {
         return nullMensal.get(index);
     }
 
-    public int getSubsMensal(int index) {
+    public int getQtdSubsMensal(int index) {
         return subsMensal.get(index);
     }
 
-    public int getElementosMensal(int index) {
+    public int getQtdElementosMensal(int index) {
         return nElementMensal.get(index);
     }
-
+    
+    public int getSomaNullsAntes() {
+        return somaNulls;
+    }
+    
+    public int getSomaNullsDpois() {
+        return this.contNull(this.autoSmoot);
+    }
+    
+    public int getQtdSubstituido() {
+        return this.subsEs.size();
+    }
+    
+    public int getQtdElementosProcessados() {
+        return (this.autoSmoot.size()-
+                this.subsEs.size()-
+                this.contNull(this.autoSmoot));
+    }
+    public String getMaxMape() {
+        return ""+ Collections.max(this.mapeListaES);
+    }
+    
+    public String getMimMape() {
+        return ""+ Collections.min(this.mapeListaES);
+    }    
     //------Funções Administrativas entre vetores--------
     public void relatorio(){
         System.out.println("***********************************************");
@@ -177,41 +169,7 @@ public class AuxEs {
         System.out.println("Tamanho Mape Lista: "+ this.mapeListaES.size() + " valores: " + this.mapeListaES);
         System.out.println("***********************************************");
     }
-    
-    //função de texte a remover
-    public void relatorioMensal(){
-
-
-        int mes = 3;
-        int ano = 2017; 
         
-        List<Integer> cont = this.contListaNull(this.autoSmoot);
-        this.nElementMensal = this.contListaQtdErro();
-        List<Integer> erroEs = this.contListaQtdErro();
-        List<Integer> subsEs = this.contListaQtdSub();
-
-        
-        for(int i = 0; i < this.guia.getApendice().size(); i++){
-
-            System.out.println("***********************************************");
-            System.out.println("Mes: " + mes);
-            System.out.println("Ano: " + ano);
-            System.out.println("QTD erros mensal: " + erroEs.get(i));
-            System.out.println("QTD substituições: " + subsEs.get(i));
-            System.out.println("QTD null mensal: " + cont.get(i));
-
-            System.out.println("Numero de elementos (n): " + (erroEs.get(i)-
-                                                              subsEs.get(i)-
-                                                              cont.get(i)));
-            System.out.println("***********************************************");            
-            mes++;
-            if(mes == 13){
-                mes = 1;
-                ano++;
-            }            
-        }
-    }
-    
     //preenche meu vetor de predicao
     public void preencherAutoSmooth(){
         for(int index = 0; index < this.dados.size(); index++){
@@ -341,36 +299,7 @@ public class AuxEs {
         }
         return listaCont;
     }
-
-    //claculo de erro
-    
-    //Desvio Absoluto Médio
-//    public void esMAD(){
-//        float abs = somaErroABS(this.erroEs, this.subsEs);
-//        int cont = this.contNull(this.autoSmoot);
-//        float mad = calculaMAD(abs, 
-//                            this.erroEs.size(), 
-//                            this.subsEs.size(), 
-//                            cont);
-//        this.setMadES(""+mad);
-//    }
-
-    //Erro Médio Absoluto
-//    public void esMAE(){
-//        float absn = somaErroABSNormalizada(this.dados, this.erroEs, this.subsEs);
-//        int cont = this.contNull(this.autoSmoot);
-//        float mae = calculaMAE(absn, 
-//                            this.erroEs.size(), 
-//                            this.subsEs.size(), 
-//                            cont);
-//        this.setMaeES(""+mae);
-//    }
-    
-    //Erro Absoluto Médio Percentual
-//    public void esMAPE(){
-//        this.setMapeES(calculaMAPE(this.getMaeES()).toString());        
-//    }
-    
+  
     //Lista Mensal de Desvio Absoluto Médio
     public List<Float> esListaMAD(){
         
@@ -382,9 +311,6 @@ public class AuxEs {
         List<Float> abs = somaListaErroABS(this.erroEs,
                                             this.subsEs,
                                            this.guia);
-//        this.nElementMensal = this.contListaQtdErro();
-//        List<Integer> erroEs = this.contListaQtdErro();
-
         float mad = 0;
         
         for(int i = 0; i < abs.size(); i++){
@@ -393,24 +319,7 @@ public class AuxEs {
                                 this.nElementMensal.get(i), 
                                  this.subsMensal.get(i), 
                                 this.nullMensal.get(i));
-            lista.add(mad);
-//            System.out.println("***********************************************");
-//            System.out.println("Mes: " + mes);
-//            System.out.println("Ano: " + ano);
-//            System.out.println("QTD erros mensal: " + erroEs.get(i));
-//            System.out.println("QTD substituições: " + subsEs.get(i));
-//            System.out.println("QTD null mensal: " + cont.get(i));
-//            System.out.println("QTD MAD: " + mad);
-//
-//            System.out.println("Numero de elementos (n): " + (erroEs.get(i)-
-//                                                              subsEs.get(i)-
-//                                                              cont.get(i)));
-//            System.out.println("***********************************************");            
-//            mes++;
-//            if(mes == 13){
-//                mes = 1;
-//                ano++;
-//            }            
+            lista.add(mad);         
         }
         return lista;
     }
@@ -419,16 +328,10 @@ public class AuxEs {
     public List<Float> esListaMAE(){
         
         List<Float> lista = new ArrayList<Float>();
-        
-//        int mes = 3;
-//        int ano = 2017; 
-        
         List<Float> absn = somaListaErroABSNormalizada(this.copiaDados,
                                                        this.erroEs,
                                                         this.subsEs,
                                                        this.guia);
-//        List<Integer> erroEs = this.contListaQtdErro();
-
         float mae = 0;
         for(int i = 0; i < absn.size(); i++){
             mae = 0;        
@@ -436,24 +339,7 @@ public class AuxEs {
                                     this.nElementMensal.get(i), 
                                      this.subsMensal.get(i), 
                                     this.nullMensal.get(i));
-            lista.add(mae);
-//            System.out.println("***********************************************");
-//            System.out.println("Mes: " + mes);
-//            System.out.println("Ano: " + ano);
-//            System.out.println("QTD erros mensal: " + erroEs.get(i));
-//            System.out.println("QTD substituições: " + subsEs.get(i));
-//            System.out.println("QTD null mensal: " + cont.get(i));
-//            System.out.println("QTD MAD: " + mae);
-//
-//            System.out.println("Numero de elementos (n): " + (erroEs.get(i)-
-//                                                              subsEs.get(i)-
-//                                                              cont.get(i)));
-//            System.out.println("***********************************************");            
-//            mes++;
-//            if(mes == 13){
-//                mes = 1;
-//                ano++;
-//            }            
+            lista.add(mae);           
         }
         return lista;
     }

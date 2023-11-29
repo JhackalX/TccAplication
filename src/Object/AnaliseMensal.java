@@ -246,15 +246,15 @@ public class AnaliseMensal {
         return"" 
              + "\n Ano: "+ this.getAno()
              + "\n Mes: "+ this.getMes()
-             + "\n ----------------------------------------------------"
+             + "\n Coeficiente-------------------------------------------------"
              + "\n Coeficiente de Sperman: "+ this.getCoefSperman()
              + "\n Tendencia: "+ this.getTendencia()
              + "\n Estacionariedade: "+ this.getEstacionariedade()
-             + "\n ----------------------------------------------------"
+             + "\n Erro::------------------------------------------------------"
              + "\n Mad: "+ this.getMad()
              + "\n Mae: "+ this.getMae()
              + "\n Mape: "+ this.getMape()
-             + "\n ----------------------------------------------------"
+             + "\n Info::------------------------------------------------------"
              + "\n Quantidade de Null's restante: "+ this.getQtdNull()
              + "\n Quantidade de Substituições: "+ this.getQtdSubs()
              + "\n Quantidade de Elementos(n): "+ this.getQtdElementos()

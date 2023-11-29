@@ -13,6 +13,7 @@ import static DTO.CalculoErro.somaErroABSNormalizada;
 import static DTO.CalculoErro.somaListaErroABS;
 import static DTO.CalculoErro.somaListaErroABSNormalizada;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,9 +61,6 @@ public class AuxAr {
         this.subsAr = new ArrayList<Integer>();
         this.copiaAr = new ArrayList<Integer>();
         //valores acumulados  
-//        this.madAR = Float.parseFloat("0");
-//        this.maeAR = Float.parseFloat("0");
-//        this.mapeAR = Float.parseFloat("0");
         this.madListaAR = new ArrayList<Float>();
         this.maeListaAR = new ArrayList<Float>();
         this.mapeListaAR = new ArrayList<Float>();
@@ -77,17 +75,12 @@ public class AuxAr {
         
         this.calculaErro();
         this.nElementMensal = this.contListaQtdErro();        
-//        this.arMAD();
-        //System.out.println(this.madAR);
-//        this.arMAE();
-        //System.out.println(this.maeAR);
-//        this.arMAPE();
-        //System.out.println(this.arMAPE());
-        this.relatorio();
+
         
         this.madListaAR = this.arListaMAD();
         this.maeListaAR = this.arListaMAE();
         this.mapeListaAR = this.arListaMAPE();        
+//        this.relatorio();
 
     }
     //Getter e Setter
@@ -127,40 +120,43 @@ public class AuxAr {
         this.subsAr = subsAr;
     }
 
-//    public String getMadAR() {
-//        return ""+madAR;
-//    }
-//
-//    public void setMadAR(String madAR) {
-//        this.madAR = Float.parseFloat(madAR);
-//    }
-//
-//    public String getMaeAR() {
-//        return ""+maeAR;
-//    }
-//
-//    public void setMaeAR(String maeAR) {
-//        this.maeAR = Float.parseFloat(maeAR);
-//    }
-//
-//    public String getMapeAR() {
-//        return ""+mapeAR;
-//    }
-//
-//    public void setMapeAR(String mapeAR) {
-//        this.mapeAR = Float.parseFloat(mapeAR);
-//    }
-
-    public int getNullMensal(int index) {
+    //funções para o relatório geral
+    public int getQtdNullMensal(int index) {
         return nullMensal.get(index);
     }
 
-    public int getSubsMensal(int index) {
+    public int getQtdSubsMensal(int index) {
         return subsMensal.get(index);
     }
 
-    public int getElementosMensal(int index) {
+    public int getQtdElementosMensal(int index) {
         return nElementMensal.get(index);
+    }
+    
+    public int getSomaNullsAntes() {
+        return somaNulls;
+    }
+    
+    public int getSomaNullsDpois() {
+        return this.contNull(this.autoAr);
+    }
+    
+    public int getQtdSubstituido() {
+        return this.subsAr.size();
+    }
+    
+    public int getQtdElementosProcessados() {
+        return (this.autoAr.size()-
+                this.subsAr.size()-
+                this.contNull(this.autoAr));
+    }
+    
+    public String getMaxMape() {
+        return ""+ Collections.max(this.mapeListaAR);
+    }
+    
+    public String getMimMape() {
+        return ""+ Collections.min(this.mapeListaAR);
     }
 
     //------Funções Administrativas entre vetores--------
@@ -184,38 +180,8 @@ public class AuxAr {
         System.out.println("***********************************************");
     }
     
-    //função para teste
-    public void relatorioMensal(){
-
-
-        int mes = 3;
-        int ano = 2017; 
-        
-        List<Integer> cont = this.contListaNull(this.autoAr);
-        this.nElementMensal = this.contListaQtdErro();
-        List<Integer> erroEs = this.contListaQtdErro();
-        List<Integer> subsEs = this.contListaQtdSub();
-
-        
-        for(int i = 0; i < this.guia.getApendice().size(); i++){
-
-            System.out.println("***********************************************");
-            System.out.println("Mes: " + mes);
-            System.out.println("Ano: " + ano);
-            System.out.println("QTD erros mensal: " + erroAr.get(i));
-            System.out.println("QTD substituições: " + subsAr.get(i));
-            System.out.println("QTD null mensal: " + cont.get(i));
-
-            System.out.println("Numero de elementos (n): " + (erroAr.get(i)-
-                                                              subsAr.get(i)-
-                                                              cont.get(i)));
-            System.out.println("***********************************************");            
-            mes++;
-            if(mes == 13){
-                mes = 1;
-                ano++;
-            }            
-        }
+    public String getQtdErroMensal(int Index){
+        return "" + erroAr.get(Index);
     }
     
     private void preencherAutoAR() {
@@ -315,36 +281,7 @@ public class AuxAr {
         return qtd;
     }
     
-    //Desvio Absoluto Médio
-//    private void arMAD() {
-//        float abs = somaErroABS(this.erroAr, this.subsAr);
-//        //int cont = this.contNull(this.autoAr);
-//        float mad = calculaMAD(abs, 
-//                            this.erroAr.size(), 
-//                             this.subsAr.size(), 
-//                            this.copiaAr.size());
-//        this.setMadAR(""+mad);    
-//    }
-
-    //Erro Médio Absoluto
-//    private void arMAE() {
-//       float absn = somaErroABSNormalizada(this.dados, 
-//                                            this.erroAr,
-//                                            this.subsAr);
-//        //int cont = this.contNull(this.autoAr);
-//        float mae = calculaMAE(absn, 
-//                            this.erroAr.size(), 
-//                             this.subsAr.size(), 
-//                            this.copiaAr.size());
-//        this.setMaeAR(""+mae);
-//    }
-
-    //Erro Absoluto Médio Percentual
-//    private void arMAPE() {
-//       this.setMapeAR(calculaMAPE(this.getMaeAR()).toString());        
-//    }
-    
-    //contador de elementos na lista de erro mensal
+    //contador de elementos null mensal na lista usavel em lista de erro e lista de elementos
     private List<Integer> contListaNull(List<Float> lista) {
         
         List<Integer> listaCont = new ArrayList<Integer>();
@@ -403,15 +340,10 @@ public class AuxAr {
     public List<Float> arListaMAD() {
         
         List<Float> lista = new ArrayList<Float>();
-
-//        int mes = 3;
-//        int ano = 2017; 
-        
+      
         List<Float> abs = somaListaErroABS(this.erroAr,
                                             this.subsAr,
                                            this.guia);
-//        this.nElementMensal = this.contListaQtdErro();
-//        List<Integer> erroEs = this.contListaQtdErro();
 
         float mad = 0;
         
@@ -421,24 +353,7 @@ public class AuxAr {
                                 this.nElementMensal.get(i), 
                                  this.subsMensal.get(i), 
                                 this.nullMensal.get(i));
-            lista.add(mad);
-//            System.out.println("***********************************************");
-//            System.out.println("Mes: " + mes);
-//            System.out.println("Ano: " + ano);
-//            System.out.println("QTD erros mensal: " + erroEs.get(i));
-//            System.out.println("QTD substituições: " + subsEs.get(i));
-//            System.out.println("QTD null mensal: " + cont.get(i));
-//            System.out.println("QTD MAD: " + mad);
-//
-//            System.out.println("Numero de elementos (n): " + (erroEs.get(i)-
-//                                                              subsEs.get(i)-
-//                                                              cont.get(i)));
-//            System.out.println("***********************************************");            
-//            mes++;
-//            if(mes == 13){
-//                mes = 1;
-//                ano++;
-//            }            
+            lista.add(mad);            
         }
         return lista;        
     }
@@ -447,16 +362,11 @@ public class AuxAr {
     public List<Float> arListaMAE() {
         
         List<Float> lista = new ArrayList<Float>();
-        
-//        int mes = 3;
-//        int ano = 2017; 
-        
+               
         List<Float> absn = somaListaErroABSNormalizada(this.copiaDados,
                                                        this.erroAr,
                                                         this.subsAr,
                                                        this.guia);
-//        List<Integer> erroEs = this.contListaQtdErro();
-
         float mae = 0;
         for(int i = 0; i < absn.size(); i++){
             mae = 0;        
@@ -464,24 +374,7 @@ public class AuxAr {
                                     this.nElementMensal.get(i), 
                                      this.subsMensal.get(i), 
                                     this.nullMensal.get(i));
-            lista.add(mae);
-//            System.out.println("***********************************************");
-//            System.out.println("Mes: " + mes);
-//            System.out.println("Ano: " + ano);
-//            System.out.println("QTD erros mensal: " + erroEs.get(i));
-//            System.out.println("QTD substituições: " + subsEs.get(i));
-//            System.out.println("QTD null mensal: " + cont.get(i));
-//            System.out.println("QTD MAD: " + mae);
-//
-//            System.out.println("Numero de elementos (n): " + (erroEs.get(i)-
-//                                                              subsEs.get(i)-
-//                                                              cont.get(i)));
-//            System.out.println("***********************************************");            
-//            mes++;
-//            if(mes == 13){
-//                mes = 1;
-//                ano++;
-//            }            
+            lista.add(mae);            
         }
         
         return lista;

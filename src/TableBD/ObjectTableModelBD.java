@@ -20,18 +20,29 @@ public class ObjectTableModelBD extends AbstractTableModel {
         this.info = info;
     }
     
+    public void updateInfoList(ArrayList<Info> newInfo){
+        this.info = newInfo;
+        fireTableDataChanged();
+    }
+    
     public void addInfo(Info info){
         this.info.add(info);
         fireTableRowsInserted(this.info.size() - 1, this.info.size() - 1);
+        fireTableDataChanged();
     }
     
     public void removeInfo(int rowIndex){
-        this.info.remove(rowIndex);
-        fireTableRowsDeleted(rowIndex, rowIndex);
+        if (rowIndex >= 0 && rowIndex < this.info.size()){
+            this.info.remove(rowIndex);
+            fireTableRowsDeleted(rowIndex, rowIndex);   
+        }
     }
     
     @Override
     public int getRowCount() {
+        if (info == null || info.isEmpty()){
+            return 1; // Retorna 1 para mostrar uma linha com mensagem padrão
+        }
         return info.size();
     }
 
@@ -47,20 +58,27 @@ public class ObjectTableModelBD extends AbstractTableModel {
     
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Info info = this.info.get(rowIndex);
-        switch (columnIndex){
-            case 0:
-                return info.getEstacao().getNome();
-            case 1:
-                return info.getDataCriacaoBR();
-            case 2:
-                return info.getEstacao().getCodigo();
-            case 3:
-                return "Selecionar";
-            case 4:
-                return "Excluir";
-            default:
-                return null;
+        if(info == null || info.isEmpty()){
+            if (columnIndex == 0){
+                return "Nenhuma informação disponivel";
+            }
+            return "";
+        }else{
+            Info info = this.info.get(rowIndex);
+            switch (columnIndex){
+                case 0:
+                    return info.getEstacao().getNome();
+                case 1:
+                    return info.getDataCriacaoBR();
+                case 2:
+                    return info.getEstacao().getCodigo();
+                case 3:
+                    return "Selecionar";
+                case 4:
+                    return "Excluir";
+                default:
+                    return null;
+            }
         }
     }
     
