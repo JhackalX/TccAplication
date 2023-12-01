@@ -185,7 +185,7 @@ public class MetodologiaDecorator {
         this.jRadioButtonOpcao2.setBackground(new java.awt.Color(255, 255, 255));
         this.buttonGroupOpcoes.add(this.jRadioButtonOpcao2);
         this.jRadioButtonOpcao2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        this.jRadioButtonOpcao2.setText("Alisamento Exponencial");
+        this.jRadioButtonOpcao2.setText("Suavização Exponencial");
         this.jRadioButtonOpcao2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 opcao2FocusGained(evt);
