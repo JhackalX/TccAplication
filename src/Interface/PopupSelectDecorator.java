@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import DTO.EstacoesListaDeAnos;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -63,10 +64,10 @@ public class PopupSelectDecorator {
 //    private ArrayList<String> listEstacoes;
     private JFrame janela;
     
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
     
-    public PopupSelectDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
+    public PopupSelectDecorator(CtrlInterface ctrlInterface) {
+        this.ctrlInterface = ctrlInterface;
         this.initGeralComponets();
 //        this.configureComboBox();
         this.configureButtonPane();

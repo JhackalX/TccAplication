@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import static DTO.Funcionalidades.gerarCsv;
 import java.awt.event.ActionEvent;
 import java.io.FilenameFilter;
@@ -35,10 +36,11 @@ class ResultadosDecorator {
     private JCheckBox jCheckBoxOpcao3;
     
     private JScrollPane jScrollPaneRelatorio;
-    private CtrlGeral ctrlGeral;
     
-    public ResultadosDecorator(CtrlGeral ctrlGeral){
-        this.ctrlGeral = ctrlGeral;
+    private CtrlInterface ctrlInterface;
+    
+    public ResultadosDecorator(CtrlInterface ctrlInterface){
+        this.ctrlInterface = ctrlInterface;
         this.initComponets();
         this.configureOpcaoCheckBox();
         this.configureTextArea();
@@ -90,7 +92,7 @@ class ResultadosDecorator {
         this.jTextAreaRelatorio.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         this.jTextAreaRelatorio.setForeground(new java.awt.Color(255, 255, 255));
         this.jTextAreaRelatorio.setRows(5);
-        this.jTextAreaRelatorio.setText(ctrlGeral.gerarRelatorio());
+        this.jTextAreaRelatorio.setText(ctrlInterface.gerarRelatorio());
         this.jScrollPaneRelatorio.setViewportView(this.jTextAreaRelatorio);        
     }
 
@@ -220,7 +222,7 @@ class ResultadosDecorator {
         //abre o painel de dialogo caso uma das premissas sejam verdadeiras
         if(this.jCheckBoxOpcao2.isSelected() || this.jCheckBoxOpcao3.isSelected()){
             path = this.dialogSalvarFile();
-            this.jTextAreaRelatorio.setText(ctrlGeral.gerarRelatorio());
+            this.jTextAreaRelatorio.setText(ctrlInterface.gerarRelatorio());
         }
         
         if(this.jCheckBoxOpcao1.isSelected()){
@@ -229,7 +231,7 @@ class ResultadosDecorator {
         }
         
         if(this.jCheckBoxOpcao2.isSelected() && (!path.equalsIgnoreCase(""))){
-            gerarCsv(ctrlGeral.getMedicao(), path);              
+            gerarCsv(ctrlInterface.getMedicao(), path);              
         }
         
         if(this.jCheckBoxOpcao3.isSelected()){

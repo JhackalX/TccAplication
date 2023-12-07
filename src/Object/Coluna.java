@@ -16,7 +16,9 @@ public class Coluna {
     
     private String titulo;
     private List<Dados> dados;
-
+    private Sensor sensor;
+    private Info medicaoPai;
+    
     public Coluna() {
     }
 
@@ -28,6 +30,12 @@ public class Coluna {
     public Coluna(String titulo) {
         this.titulo = titulo;
         this.dados = new ArrayList<Dados>();
+    }
+    
+    public Coluna(String titulo, Info medicaoPai) {
+        this.titulo = titulo;
+        this.dados = new ArrayList<Dados>();
+        this.medicaoPai =  medicaoPai;
     }
 
     public String getTitulo() {
@@ -100,12 +108,22 @@ public class Coluna {
         this.dados.remove(index);
     }
     
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+    
     public void addDado(Dados Obj) {
         //System.out.println(Obj.getData()+","+Obj.getPeriodo()+","+Obj.getValor());
         Dados dado = new Dados();
         dado.setData(Obj.getData());
         dado.setPeriodo(Obj.getPeriodo());
         dado.setValor(Obj.getValor()); 
+        dado.setSensor(this.sensor);
+        dado.setId(dado.getDataBr(),dado.getPeriodo(), this.sensor, this.medicaoPai.getEstacao().getCodigo());
         //System.out.println(dado.getData()+","+dado.getPeriodo()+","+dado.getValor());
         if(this.isEmpty()){
                 this.dados.add(dado);
@@ -113,7 +131,7 @@ public class Coluna {
             //System.out.println("entrou aqui");
             if(!dados.contains(dado)){
                 this.dados.add(dado);
-                this.ordenarLista();
+                //this.ordenarLista();
             }else{
                 System.out.println("elemento ja existe na lista...");
             }    
@@ -194,5 +212,14 @@ public class Coluna {
         }
         return Objects.equals(this.dados, other.dados);
     }
+
+    public Info getMedicaoPai() {
+        return medicaoPai;
+    }
+
+    public void setMedicaoPai(Info medicaoPai) {
+        this.medicaoPai = medicaoPai;
+    }
        
+    
 }

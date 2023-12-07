@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import Object.Info;
 import TableBD.ButtonEditor;
 import TableBD.ButtonRenderer;
@@ -79,13 +80,13 @@ public class RecMetodologiaDecorator {
     private JTextArea jTextAreaAjuda;    
     private JTable jTableBanco;
     private PopupSelectDecorator popup;
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
     private ObjectTableModelBD model;
     //para teste
     private ArrayList<Info> listInfos;
     
-    public RecMetodologiaDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
+    public RecMetodologiaDecorator(CtrlInterface ctrlInterface) {
+        this.ctrlInterface = ctrlInterface;
         this.initComponets();
         this.configureInfoFields();
         configureTable();
@@ -130,7 +131,7 @@ public class RecMetodologiaDecorator {
         
         this.dataCriacaoFTF = new JFormattedTextField();
 //        this.jTableBanco = new JTable();
-        this.popup = new PopupSelectDecorator(this.ctrlGeral);
+        this.popup = new PopupSelectDecorator(this.ctrlInterface);
         
         this.btAvancar = new JButton();
         this.btVoltar = new JButton();

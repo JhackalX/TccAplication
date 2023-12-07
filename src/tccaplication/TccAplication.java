@@ -5,6 +5,7 @@
 package tccaplication;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import Interface.WindowDecorator;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
@@ -21,11 +22,7 @@ public class TccAplication {
     public static void main(String[] args) {
         CtrlGeral ctrlGeral = new CtrlGeral();
         
-        JFrame janela = new JFrame();     
-        
-        WindowDecorator teste = Interface.WindowDecorator.decorator(janela, ctrlGeral);
-        
-        janela.show();
+        CtrlInterface ctrlInterface= new CtrlInterface(ctrlGeral);
     }
     
 }

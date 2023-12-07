@@ -26,7 +26,7 @@ public class Dados implements Comparable<Dados> {
     private Date data;
     private int periodo;
     private Float valor;
-    private String sensor;
+    private Sensor sensor;
 
     public Dados() {
     }
@@ -103,22 +103,22 @@ public class Dados implements Comparable<Dados> {
         }
     }
     
-    public void setId (String dataBr, int periodo, Float valor, Sensor sensor, String codEstacao){
-        String entradaHash = (dataBr + Float.toString(valor) + Integer.toString(periodo) + Integer.toString(sensor.getId()));
-        System.out.println("Definindo hash para: "  + entradaHash);
-        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
-        System.out.println("Hash gerada: " + this.id);
-    }
+//    public void setId (String dataBr, int periodo, Float valor, Sensor sensor, String codEstacao){
+//        String entradaHash = (dataBr + Float.toString(valor) + Integer.toString(periodo) + Integer.toString(sensor.getId()));
+//        System.out.println("Definindo hash para: "  + entradaHash);
+//        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
+//        System.out.println("Hash gerada: " + this.id);
+//    }
 
     public void setId(String id) {
         this.id = id;
     }
     
-    public void setSensor(String sensor){
+    public void setSensor(Sensor sensor){
         this.sensor = sensor;
     }
     
-    public String getSensor(){
+    public Sensor getSensor(){
         return this.sensor;
     }
     
@@ -269,5 +269,14 @@ public class Dados implements Comparable<Dados> {
         }           
     } 
     
-    
+    public void setId (String dataBr, int periodo, Sensor sensor, String codEstacao){
+        String entradaHash = ("Data:" + dataBr + "\n" +
+                              "Periodo: " + Integer.toString(periodo) + "\n" + 
+                              "ID Sensor:" + (sensor.getId()) + "\n" + 
+                              "Codigo Estacao: " + codEstacao);
+        //System.out.println("Definindo hash para: "  + entradaHash);
+        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
+        //System.out.println("Hash gerada: " + this.id);
+    }
+
 }

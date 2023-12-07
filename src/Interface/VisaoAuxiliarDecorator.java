@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import Object.AnaliseMensal;
 import Object.ListaClassificacao;
 import Tabela.Employee;
@@ -71,10 +72,10 @@ public class VisaoAuxiliarDecorator {
                                     "Maio", "Junho", "Julho", "Agosto", 
                                     "Setembro", "Outubro", "Novembro", "Dezembro"};
     
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
     
-    public VisaoAuxiliarDecorator(CtrlGeral ctrlGeral){
-        this.ctrlGeral = ctrlGeral;
+    public VisaoAuxiliarDecorator(CtrlInterface ctrlInterface){
+        this.ctrlInterface = ctrlInterface;
         this.initComponents();
     }
     
@@ -548,7 +549,7 @@ public class VisaoAuxiliarDecorator {
     private void panelDetalhes(){
         this.panelBtn();
         this.panelInfo();
-        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
+        this.StatusTab(this.ctrlInterface.getListaClassificacoes());
         
         this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
         
@@ -591,17 +592,17 @@ public class VisaoAuxiliarDecorator {
     
     private void setTableBActionPerformed(ActionEvent evt) {
 
-        System.out.println("Numero de colunas:" + this.ctrlGeral.getColuna().size());
+        System.out.println("Numero de colunas:" + this.ctrlInterface.getColuna().size());
         this.list = null;
-        this.list = (ArrayList<Employee>) this.ctrlGeral.gerarDadosTabelaImputados();
+        this.list = (ArrayList<Employee>) this.ctrlInterface.gerarDadosTabelaImputados();
         
-        this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlGeral.getColuna()),
+        this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlInterface.getColuna()),
                                                 createDataProvider(this.list),
                                                 new int[]{720, 744});
         this.paginatedDecorator.adjustColumnWidths();
     }
     private void setVoltarBActionPerformed(ActionEvent evt) {
-        this.ctrlGeral.reSetMedicao();
+        this.ctrlInterface.reSetMedicao();
     }
     
     private void salvarBActionPerformed(ActionEvent evt) {
@@ -614,7 +615,7 @@ public class VisaoAuxiliarDecorator {
         janela.setVisible(true);
         janela.setLayout(new BorderLayout());
         
-        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, this.ctrlGeral.getListaClassificacoes(), 2));
+        jScrollPanePopup.setViewportView(popup.TableShowReady(janela, this.ctrlInterface.getListaClassificacoes(), 2));
         
         janela.add(jScrollPanePopup);
         janela.repaint();

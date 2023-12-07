@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.GroupLayout;
@@ -40,10 +41,10 @@ public class WindowDecorator {
     private JScrollPane jScrollPaneVisaoAuxiliar;
     private JScrollPane jScrollPaneResultados;
     
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
     
-    private WindowDecorator(JFrame janela, CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
+    private WindowDecorator(JFrame janela, CtrlInterface ctrlInterface) {
+        this.ctrlInterface = ctrlInterface;
         
         this.initComponets();
 
@@ -65,9 +66,9 @@ public class WindowDecorator {
         
     }
     
-    public static WindowDecorator decorator (JFrame janela, CtrlGeral ctrlGeral) {
+    public static WindowDecorator decorator (JFrame janela, CtrlInterface ctrlInterface) {
      
-        WindowDecorator decorate = new WindowDecorator(janela, ctrlGeral);
+        WindowDecorator decorate = new WindowDecorator(janela, ctrlInterface);
         
         return decorate;
     }
@@ -175,8 +176,8 @@ public class WindowDecorator {
 //        this.painelTab.add("Inicio", this.inicio);
     }
 
-    private void montarRecuperar() {
-        RecuperarDecorator recuperar = new RecuperarDecorator(this.ctrlGeral);
+    public void montarRecuperar() {
+        RecuperarDecorator recuperar = new RecuperarDecorator(this.ctrlInterface);
         JPanel jPanelRecuperar = recuperar.RecuperarReady();
 
         GroupLayout recuperarLayout = new GroupLayout(this.recuperar);
@@ -196,12 +197,13 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
-        );        
+        );   
+        
 //        this.painelTab.add("Recuperar", this.recuperar);        
     }
     
     private void montarRecuperarProcessados() {
-        RecMetodologiaDecorator recuperarProcessados = new RecMetodologiaDecorator(this.ctrlGeral);
+        RecMetodologiaDecorator recuperarProcessados = new RecMetodologiaDecorator(this.ctrlInterface);
         JPanel jPanelRecuperarProcessos = recuperarProcessados.RecMetodologiaDecoratorReady();
 
         GroupLayout recuperarProcessadosLayout = new GroupLayout(this.recuperarProcessados);
@@ -226,7 +228,7 @@ public class WindowDecorator {
     }
     
     private void montarImportar(){
-        ImportarDecorator importar = new ImportarDecorator(this.ctrlGeral, this.painelTab);
+        ImportarDecorator importar = new ImportarDecorator(this.ctrlInterface, this.painelTab);
         JPanel jPanelImportar = importar.ImportarReady();
 
         GroupLayout importarLayout = new GroupLayout(this.importar);
@@ -251,7 +253,7 @@ public class WindowDecorator {
     }
     
     private void montarVisaoGeral(){
-        VisaoGeralDecorator visaoGeral = new VisaoGeralDecorator(this.ctrlGeral);
+        VisaoGeralDecorator visaoGeral = new VisaoGeralDecorator(this.ctrlInterface);
         JPanel jPanelVisaoGeral = visaoGeral.visaoGeralReady();        
 
         GroupLayout visaoGeralLayout = new GroupLayout(this.visaoGeral);
@@ -277,7 +279,7 @@ public class WindowDecorator {
     }
     
     private void montarMetodologias(){ 
-        MetodologiaDecorator metodologia = new MetodologiaDecorator(this.ctrlGeral);
+        MetodologiaDecorator metodologia = new MetodologiaDecorator(this.ctrlInterface);
         JPanel jPanelMetodologia = metodologia.metodologiaReady();
         
         GroupLayout metodologialLayout = new GroupLayout(this.metodologias);
@@ -303,7 +305,7 @@ public class WindowDecorator {
     
     private void montarVisaoAuxiliar(){
         
-        VisaoAuxiliarDecorator visaoAuxiliar = new VisaoAuxiliarDecorator(this.ctrlGeral);
+        VisaoAuxiliarDecorator visaoAuxiliar = new VisaoAuxiliarDecorator(this.ctrlInterface);
         JPanel jPanelVisaoAuxiliar = visaoAuxiliar.visaoAuxiliarReady();
         
         GroupLayout visaoAuxiliarLayout = new GroupLayout(this.visaoAuxiliar);
@@ -329,7 +331,7 @@ public class WindowDecorator {
     
     private void montarResultados(){
         
-        ResultadosDecorator resultados = new ResultadosDecorator(this.ctrlGeral);
+        ResultadosDecorator resultados = new ResultadosDecorator(this.ctrlInterface);
         JPanel jPanelResultados = resultados.ResultadoReady();
         
         GroupLayout resultadoLayout = new GroupLayout(this.resultados);
@@ -351,6 +353,10 @@ public class WindowDecorator {
                               Short.MAX_VALUE)
         );
 //        this.painelTab.add("Resultados", this.resultados);
+    }
+    
+    public void popularTabelaEstacoes(){
+        this.montarRecuperar();
     }
 
 }

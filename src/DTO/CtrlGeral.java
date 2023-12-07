@@ -6,11 +6,19 @@ package DTO;
 
 import DAO.CtrlDao;
 import Object.AnaliseMensal;
+import Object.Estacao;
 import Object.Info;
 import Object.ListaClassificacao;
+import Object.Sensor;
 import Tabela.Employee;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -74,7 +82,7 @@ public class CtrlGeral{
                                 
                 Validacao valMes = new Validacao(medicao.subListaIndex(coluna,
                                                                       getMarcador(i).getInicio(),
-                                                                        (getMarcador(i).getFim()+1)));
+                                                                        (getMarcador(i).getFim())));
                 AnaliseMensal nova = new AnaliseMensal(ano, 
                                                        mes, 
                                              valMes.getStrCoefSp(), 
@@ -279,4 +287,58 @@ public class CtrlGeral{
             return lista;  
         }
     } 
+    
+    public Info lerArquivo(String caminho){
+        try {
+            ArrayList<Sensor> sensores = null;
+
+            sensores = (ArrayList<Sensor>) ctrlDao.listarSensores();
+        
+            return Funcionalidades.lerArquivo(caminho, sensores);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlGeral.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } catch (IOException ex) {
+            Logger.getLogger(CtrlGeral.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+        
+    }
+    
+    public void gravarEstacao(Info medicao){
+        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFundacao =  null;
+        
+        if (medicao.getEstacao().getDataFundacao() != null){
+            dataFundacao = dateformat.format(medicao.getEstacao().getDataFundacao());
+        }
+        
+        this.ctrlDao.gravarEstacao(medicao.getEstacao().getId(), medicao.getEstacao().getNome(), medicao.getEstacao().getCodigo(), dataFundacao, medicao.getEstacao().getLatitude().toString(), medicao.getEstacao().getLongitude().toString(), medicao.getEstacao().getAltitude().toString(), medicao.getEstacao().getPeriodicidade());
+    }
+    
+    public void gravarListaColunas(Info medicao){
+        
+        this.ctrlDao.gravarListaColunas(medicao.getLista(), medicao.getEstacao().getCodigo());
+    }
+    
+    public List<Info> listarEstacoes(){
+        ArrayList<Info> lista = new ArrayList<>();
+        ArrayList<Estacao> estacoes;
+        Info nova;
+        
+        estacoes = (ArrayList<Estacao>) this.ctrlDao.listarEstacoes();
+        
+        for (int i = 0; i < estacoes.size(); i++){
+            nova = new Info();
+            nova.setEstacao(estacoes.get(i));
+            lista.add(nova);
+        }
+        
+        return lista;
+    }
+    
+    public List<String>listarAnosDadosMedidosEstacoes( String codigoEstacao) {
+        return this.ctrlDao.listarAnosDadosMedidosEstacoes(codigoEstacao);
+    }
 }

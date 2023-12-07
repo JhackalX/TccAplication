@@ -4,6 +4,7 @@
  */
 package Interface;
 
+import DTO.CtrlInterface;
 import Object.AnaliseMensal;
 import Object.ListaClassificacao;
 import java.awt.BorderLayout;
@@ -34,6 +35,8 @@ public class TableShowDecorator {
     private JScrollPane jScrollPaneStatus;
     private JTabbedPane jTabbedPaneColunas;
     private JButton okBtn;
+    
+    private CtrlInterface ctrlInterface;
     
     private List<ListaClassificacao> listaClassificacao;
 
