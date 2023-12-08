@@ -341,4 +341,8 @@ public class CtrlGeral{
     public List<String>listarAnosDadosMedidosEstacoes( String codigoEstacao) {
         return this.ctrlDao.listarAnosDadosMedidosEstacoes(codigoEstacao);
     }
+    
+    public Info getMedicaoPeriodo(String codigo, String periodo){
+        return this.ctrlDao.getMedicaoPeriodo(codigo,periodo);
+    }
 }

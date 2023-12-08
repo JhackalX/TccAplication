@@ -422,8 +422,8 @@ public class ImportarDecorator {
                                       String Situacao,
                                       String Altitude,
                                       String Longitude,
-                                      String DataInicial,
-                                      String DataFinal,
+//                                      String DataInicial,
+//                                      String DataFinal,
                                       String PeriodMedicao,
                                       String DataCriacao){
         
@@ -607,7 +607,7 @@ public class ImportarDecorator {
         
         this.ctrlInterface.gravarListaColunas(medicao);
         
-        this.ctrlInterface.setMedicao(medicao);
+//        this.ctrlInterface.setMedicao(medicao);
         
         this.insertInfoTextFields(this.ctrlInterface.getMedicao().getEstacao().getNome(), 
                                   this.ctrlInterface.getMedicao().getEstacao().getCodigo(), 
@@ -615,8 +615,8 @@ public class ImportarDecorator {
                                    this.ctrlInterface.getMedicao().getEstacao().getSituacao(), 
                                    this.ctrlInterface.getMedicao().getEstacao().getAltitude().toString(), 
                                   this.ctrlInterface.getMedicao().getEstacao().getLongitude().toString(),
-                                 this.ctrlInterface.getMedicao().getDataInicialBR(), 
-                                  this.ctrlInterface.getMedicao().getDataFinalBR(), 
+//                                 this.ctrlInterface.getMedicao().getDataInicialBR(), 
+//                                  this.ctrlInterface.getMedicao().getDataFinalBR(), 
                                this.ctrlInterface.getMedicao().getPeriodicidade(), 
                                  this.ctrlInterface.getMedicao().getDataCriacaoBR());
             //lerArquivo(camField.getText());

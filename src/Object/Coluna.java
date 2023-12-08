@@ -20,6 +20,10 @@ public class Coluna {
     private Info medicaoPai;
     
     public Coluna() {
+        this.dados = null;
+        this.medicaoPai = null;
+        this.sensor = null;
+        this.titulo = null;
     }
 
     public Coluna(String titulo, List<Dados> dados) {

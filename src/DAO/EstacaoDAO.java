@@ -198,4 +198,46 @@ public class EstacaoDAO {
         }
     }
     
+    public Estacao getEstacao(Connection conexao, String codigo){
+        try {
+            Estacao nova =  null;
+            ResultSet resultado = null;
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            
+            Statement sttm = conexao.createStatement();
+            
+            resultado = sttm.executeQuery("SELECT * FROM tb_estacao WHERE codigo LIKE '%" + codigo + "%';");
+            
+            if (resultado.next()){
+                nova = new Estacao();
+                
+                nova.setID((resultado.getString("id")));
+                nova.setNome(resultado.getString("nome"));
+                nova.setCodigo(resultado.getString("codigo"));
+                nova.setLatitude(Float.valueOf(resultado.getString("latitude")));
+                nova.setLongitude(Float.valueOf(resultado.getString("longitude")));
+                nova.setAltitude(Float.valueOf(resultado.getString("altitude")));
+                nova.setPeriodicidade(resultado.getString("periodicidade"));
+                
+                if(resultado.getString("data_fundacao") != null){
+                    nova.setDataFundacao(formato.parse(resultado.getString("data_fundacao").trim()));
+                } 
+                
+                if(resultado.getString("data_cadastro") != null){
+                    nova.setDataCadastro(formato.parse(resultado.getString("data_cadastro")));
+                } 
+                return nova;
+            } else {
+                return null;
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Erro ao carregar estacao do banco. Codigo da estacao: "+ codigo + ". Mensagem do erro: " + ex.getMessage());
+            return null;
+        } catch (ParseException ex) {
+            System.out.println("Erro ao conbverter data da estacao. Codigo da estacao: "+ codigo + ". Mensagem do erro: " + ex.getMessage());
+            return null;
+        }
+    }
+    
 }

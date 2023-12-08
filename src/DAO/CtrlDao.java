@@ -66,7 +66,7 @@ public class CtrlDao {
             if (conexaoBase != null) {
                 DatabaseMetaData meta = conexaoBase.getMetaData();
                 System.out.println("O driver utilizado é " + meta.getDriverName());
-                System.out.println("uma nova bas foi criada..");
+                System.out.println("Uma nova base foi criada..");
                 populaBaseDados(conexaoBase);
                 conexaoBase.close();
             } else {
@@ -148,7 +148,7 @@ public class CtrlDao {
                                 "FOREIGN KEY (id_estacao) REFERENCES tb_estacao(id),\n"+
                                 "FOREIGN KEY (id_sensor) REFERENCES tb_sensor(id)\n" +
                                 ");");
-        System.out.println("Criando tabela de parametros");
+        System.out.println("Criando tabela de Parametros");
         sttmBase.executeUpdate("CREATE TABLE tb_parametros (\n" +
                                 "id	TEXT(36) NOT NULL,\n" +
                                 "valor	REAL,\n" +
@@ -158,7 +158,7 @@ public class CtrlDao {
                                 "PRIMARY KEY(id)\n" +
                                 ");");
         
-        System.out.println("Criando tabela de relatorio mensal");
+        System.out.println("Criando tabela de Relatorio Mensal");
         sttmBase.executeUpdate("CREATE TABLE tb_relatorio_mensal (\n" +
                                 "id	TEXT NOT NULL,\n" +
                                 "id_estudo	TEXT(36) NOT NULL,\n" +
@@ -171,7 +171,7 @@ public class CtrlDao {
                                 "FOREIGN KEY(id_estudo) REFERENCES tb_estudo,\n" +
                                 "PRIMARY KEY(id)\n" +
                                 ");");
-        System.out.println("Criando tabela de relatorio erro");
+        System.out.println("Criando tabela de Relatorio Erro");
         sttmBase.executeUpdate("CREATE TABLE tb_relatorio_erro (\n" +
                                 "id	TEXT(36) NOT NULL,\n" +
                                 "id_estudo	TEXT(36) NOT NULL,\n" +
@@ -183,7 +183,7 @@ public class CtrlDao {
                                 "FOREIGN KEY(id_estudo) REFERENCES tb_estudo,\n" +
                                 "PRIMARY KEY(id)\n" +
                                 ");");
-        System.out.println("Criando tabela de relatorio coeficientes");
+        System.out.println("Criando tabela de Relatorio Coeficientes");
         sttmBase.executeUpdate("CREATE TABLE tb_relatorio_coeficientes (\n" +
                                 "id	TEXT(36) NOT NULL,\n" +
                                 "id_estudo	TEXT(36) NOT NULL,\n" +
@@ -274,6 +274,42 @@ public class CtrlDao {
         lista = (ArrayList<String>) this.dadosDao.listarAnosDadosMedidosEstacoes(conexao, idEstacao);
         this.desconectarBanco();
         return lista;
+    }
+    
+    public List<Dados> listarDadosEstacaoMes (String codigoEstacao, String ano, Sensor sensor){
+        ArrayList<Dados> lista;
+        this.conectarBanco();
+        lista = (ArrayList<Dados>) dadosDao.listarDadosEstacaoMes(conexao, codigoEstacao, ano, sensor);
+        this.desconectarBanco();
+        return lista;
+        
+    }
+    
+    public Estacao getEstacao (String codigo) {
+        Estacao nova;
+        this.conectarBanco();
+        nova = this.estacaoDao.getEstacao(conexao, codigo);
+        this.desconectarBanco();
+        return nova;
+    }
+    
+    public Info getMedicaoPeriodo(String codigo, String periodo){
+        Info medicao = null;
+        Estacao nova = this.getEstacao(codigo);
+        
+        if (nova == null){
+            return null;
+        }
+        
+        medicao = new Info();
+        
+        medicao.setEstacao(nova);
+        
+        medicao.setLista(this.colunaDAO.getColunasEstacaoPeriodo(codigo, periodo, medicao));
+        
+        medicao.setListaAnos(this.listarAnosDadosMedidosEstacoes(codigo));
+        
+        return medicao;        
     }
        
     

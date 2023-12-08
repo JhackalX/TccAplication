@@ -142,8 +142,8 @@ public class Funcionalidades {
                           line2[1].trim(),
                          line3[1].trim(),
                         line4[1].trim(),
-                         line5[1].trim(),
-                         line6[1].trim(),
+//                         line5[1].trim(),
+//                         line6[1].trim(),
                        line7[1].trim(),
                         line8[1].trim(),
                      line9[1].trim());
@@ -277,12 +277,12 @@ public class Funcionalidades {
             // Ler primeira linha
             linha = arquivo.readLine();
             
-            medicao.atualizaDataInicial(linha.split(";")[0]); 
+            //medicao.atualizaDataInicial(linha.split(";")[0]); 
             //System.out.println(linha);
             while(linha != null){ 
                 
                 addDadosEstacoesAutomaticas(linha, medicao, gabarito);
-                medicao.atualizaDataFinal(linha.split(";")[0]);
+                //medicao.atualizaDataFinal(linha.split(";")[0]);
                 
                 linha = arquivo.readLine();    
             } 
@@ -315,13 +315,13 @@ public class Funcionalidades {
             medicao.setPeriodicidade("Horaria");
             
             
-            medicao.atualizaDataInicial(linha.split(";")[0]);
+            //medicao.atualizaDataInicial(linha.split(";")[0]);
             
             System.out.println(linha);
             while(linha != null){ 
                 
                 addDadosEstacoesAutomaticas(arquivo, medicao);
-                medicao.atualizaDataFinal(linha.split(";")[0]);
+                //medicao.atualizaDataFinal(linha.split(";")[0]);
                 
                 linha = arquivo.readLine();    
             } 
@@ -342,8 +342,8 @@ public class Funcionalidades {
             bw.write("Longitude: " + info.getEstacao().getLongitude() + "\n");
             bw.write("Altitude: " + info.getEstacao().getAltitude() + "\n");
             bw.write("Situacao: " + info.getEstacao().getSituacao() + "\n");
-            bw.write("Data Inicial: " + info.getDataInicialBR() + "\n");
-            bw.write("Data Final: " + info.getDataFinalBR() + "\n");
+//            bw.write("Data Inicial: " + info.getDataInicialBR() + "\n");
+//            bw.write("Data Final: " + info.getDataFinalBR() + "\n");
             bw.write("Periodicidade da Medicao: " + info.getPeriodicidade() + "\n");
             bw.newLine();
 

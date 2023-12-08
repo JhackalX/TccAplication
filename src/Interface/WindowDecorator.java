@@ -274,7 +274,7 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );   
-
+        visaoGeral.atualizarPanel();
 //        this.painelTab.add("Visão Geral", this.jScrollPaneVisaoGeral);
     }
     
@@ -355,8 +355,12 @@ public class WindowDecorator {
 //        this.painelTab.add("Resultados", this.resultados);
     }
     
-    public void popularTabelaEstacoes(){
+    public void popularTabelaEstacoesRecuperarDecorator(){
         this.montarRecuperar();
+    }
+    
+     public void popularTabelaEstacoesVisaoGeral(){
+        
     }
 
 }

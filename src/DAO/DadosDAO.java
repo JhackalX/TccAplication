@@ -14,6 +14,7 @@ import Object.Dados;
 import java.util.ArrayList;
 import Object.Sensor;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,42 +75,57 @@ public class DadosDAO {
         
     }
     
-    public List<Dados> listarDadosEstacaoAno (Connection conexaoBase, String codigoEstacao, String ano){
+    public List<Dados> listarDadosEstacaoMes (Connection conexaoBase, String codigoEstacao, String ano, Sensor sensor){
         try {
             DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
             List<Dados> lista = new ArrayList<Dados>();
             Dados novo;
-            Sensor sensor;
             Statement sttm =  conexaoBase.createStatement();
-            ResultSet resultado =  sttm.executeQuery("SELECT d.id, d.data_medicao, d.periodo_medicao, d.valor, s.id AS id_sensor, s.nome as nome_sensor, s.txt_arquivo_carga, s.unidade_medida FROM tb_dados_medidos as d LEFT JOIN tb_estacao AS e ON d.id_estacao = e.id LEFT JOIN tb_sensor AS s ON d.id_sensor = s.id WHERE data_medicao LIKE '%/%/" + ano + "' AND e.codigo LIKE '" + codigoEstacao + "'");
-            
+            //ResultSet resultado =  sttm.executeQuery("SELECT d.id, d.data_medicao, d.periodo_medicao, d.valor, s.id AS id_sensor, s.nome as nome_sensor, s.txt_arquivo_carga, s.unidade_medida FROM tb_dados_medidos as d LEFT JOIN tb_estacao AS e ON d.id_estacao = e.id LEFT JOIN tb_sensor AS s ON d.id_sensor = s.id WHERE data_medicao LIKE '%/%/" + ano + "' AND e.codigo LIKE '" + codigoEstacao + "'");
+            ResultSet resultado =  sttm.executeQuery( "SELECT d.* "
+                                                    + "FROM tb_dados_medidos as d "
+                                                    + "LEFT JOIN tb_estacao AS e "
+                                                    + "ON d.id_estacao = e.id "
+                                                    + "LEFT JOIN tb_sensor AS s "
+                                                    + "ON d.id_sensor = s.id "
+                                                    + "WHERE STRFTIME('%Y-%m',data_medicao) LIKE '" + ano + "' "
+                                                    + "AND e.codigo LIKE '" + codigoEstacao + "' "
+                                                    + "AND s.id LIKE '" + sensor.getId()+ "';");
+            System.out.println( "SELECT d.* \n"
+                                                    + "FROM tb_dados_medidos as d \n"
+                                                    + "LEFT JOIN tb_estacao AS e \n"
+                                                    + "ON d.id_estacao = e.id \n"
+                                                    + "LEFT JOIN tb_sensor AS s \n"
+                                                    + "ON d.id_sensor = s.id \n"
+                                                    + "WHERE STRFTIME('%Y-%m',data_medicao) LIKE '" + ano + "' \n"
+                                                    + "AND e.codigo LIKE '" + codigoEstacao + "' \n"
+                                                    + "AND s.id LIKE '" + sensor.getId()+ "';");
+
             if (!resultado.next()){
                 System.out.println("Dados nao encontrados.");
                 return null;
             }
             
-            resultado.first();
-            
-            do{
+                  
+            while(resultado.next()){
                 novo = new Dados();
                 novo.setId(resultado.getString("id"));
-                novo.setData(dateFormat.format(resultado.getString("data_medicao")));
-                novo.setPeriodo(Integer.parseInt(resultado.getString("periodo_medicao")));
-                novo.setValor(Float.parseFloat(resultado.getString("valor")));
-                
-                sensor = new Sensor();
-                sensor.setId(resultado.getString("id_sensor"));
-                sensor.setNome(resultado.getString("nome_sensor"));
-                sensor.setTextoCarga("txt_arquivo_carga");
-                sensor.setUnidadeMedida(resultado.getString("unidade_medida"));
+                novo.setData(dateFormat.parse(resultado.getString("data_medicao")));
+                novo.setPeriodo((resultado.getInt("periodo_medicao")));
+                if (resultado.getString("valor") != null) {
+                    novo.setValor(Float.parseFloat(resultado.getString("valor"))); 
+                }                 
                 
                 novo.setSensor(sensor);
                 lista.add(novo);
-            }while(resultado.next());
+            }
             
             return lista;
         }catch (SQLException e ){
             System.out.println("Erro ao listar dados (Estacao/ano). Mensagem: " + e.getMessage());
+            return null;
+        } catch (ParseException ex) {
+            System.out.println("Erro ao converter data de medicao. Mensagem: " + ex.getMessage());
             return null;
         }
     }
@@ -196,9 +212,9 @@ public class DadosDAO {
             ResultSet resultado;
             Statement sttm = conexao.createStatement();
             
-            System.out.println("SELECT STRFTIME('%Y',data_medicao) AS ano FROM tb_dados_medidos WHERE id_estacao LIKE '"+ idEstacao+ "' GROUP BY ano;");
+            System.out.println("SELECT STRFTIME('%Y-%M',data_medicao) AS ano FROM tb_dados_medidos WHERE id_estacao LIKE '"+ idEstacao+ "' GROUP BY ano;");
             
-            resultado = sttm.executeQuery("SELECT STRFTIME('%Y',data_medicao) AS ano FROM tb_dados_medidos WHERE id_estacao LIKE '"+ idEstacao+ "' GROUP BY ano;");
+            resultado = sttm.executeQuery("SELECT STRFTIME('%Y-%m',data_medicao) AS ano FROM tb_dados_medidos WHERE id_estacao LIKE '"+ idEstacao+ "' GROUP BY ano;");
                         
             while(resultado.next()){
                 lista.add(resultado.getString("ano").trim());

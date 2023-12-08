@@ -130,4 +130,12 @@ public class CtrlInterface {
     public void recarregarRecuperarDecorator(){
         this.windowDecorator.montarRecuperar();
     }
+    
+    public void setMedicao(String codigo, String periodo){
+        this.ctrlGeral.setMedicao(this.ctrlGeral.getMedicaoPeriodo(codigo, periodo));
+    }
+    
+    public void atualizarTabelaVisaoGeral(){
+        this.windowDecorator.popularTabelaEstacoesVisaoGeral();
+    }
 }

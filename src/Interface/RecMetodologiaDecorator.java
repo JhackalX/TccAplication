@@ -150,12 +150,12 @@ public class RecMetodologiaDecorator {
     }
     private void populateInfo() throws ParseException{
         this.listInfos = new ArrayList<Info>();
-        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
-        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
-        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
-        listInfos.get(0).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019")));
-        listInfos.get(1).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019", "2020")));
-        listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
+//        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
+//        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
+//        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
+//        listInfos.get(0).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019")));
+//        listInfos.get(1).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019", "2020")));
+//        listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
     }
     
     private void configureTextMet(int row){

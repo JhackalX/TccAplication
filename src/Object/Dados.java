@@ -24,11 +24,16 @@ public class Dados implements Comparable<Dados> {
     
     private String id;    
     private Date data;
-    private int periodo;
+    private Integer periodo;
     private Float valor;
     private Sensor sensor;
 
     public Dados() {
+        this.id = null;
+        this.data = null;
+        this.valor = null;
+        this.periodo = null;
+        this.sensor =null;
     }
 
     public Dados(Date data, int periodo, float valor){
@@ -155,7 +160,7 @@ public class Dados implements Comparable<Dados> {
     }
 
     public void setValor(String valor) {
-        if(valor.equalsIgnoreCase("null")){
+        if(valor.equalsIgnoreCase("null") || valor == null){
             this.valor = null;
         }else{
             this.valor = Float.parseFloat(valor.replace(',', '.'));

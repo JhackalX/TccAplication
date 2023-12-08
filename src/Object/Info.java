@@ -29,8 +29,8 @@ public class Info {
     //private String longitude;//longitude
    // private String altitude;//altitude
     //private String situacao;//situação
-    private Date dataInicial;//data inicial da medição
-    private Date dataFinal;//data final da medição
+    //private Date dataInicial;//data inicial da medição
+    //private Date dataFinal;//data final da medição
     //private String periodicidade;//
 
     private List<Coluna> lista;
@@ -56,8 +56,8 @@ public class Info {
                 String latitude, 
                 String longitude, 
                 String altitude, 
-                Date dataInicial, 
-                Date dataFinal,  
+//                Date dataInicial, 
+//                Date dataFinal,  
                 List<Coluna> lista,
                 Metodologia metodologiaAplicada, 
                 Date dataCriacao) {
@@ -66,8 +66,8 @@ public class Info {
         this.estacao.setLatitude(Float.parseFloat(latitude));
         this.estacao.setLongitude(Float.parseFloat(longitude));
         this.estacao.setAltitude(Float.parseFloat(altitude));
-        this.dataInicial = dataInicial;
-        this.dataFinal = dataFinal;
+//        this.dataInicial = dataInicial;
+//        this.dataFinal = dataFinal;
         this.lista = lista;
         this.copiaLista = new ArrayList<Coluna>(lista);
         this.metodologiaAplicada = metodologiaAplicada;
@@ -82,8 +82,8 @@ public class Info {
                 String longitude, 
                 String altitude, 
                 String situacao, 
-                String dataInicial, 
-                String dataFinal, 
+//                String dataInicial, 
+//                String dataFinal, 
                 String periodicidade                                   
                 ) throws ParseException {
         
@@ -94,8 +94,8 @@ public class Info {
         this.estacao.setLatitude(Float.parseFloat(latitude));
         this.estacao.setLongitude(Float.parseFloat(longitude));
         this.estacao.setAltitude(Float.parseFloat(altitude));
-        this.dataInicial = dateFormate.parse(dataInicial.trim());
-        this.dataFinal = dateFormate.parse(dataFinal.trim());
+//        this.dataInicial = dateFormate.parse(dataInicial.trim());
+//        this.dataFinal = dateFormate.parse(dataFinal.trim());
         this.estacao.setPeriodicidade(periodicidade.trim());
         
         this.estacao.setID(this.estacao.getCodigo());
@@ -375,14 +375,14 @@ public class Info {
         this.metodologiaAplicada = metodologiaAplicada;
     }
 
-    public Date getDataInicial() {
-        return dataInicial;
-    }
-    
-    public String getDataInicialBR() {
-        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormate.format(dataInicial).toString();
-    }
+//    public Date getDataInicial() {
+//        return dataInicial;
+//    }
+//    
+//    public String getDataInicialBR() {
+//        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
+//        return dateFormate.format(dataInicial).toString();
+//    }
 
 //    public void setDataInicial(){
 //        if((!lista.isEmpty()) || (lista != null)){
@@ -391,15 +391,15 @@ public class Info {
 //            this.dataInicial = null;
 //        }
 //    }
-
-    public Date getDataFinal() {
-        return dataFinal;
-    }
-    
-    public String getDataFinalBR() {
-        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormate.format(dataFinal).toString();
-    }
+//
+//    public Date getDataFinal() {
+//        return dataFinal;
+//    }
+//    
+//    public String getDataFinalBR() {
+//        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
+//        return dateFormate.format(dataFinal).toString();
+//    }
     
 //    public void setDataFinal() {
 //        if((!lista.isEmpty()) || (lista != null)){
@@ -521,8 +521,8 @@ public class Info {
                        + "\n Latitude = " + this.estacao.getLatitude()
                        + "\n Longitude = " + this.estacao.getLongitude()
                        + "\n Altitude = " + this.estacao.getAltitude()
-                       + "\n Data Inicial = " + this.getDataInicialBR()
-                       + "\n Data Final = " + this.getDataFinalBR()
+//                       + "\n Data Inicial = " + this.getDataInicialBR()
+//                       + "\n Data Final = " + this.getDataFinalBR()
                        + "\n Periodicidade da Medicao = " + this.estacao.getPeriodicidade()//obs 
                        + '}'; 
     }//obs: ajeitar o toString da lista
@@ -598,8 +598,8 @@ public class Info {
     public void limparGeral(){
         this.lista.removeAll(this.lista);
         
-        this.dataInicial = null;
-        this.dataFinal = null;
+//        this.dataInicial = null;
+//        this.dataFinal = null;
     }
     
     public boolean isEmpty(){
@@ -614,35 +614,35 @@ public class Info {
         return dataUTC.format(dataBR.parse(data));
     }
     
-    public void atualizaDataInicial (String data){
-        DateFormat dateFormate;
-        
-        if (data.contains("-")) {
-            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
-        }
-        try {
-            this.dataInicial = dateFormate.parse(data.toString());
-        } catch (ParseException ex) {
-            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
-        }
-    }
-    
-        public void atualizaDataFinal (String data){
-        DateFormat dateFormate;
-        
-        if (data.contains("-")) {
-            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
-        }
-        try {
-            this.dataFinal = dateFormate.parse(data.toString());
-        } catch (ParseException ex) {
-            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
-        }
-    }
+//    public void atualizaDataInicial (String data){
+//        DateFormat dateFormate;
+//        
+//        if (data.contains("-")) {
+//            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+//        } else {
+//            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
+//        }
+//        try {
+//            this.dataInicial = dateFormate.parse(data.toString());
+//        } catch (ParseException ex) {
+//            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
+//        }
+//    }
+//    
+//        public void atualizaDataFinal (String data){
+//        DateFormat dateFormate;
+//        
+//        if (data.contains("-")) {
+//            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+//        } else {
+//            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
+//        }
+//        try {
+//            this.dataFinal = dateFormate.parse(data.toString());
+//        } catch (ParseException ex) {
+//            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
+//        }
+//    }
     
 //    public void listarMedicao(){
 //        System.out.println(this.toString());

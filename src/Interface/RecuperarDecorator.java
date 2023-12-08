@@ -439,13 +439,7 @@ public class RecuperarDecorator {
         this.btAvancar.setText("Avançar");
         this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                
-//                JFrame janela = new JFrame();                
-//                popup.PopupSelectReady(1, janela);
-//                janela.setVisible(true);
-//                janela.repaint();
-//                janela.pack();
-//                janela.show();
+                btnAvancarActionPerformed(evt);
             }
         });
                 
@@ -638,6 +632,19 @@ public class RecuperarDecorator {
                 .addContainerGap())
         );
 
+    }
+    
+    public void btnAvancarActionPerformed(java.awt.event.ActionEvent evt){
+        System.out.println("Ano Selecionado: " + this.jComboBoxAnoEst.getSelectedItem().toString());
+        System.out.println("Estacao Selecionada: " + this.infoSelecionada.getEstacao().getNome());
+        this.ctrlInterface.setMedicao(infoSelecionada.getEstacao().getCodigo(), jComboBoxAnoEst.getSelectedItem().toString());
+        this.ctrlInterface.atualizarTabelaVisaoGeral();
+//       JFrame janela = new JFrame();                
+//       popup.PopupSelectReady(1, janela);
+//       janela.setVisible(true);
+//       janela.repaint();
+//       janela.pack();
+//       janela.show();
     }
 
 }
