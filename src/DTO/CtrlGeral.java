@@ -56,6 +56,8 @@ public class CtrlGeral{
 
     public ArrayList<String> getColuna() {
         ArrayList<String> colunas = new ArrayList<String>();
+        colunas.add("Data");
+        colunas.add("Hora");
         if(medicao == null){
             colunas.add("vazio");
             return colunas;           

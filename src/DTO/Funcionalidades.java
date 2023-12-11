@@ -21,6 +21,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -127,14 +128,21 @@ public class Funcionalidades {
         
         //Ler cabeçalho da estacao
         
-       
+        //codigo
         String[] line2 = arquivo.readLine().split(":");
+        //latitude
         String[] line3 = arquivo.readLine().split(":");
+        //longitude
         String[] line4 = arquivo.readLine().split(":");
+        //altitude
         String[] line5 = arquivo.readLine().split(":");
+        //situação
         String[] line6 = arquivo.readLine().split(":");
+        //data inicial
         String[] line7 = arquivo.readLine().split(":");
+        // datafinal
         String[] line8 = arquivo.readLine().split(":");
+        //periodicidade
         String[] line9 = arquivo.readLine().split(":");
 
         medicao = new Info(
@@ -144,8 +152,8 @@ public class Funcionalidades {
                         line4[1].trim(),
 //                         line5[1].trim(),
 //                         line6[1].trim(),
-                       line7[1].trim(),
-                        line8[1].trim(),
+                       line5[1].trim(),
+                        line6[1].trim(),
                      line9[1].trim());
 
         return medicao;
@@ -289,10 +297,13 @@ public class Funcionalidades {
         
             return medicao;
         }catch (IOException ioe) {
+            System.out.println("Erro de entrada e saida. Mensagem: " + ioe.getMessage());
             return null;
-        } catch (NullPointerException npe){
-            return null;
+//        } catch (NullPointerException npe){
+//            System.out.println("Erro de ponteiro nulo. Mensagem: " + npe.getMessage() );
+//            return null;
         }  catch (ParseException ex) {
+            System.out.println("Erro de conversao de valores. Mensagem: " + ex.getMessage());
             return null;
         } 
     }
@@ -383,8 +394,8 @@ public class Funcionalidades {
         
         for (int i = 2; i < coluna.length; i++){
             for(int j = 0; j < sensores.size(); j++){
-                stra = coluna[i];
-                strb = sensores.get(j).getTextoCarga().split("\\(")[0];
+                stra = removerAcentos(coluna[i]);
+                strb = removerAcentos(sensores.get(j).getTextoCarga().split("\\(")[0]);
                 if (stra.contains(strb)){
                     gabarito[i] = true;
                     break;
@@ -395,9 +406,12 @@ public class Funcionalidades {
     }
     
     private static Info vincularSensoresColunas(Info medicao, ArrayList<Sensor> sensores ){
+        String stra, strb;
         for (int c = 0; c < medicao.getColuna().length; c++){
             for (int s = 0; s < sensores.size(); s++) {
-                if (medicao.getColuna(c).contains(sensores.get(s).getTextoCarga().split("\\(")[0])){
+                stra = removerAcentos(medicao.getColuna(c));
+                strb = removerAcentos(sensores.get(s).getTextoCarga().split("\\(")[0]);
+                if (stra.contains(strb)){
                     medicao.setSensor(c, sensores.get(s));
                     break;
                 }
@@ -406,6 +420,10 @@ public class Funcionalidades {
         }
         return medicao;
     }
+    
+    public static String removerAcentos(String str) {
+    return Normalizer.normalize(str, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "");
+}
 
 //    
 ////Dados-------------------------------------------------------------------------

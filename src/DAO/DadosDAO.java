@@ -82,16 +82,7 @@ public class DadosDAO {
             Dados novo;
             Statement sttm =  conexaoBase.createStatement();
             //ResultSet resultado =  sttm.executeQuery("SELECT d.id, d.data_medicao, d.periodo_medicao, d.valor, s.id AS id_sensor, s.nome as nome_sensor, s.txt_arquivo_carga, s.unidade_medida FROM tb_dados_medidos as d LEFT JOIN tb_estacao AS e ON d.id_estacao = e.id LEFT JOIN tb_sensor AS s ON d.id_sensor = s.id WHERE data_medicao LIKE '%/%/" + ano + "' AND e.codigo LIKE '" + codigoEstacao + "'");
-            ResultSet resultado =  sttm.executeQuery( "SELECT d.* "
-                                                    + "FROM tb_dados_medidos as d "
-                                                    + "LEFT JOIN tb_estacao AS e "
-                                                    + "ON d.id_estacao = e.id "
-                                                    + "LEFT JOIN tb_sensor AS s "
-                                                    + "ON d.id_sensor = s.id "
-                                                    + "WHERE STRFTIME('%Y-%m',data_medicao) LIKE '" + ano + "' "
-                                                    + "AND e.codigo LIKE '" + codigoEstacao + "' "
-                                                    + "AND s.id LIKE '" + sensor.getId()+ "';");
-            System.out.println( "SELECT d.* \n"
+            ResultSet resultado =  sttm.executeQuery( "SELECT d.* \n"
                                                     + "FROM tb_dados_medidos as d \n"
                                                     + "LEFT JOIN tb_estacao AS e \n"
                                                     + "ON d.id_estacao = e.id \n"
@@ -99,9 +90,20 @@ public class DadosDAO {
                                                     + "ON d.id_sensor = s.id \n"
                                                     + "WHERE STRFTIME('%Y-%m',data_medicao) LIKE '" + ano + "' \n"
                                                     + "AND e.codigo LIKE '" + codigoEstacao + "' \n"
-                                                    + "AND s.id LIKE '" + sensor.getId()+ "';");
+                                                    + "AND s.id LIKE '" + sensor.getId()+ "'\n"
+                                                    + "ORDER BY  d.data_medicao, d.periodo_medicao;");
+//            System.out.println( "SELECT d.* \n"
+//                                                    + "FROM tb_dados_medidos as d \n"
+//                                                    + "LEFT JOIN tb_estacao AS e \n"
+//                                                    + "ON d.id_estacao = e.id \n"
+//                                                    + "LEFT JOIN tb_sensor AS s \n"
+//                                                    + "ON d.id_sensor = s.id \n"
+//                                                    + "WHERE STRFTIME('%Y-%m',data_medicao) LIKE '" + ano + "' \n"
+//                                                    + "AND e.codigo LIKE '" + codigoEstacao + "' \n"
+//                                                    + "AND s.id LIKE '" + sensor.getId()+ "'\n"
+//                                                    + "ORDER BY  d.data_medicao, d.periodo_medicao;");
 
-            if (!resultado.next()){
+            if (!resultado.isBeforeFirst()){
                 System.out.println("Dados nao encontrados.");
                 return null;
             }
@@ -212,7 +214,7 @@ public class DadosDAO {
             ResultSet resultado;
             Statement sttm = conexao.createStatement();
             
-            System.out.println("SELECT STRFTIME('%Y-%M',data_medicao) AS ano FROM tb_dados_medidos WHERE id_estacao LIKE '"+ idEstacao+ "' GROUP BY ano;");
+            //System.out.println("SELECT STRFTIME('%Y-%M',data_medicao) AS ano FROM tb_dados_medidos WHERE id_estacao LIKE '"+ idEstacao+ "' GROUP BY ano;");
             
             resultado = sttm.executeQuery("SELECT STRFTIME('%Y-%m',data_medicao) AS ano FROM tb_dados_medidos WHERE id_estacao LIKE '"+ idEstacao+ "' GROUP BY ano;");
                         
@@ -228,4 +230,6 @@ public class DadosDAO {
         
         
     }
+    
+    
 }

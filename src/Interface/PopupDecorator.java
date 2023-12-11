@@ -44,7 +44,7 @@ public class PopupDecorator {
 
     public PopupDecorator(CtrlInterface ctrlInterface) {
         this.ctrlInterface = ctrlInterface;
-;        this.fundo = new JPanel(new GridLayout());
+        this.fundo = new JPanel(new GridLayout());
         this.panelBTNs = new JPanel();
         this.avancarBtn = new JButton();
         this.limparBtn = new JButton();

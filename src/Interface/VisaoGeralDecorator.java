@@ -654,6 +654,7 @@ public class VisaoGeralDecorator {
     }
     
     private void setTableBActionPerformed(ActionEvent evt) {
+        
 
         System.out.println("Numero de colunas:" + this.ctrlInterface.getColuna().size());
         this.list = null;

@@ -59,7 +59,7 @@ public class CtrlInterface {
     }
     
     public void imputarValoresEs(){
-        this.ctrlGeral.imputarValoresAr();
+        this.ctrlGeral.imputarValoresEs();
     }
     
     public void setMedicao(Info medicao){

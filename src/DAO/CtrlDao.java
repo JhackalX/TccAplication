@@ -318,7 +318,7 @@ public class CtrlDao {
         
         sttmBase.executeUpdate(""
                 +   "INSERT INTO tb_sensor(id, txt_arquivo_carga, nome, unidade_medida) VALUES('3043bee9-3ad6-44fe-b1a1-2f2018c58df2','PRECIPITACAO TOTAL, HORARIO(mm)', 'Precipitação Total', 'mm');\n" +
-                    "INSERT INTO tb_sensor(id, txt_arquivo_carga, nome, unidade_medida) VALUES('a4573ace-31eb-4db5-97cf-5a9c21f19679','PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARIA(mB)', 'Pressão Atmorférica (Nível Estação)', 'mB');\n" +
+                    "INSERT INTO tb_sensor(id, txt_arquivo_carga, nome, unidade_medida) VALUES('a4573ace-31eb-4db5-97cf-5a9c21f19679','PRESSAO ATMOSFERICA AO NIVEL DA ESTACAO, HORARIA(mB)', 'Pressão Atmosférica (Nível Estação)', 'mB');\n" +
                     "INSERT INTO tb_sensor(id, txt_arquivo_carga, nome, unidade_medida) VALUES('64cea8eb-cbb8-4573-be49-2fd3bdd1b2a1','PRESSAO ATMOSFERICA REDUZIDA NIVEL DO MAR, AUT(mB)', 'Pressão Atmosférica (Nível Mar)', 'mB');\n" +
                     "INSERT INTO tb_sensor(id, txt_arquivo_carga, nome, unidade_medida) VALUES('0295b45b-dfb1-4336-b9c1-01e95caf5b43','PRESSAO ATMOSFERICA MAX.NA HORA ANT. (AUT)(mB)', 'Pressão Atmosférica Máxima (Última Hora)', 'mB');\n" +
                     "INSERT INTO tb_sensor(id, txt_arquivo_carga, nome, unidade_medida) VALUES('18d6c881-5609-4453-8432-355a094a691f','PRESSAO ATMOSFERICA MIN. NA HORA ANT. (AUT)(mB)', 'Pressão Atmosférica Mínima (Ultima Hora)', 'mb');\n" +

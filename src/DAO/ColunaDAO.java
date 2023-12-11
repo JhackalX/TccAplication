@@ -47,6 +47,8 @@ public class ColunaDAO {
         
         lista =  new ArrayList<Coluna>();
         
+        
+        
         for (int i =0; i < listasensores.size(); i++){
             System.out.println("Recuperando sensor: " + listasensores.get(i).getNome());
             
@@ -60,7 +62,9 @@ public class ColunaDAO {
             
             nova.setMedicaoPai(medicao);
             
-            lista.add(nova);
+            if (nova.getDados() != null) {
+                 lista.add(nova);
+            }
             
         }
         

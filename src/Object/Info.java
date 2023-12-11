@@ -306,11 +306,11 @@ public class Info {
             linha.add("vazio");
             return linha;
         }else{
-            for(int i = 0; i < this.getColunaCount(); i++){
-                if(i == 0){
+            for(int i = -2; i < this.getColunaCount(); i++){
+                if(i == -2){
                     linha.add(this.getLista(3).getDado(index).getDataBr());
                 }else{
-                    if(i == 1){
+                    if(i == -1){
                         linha.add(""+ this.getLista(3).getDado(index).getPeriodo());
                     }else{
                         linha.add(this.getLista(i).getDado(index).getValor());
@@ -327,11 +327,11 @@ public class Info {
             linha.add("vazio");
             return linha;
         }else{
-            for(int i = 0; i < this.getColunaCount(); i++){
-                if(i == 0){
+            for(int i = -2; i < this.getColunaCount(); i++){
+                if(i == -2){
                     linha.add(this.getCopiaLista(3).getDado(index).getDataBr());
                 }else{
-                    if(i == 1){
+                    if(i == -1){
                         linha.add(""+ this.getCopiaLista(3).getDado(index).getPeriodo());
                     }else{
                         linha.add(this.getCopiaLista(i).getDado(index).getValor());

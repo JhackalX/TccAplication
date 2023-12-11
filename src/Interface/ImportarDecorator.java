@@ -609,16 +609,16 @@ public class ImportarDecorator {
         
 //        this.ctrlInterface.setMedicao(medicao);
         
-        this.insertInfoTextFields(this.ctrlInterface.getMedicao().getEstacao().getNome(), 
-                                  this.ctrlInterface.getMedicao().getEstacao().getCodigo(), 
-                                   this.ctrlInterface.getMedicao().getEstacao().getLatitude().toString(),
-                                   this.ctrlInterface.getMedicao().getEstacao().getSituacao(), 
-                                   this.ctrlInterface.getMedicao().getEstacao().getAltitude().toString(), 
-                                  this.ctrlInterface.getMedicao().getEstacao().getLongitude().toString(),
+        this.insertInfoTextFields(medicao.getEstacao().getNome(), 
+                                  medicao.getEstacao().getCodigo(), 
+                                   medicao.getEstacao().getLatitude().toString(),
+                                   medicao.getEstacao().getSituacao(), 
+                                   medicao.getEstacao().getAltitude().toString(), 
+                                  medicao.getEstacao().getLongitude().toString(),
 //                                 this.ctrlInterface.getMedicao().getDataInicialBR(), 
 //                                  this.ctrlInterface.getMedicao().getDataFinalBR(), 
-                               this.ctrlInterface.getMedicao().getPeriodicidade(), 
-                                 this.ctrlInterface.getMedicao().getDataCriacaoBR());
+                               medicao.getEstacao().getPeriodicidade(), 
+                                 medicao.getEstacao().getDataFundacaoBR());
             //lerArquivo(camField.getText());
             //tabelaTM.setModel(modelo);
 //            System.out.println(modelo.getLista());
