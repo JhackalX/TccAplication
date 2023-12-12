@@ -238,4 +238,8 @@ class ResultadosDecorator {
             //gerar arquivo .txt com o mesmo nome e no mesmo caminho que o .csv
         }
     }    
+    
+    public void atualizarRelatorio(){
+        this.jTextAreaRelatorio.setText(ctrlInterface.gerarRelatorio());
+    }
 }

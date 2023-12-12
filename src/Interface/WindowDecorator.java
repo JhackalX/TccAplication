@@ -352,6 +352,7 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );
+        resultados.atualizarRelatorio();
 //        this.painelTab.add("Resultados", this.resultados);
     }
     

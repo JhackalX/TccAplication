@@ -74,7 +74,7 @@ public class CtrlGeral{
 
         List<ListaClassificacao> listaClassificacao = new ArrayList<ListaClassificacao>();
         
-        for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
+        for(int coluna = 0 ; coluna < medicao.getColunaCount(); coluna++){
            
             int mes = medicao.getInicMonth();
             int ano = medicao.getInicYear();            
@@ -109,7 +109,7 @@ public class CtrlGeral{
 
         this.listaEs = new ArrayList<AuxEs>();
 
-        for(int a = 2; a < medicao.getColunaCount(); a++){
+        for(int a = 0; a < medicao.getColunaCount(); a++){
             this.listaEs.add(new AuxEs(medicao.getLista(a).getAllDados(), 
                                  medicao.getMetodologiaAplicada().getCoef(),
                                      guia));   
@@ -131,15 +131,15 @@ public class CtrlGeral{
         System.out.println(Funcionalidades.relatorioEs(listaEs));
 //        this.imputarValoresEs();
        
-        for(int i = 2; i < listaClassificacao.size(); i++){
+        for(int i = 0; i < listaClassificacao.size(); i++){
             System.out.println("=======================================");
             System.out.println(listaClassificacao.get(i).getTitulo());
             System.out.println("=======================================");
             
             System.out.println("Erro Min::==============================");
-            System.out.println(listaEs.get(i-2).getMimMape());
+            System.out.println(listaEs.get(i).getMimMape());
             System.out.println("Erro Min::==============================");
-            System.out.println(listaEs.get(i-2).getMaxMape());
+            System.out.println(listaEs.get(i).getMaxMape());
         }
     }
     
@@ -147,7 +147,7 @@ public class CtrlGeral{
 
         this.listaAR = new ArrayList<AuxAr>();
 
-        for(int a = 2; a < medicao.getColunaCount(); a++){
+        for(int a = 0; a < medicao.getColunaCount(); a++){
             this.listaAR.add(new AuxAr(medicao.getMetodologiaAplicada().getPesos(),
                                 medicao.getLista(a).getAllDados(),  
                                      guia));
@@ -170,15 +170,15 @@ public class CtrlGeral{
         
 //        this.imputarValoresAr();
        
-        for(int i = 2; i < listaClassificacao.size(); i++){
+        for(int i = 0; i < listaClassificacao.size(); i++){
             System.out.println("=======================================");
             System.out.println(listaClassificacao.get(i).getTitulo());
             System.out.println("=======================================");
 
             System.out.println("Erro Min::==============================");
-            System.out.println(listaAR.get(i-2).getMimMape());             
+            System.out.println(listaAR.get(i).getMimMape());             
             System.out.println("Erro Max::==============================");
-            System.out.println(listaAR.get(i-2).getMaxMape());             
+            System.out.println(listaAR.get(i).getMaxMape());             
             
         }
     }
@@ -190,7 +190,7 @@ public class CtrlGeral{
         relatorio.append(" Metodologia: " + medicao.getMetodologiaAplicada().getMetodologia("" + opcao)).append("\n");
         relatorio.append(medicao.getMetodologiaAplicada().getValoresReferentes(opcao)).append("\n");
         relatorio.append("=======================================\n");        
-        for (int coluna = 2; coluna < listaClassificacao.size(); coluna++) {
+        for (int coluna = 0; coluna < listaClassificacao.size(); coluna++) {
             relatorio.append("=======================================\n");
             relatorio.append(listaClassificacao.get(coluna).getTitulo()).append("\n");
             relatorio.append("=======================================\n");
@@ -205,14 +205,14 @@ public class CtrlGeral{
     
     //imputa valores calculados a serie original
     public void imputarValoresAr(){
-       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
-            this.medicao.getLista(coluna).atualizaValor(this.listaAR.get(coluna-2).getDadosProcessados());            
+       for(int coluna = 0; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(this.listaAR.get(coluna).getDadosProcessados());            
         }        
     }
     
     public void imputarValoresEs(){
-       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
-            this.medicao.getLista(coluna).atualizaValor(this.listaEs.get(coluna-2).getDadosProcessados());            
+       for(int coluna = 0; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(this.listaEs.get(coluna).getDadosProcessados());            
         }       
     }
     
@@ -222,7 +222,7 @@ public class CtrlGeral{
 //        Tabela.Funcionalidades.setColumn(CtrlGeral.meses);
 //        System.out.println("setMEdicao!!!!!");
         Guia nova = new Guia();
-        nova.gerarGuia(this.medicao.getLista(2).getDados());
+        nova.gerarGuia(this.medicao.getLista(0).getDados());
         this.setApendice(nova);
 //        apendice.imprimir();
         this.listaClassificacao = setListaClassificacao();

@@ -99,7 +99,8 @@ public class CtrlDao {
                                 "id TEXT(36) PRIMARY KEY UNIQUE,\n" +
                                 "nome TEXT(50),\n" +
                                 "dsc TEXT(255),\n" +
-                                "dsc_ajuda TEXT(512));");
+                                "dsc_ajuda TEXT(512),\n" + 
+                                "codigo TEXT(3));");
 
         System.out.println("Criando tabela de Estacoes");
          sttmBase.executeUpdate("CREATE TABLE tb_estacao (\n" +
@@ -212,6 +213,7 @@ public class CtrlDao {
     
     private static void popularTabelas( Statement sttmBase) throws SQLException {
         popularTabelaSensores(sttmBase);
+        popularMetodologias(sttmBase);
     }
     
     public void gravarEstacao(String idEstacao, String nomeEstacao, String codigoEstacao, String dataFundacao, String latitude, String Longitude, String altitude, String periodicidade) {
@@ -339,4 +341,8 @@ public class CtrlDao {
         
     }
     
+    public static void popularMetodologias(Statement sttm) throws SQLException{
+        sttm.executeUpdate( "INSERT INTO tb_metodologia (id,nome,dsc,codigo) VALUES ('5fcefab7-0eb7-4520-b8cd-cca0556ff694','Arima','Metodologia de Media Movel Ponderada','ARI');\n"+
+                            "INSERT INTO tb_metodologia (id,nome,dsc,codigo) VALUES ('f9da3108-e53f-4a06-93f2-4732b803b9fd','Alizamento Exponencial','Metodologia de Alizamento Exponencial','');");
+    }
 }
