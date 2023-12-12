@@ -24,11 +24,16 @@ public class Dados implements Comparable<Dados> {
     
     private String id;    
     private Date data;
-    private int periodo;
+    private Integer periodo;
     private Float valor;
-    private String sensor;
+    private Sensor sensor;
 
     public Dados() {
+        this.id = null;
+        this.data = null;
+        this.valor = null;
+        this.periodo = null;
+        this.sensor =null;
     }
 
     public Dados(Date data, int periodo, float valor){
@@ -103,22 +108,22 @@ public class Dados implements Comparable<Dados> {
         }
     }
     
-    public void setId (String dataBr, int periodo, Float valor, Sensor sensor, String codEstacao){
-        String entradaHash = (dataBr + Float.toString(valor) + Integer.toString(periodo) + Integer.toString(sensor.getId()));
-        System.out.println("Definindo hash para: "  + entradaHash);
-        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
-        System.out.println("Hash gerada: " + this.id);
-    }
+//    public void setId (String dataBr, int periodo, Float valor, Sensor sensor, String codEstacao){
+//        String entradaHash = (dataBr + Float.toString(valor) + Integer.toString(periodo) + Integer.toString(sensor.getId()));
+//        System.out.println("Definindo hash para: "  + entradaHash);
+//        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
+//        System.out.println("Hash gerada: " + this.id);
+//    }
 
     public void setId(String id) {
         this.id = id;
     }
     
-    public void setSensor(String sensor){
+    public void setSensor(Sensor sensor){
         this.sensor = sensor;
     }
     
-    public String getSensor(){
+    public Sensor getSensor(){
         return this.sensor;
     }
     
@@ -146,6 +151,14 @@ public class Dados implements Comparable<Dados> {
         }
     }
 
+    public String getValorCsv(){
+        if(this.valor == null){
+            return "null";
+        }else{
+            return new String().format("%.3f", valor).replace('.', ',');
+        }
+    }
+
     public Float getValorF(){
         return valor;
     }
@@ -155,7 +168,7 @@ public class Dados implements Comparable<Dados> {
     }
 
     public void setValor(String valor) {
-        if(valor.equalsIgnoreCase("null")){
+        if(valor.equalsIgnoreCase("null") || valor == null){
             this.valor = null;
         }else{
             this.valor = Float.parseFloat(valor.replace(',', '.'));
@@ -269,5 +282,14 @@ public class Dados implements Comparable<Dados> {
         }           
     } 
     
-    
+    public void setId (String dataBr, int periodo, Sensor sensor, String codEstacao){
+        String entradaHash = ("Data:" + dataBr + "\n" +
+                              "Periodo: " + Integer.toString(periodo) + "\n" + 
+                              "ID Sensor:" + (sensor.getId()) + "\n" + 
+                              "Codigo Estacao: " + codEstacao);
+        //System.out.println("Definindo hash para: "  + entradaHash);
+        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
+        //System.out.println("Hash gerada: " + this.id);
+    }
+
 }

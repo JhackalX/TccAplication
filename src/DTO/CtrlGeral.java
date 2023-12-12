@@ -6,11 +6,19 @@ package DTO;
 
 import DAO.CtrlDao;
 import Object.AnaliseMensal;
+import Object.Estacao;
 import Object.Info;
 import Object.ListaClassificacao;
+import Object.Sensor;
 import Tabela.Employee;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,6 +56,8 @@ public class CtrlGeral{
 
     public ArrayList<String> getColuna() {
         ArrayList<String> colunas = new ArrayList<String>();
+        colunas.add("Data");
+        colunas.add("Hora");
         if(medicao == null){
             colunas.add("vazio");
             return colunas;           
@@ -64,7 +74,7 @@ public class CtrlGeral{
 
         List<ListaClassificacao> listaClassificacao = new ArrayList<ListaClassificacao>();
         
-        for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
+        for(int coluna = 0 ; coluna < medicao.getColunaCount(); coluna++){
            
             int mes = medicao.getInicMonth();
             int ano = medicao.getInicYear();            
@@ -74,7 +84,7 @@ public class CtrlGeral{
                                 
                 Validacao valMes = new Validacao(medicao.subListaIndex(coluna,
                                                                       getMarcador(i).getInicio(),
-                                                                        (getMarcador(i).getFim()+1)));
+                                                                        (getMarcador(i).getFim())));
                 AnaliseMensal nova = new AnaliseMensal(ano, 
                                                        mes, 
                                              valMes.getStrCoefSp(), 
@@ -99,7 +109,7 @@ public class CtrlGeral{
 
         this.listaEs = new ArrayList<AuxEs>();
 
-        for(int a = 2; a < medicao.getColunaCount(); a++){
+        for(int a = 0; a < medicao.getColunaCount(); a++){
             this.listaEs.add(new AuxEs(medicao.getLista(a).getAllDados(), 
                                  medicao.getMetodologiaAplicada().getCoef(),
                                      guia));   
@@ -118,26 +128,26 @@ public class CtrlGeral{
                                                                 this.listaEs.get(coluna).getQtdElementosMensal(index));
             }
         }
-        System.out.println(Funcionalidades.relatorioEs(listaEs));
-//        this.imputarValoresEs();
-       
-        for(int i = 2; i < listaClassificacao.size(); i++){
-            System.out.println("=======================================");
-            System.out.println(listaClassificacao.get(i).getTitulo());
-            System.out.println("=======================================");
-            
-            System.out.println("Erro Min::==============================");
-            System.out.println(listaEs.get(i-2).getMimMape());
-            System.out.println("Erro Min::==============================");
-            System.out.println(listaEs.get(i-2).getMaxMape());
-        }
+//        System.out.println(Funcionalidades.relatorioEs(listaEs));
+////        this.imputarValoresEs();
+//       
+//        for(int i = 0; i < listaClassificacao.size(); i++){
+//            System.out.println("=======================================");
+//            System.out.println(listaClassificacao.get(i).getTitulo());
+//            System.out.println("=======================================");
+//            
+//            System.out.println("Erro Min::==============================");
+//            System.out.println(listaEs.get(i).getMimMape());
+//            System.out.println("Erro Min::==============================");
+//            System.out.println(listaEs.get(i).getMaxMape());
+//        }
     }
     
     public void gerarMetAR(){
 
         this.listaAR = new ArrayList<AuxAr>();
 
-        for(int a = 2; a < medicao.getColunaCount(); a++){
+        for(int a = 0; a < medicao.getColunaCount(); a++){
             this.listaAR.add(new AuxAr(medicao.getMetodologiaAplicada().getPesos(),
                                 medicao.getLista(a).getAllDados(),  
                                      guia));
@@ -156,21 +166,21 @@ public class CtrlGeral{
                                                                 this.listaAR.get(coluna).getQtdElementosMensal(index));
             }
         }
-        System.out.println(Funcionalidades.relatorioAr(listaAR));
-        
-//        this.imputarValoresAr();
-       
-        for(int i = 2; i < listaClassificacao.size(); i++){
-            System.out.println("=======================================");
-            System.out.println(listaClassificacao.get(i).getTitulo());
-            System.out.println("=======================================");
-
-            System.out.println("Erro Min::==============================");
-            System.out.println(listaAR.get(i-2).getMimMape());             
-            System.out.println("Erro Max::==============================");
-            System.out.println(listaAR.get(i-2).getMaxMape());             
+//        System.out.println(Funcionalidades.relatorioAr(listaAR));
+//        
+////        this.imputarValoresAr();
+//       
+//        for(int i = 0; i < listaClassificacao.size(); i++){
+//            System.out.println("=======================================");
+//            System.out.println(listaClassificacao.get(i).getTitulo());
+//            System.out.println("=======================================");
+//
+//            System.out.println("Erro Min::==============================");
+//            System.out.println(listaAR.get(i).getMimMape());             
+//            System.out.println("Erro Max::==============================");
+//            System.out.println(listaAR.get(i).getMaxMape());             
             
-        }
+//        }
     }
     
     public String gerarRelatorio(){
@@ -180,7 +190,7 @@ public class CtrlGeral{
         relatorio.append(" Metodologia: " + medicao.getMetodologiaAplicada().getMetodologia("" + opcao)).append("\n");
         relatorio.append(medicao.getMetodologiaAplicada().getValoresReferentes(opcao)).append("\n");
         relatorio.append("=======================================\n");        
-        for (int coluna = 2; coluna < listaClassificacao.size(); coluna++) {
+        for (int coluna = 0; coluna < listaClassificacao.size(); coluna++) {
             relatorio.append("=======================================\n");
             relatorio.append(listaClassificacao.get(coluna).getTitulo()).append("\n");
             relatorio.append("=======================================\n");
@@ -195,14 +205,14 @@ public class CtrlGeral{
     
     //imputa valores calculados a serie original
     public void imputarValoresAr(){
-       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
-            this.medicao.getLista(coluna).atualizaValor(this.listaAR.get(coluna-2).getDadosProcessados());            
+       for(int coluna = 0; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(this.listaAR.get(coluna).getDadosProcessados());            
         }        
     }
     
     public void imputarValoresEs(){
-       for(int coluna = 2; coluna < medicao.getColunaCount(); coluna++){
-            this.medicao.getLista(coluna).atualizaValor(this.listaEs.get(coluna-2).getDadosProcessados());            
+       for(int coluna = 0; coluna < medicao.getColunaCount(); coluna++){
+            this.medicao.getLista(coluna).atualizaValor(this.listaEs.get(coluna).getDadosProcessados());            
         }       
     }
     
@@ -212,7 +222,7 @@ public class CtrlGeral{
 //        Tabela.Funcionalidades.setColumn(CtrlGeral.meses);
 //        System.out.println("setMEdicao!!!!!");
         Guia nova = new Guia();
-        nova.gerarGuia(this.medicao.getLista(2).getDados());
+        nova.gerarGuia(this.medicao.getLista(0).getDados());
         this.setApendice(nova);
 //        apendice.imprimir();
         this.listaClassificacao = setListaClassificacao();
@@ -279,4 +289,62 @@ public class CtrlGeral{
             return lista;  
         }
     } 
+    
+    public Info lerArquivo(String caminho){
+        try {
+            ArrayList<Sensor> sensores = null;
+
+            sensores = (ArrayList<Sensor>) ctrlDao.listarSensores();
+        
+            return Funcionalidades.lerArquivo(caminho, sensores);
+        } catch (ParseException ex) {
+            Logger.getLogger(CtrlGeral.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } catch (IOException ex) {
+            Logger.getLogger(CtrlGeral.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+        
+    }
+    
+    public void gravarEstacao(Info medicao){
+        DateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFundacao =  null;
+        
+        if (medicao.getEstacao().getDataFundacao() != null){
+            dataFundacao = dateformat.format(medicao.getEstacao().getDataFundacao());
+        }
+        
+        this.ctrlDao.gravarEstacao(medicao.getEstacao().getId(), medicao.getEstacao().getNome(), medicao.getEstacao().getCodigo(), dataFundacao, medicao.getEstacao().getLatitude().toString(), medicao.getEstacao().getLongitude().toString(), medicao.getEstacao().getAltitude().toString(), medicao.getEstacao().getPeriodicidade());
+    }
+    
+    public void gravarListaColunas(Info medicao){
+        
+        this.ctrlDao.gravarListaColunas(medicao.getLista(), medicao.getEstacao().getCodigo());
+    }
+    
+    public List<Info> listarEstacoes(){
+        ArrayList<Info> lista = new ArrayList<>();
+        ArrayList<Estacao> estacoes;
+        Info nova;
+        
+        estacoes = (ArrayList<Estacao>) this.ctrlDao.listarEstacoes();
+        
+        for (int i = 0; i < estacoes.size(); i++){
+            nova = new Info();
+            nova.setEstacao(estacoes.get(i));
+            lista.add(nova);
+        }
+        
+        return lista;
+    }
+    
+    public List<String>listarAnosDadosMedidosEstacoes( String codigoEstacao) {
+        return this.ctrlDao.listarAnosDadosMedidosEstacoes(codigoEstacao);
+    }
+    
+    public Info getMedicaoPeriodo(String codigo, String periodo){
+        return this.ctrlDao.getMedicaoPeriodo(codigo,periodo);
+    }
 }

@@ -172,20 +172,20 @@ public class AuxEs {
         
     //preenche meu vetor de predicao
     public void preencherAutoSmooth(){
-        for(int index = 0; index < this.dados.size(); index++){
+        for(int index = 0; index < this.copiaDados.size(); index++){
             if(this.autoSmoot.isEmpty()){
-                this.autoSmoot.add(this.dados.get(index));
+                this.autoSmoot.add(this.copiaDados.get(index));
             }else{
                 if(this.autoSmoot.get(this.autoSmoot.size()-1) == null){
-                    this.autoSmoot.add(this.dados.get(index));
+                    this.autoSmoot.add(this.copiaDados.get(index));
                 }else{//erro, sem checagem da quantidade de preenchimento antes da formula 
                     ////maquina de estados
-                    if(this.dados.get(index) == null){
+                    if(this.copiaDados.get(index) == null){
                         if(this.trocaValorNull(index) == true){
                             this.formulaES(index);
                             this.troca(index);
                         }else{
-                            this.autoSmoot.add(this.dados.get(index));
+                            this.autoSmoot.add(this.copiaDados.get(index));
                         }
                     }else{
                         this.formulaES(index);

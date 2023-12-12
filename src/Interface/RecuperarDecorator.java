@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import Object.Info;
 import TableBD.ButtonEditor;
 import TableBD.ButtonRenderer;
@@ -83,13 +84,15 @@ public class RecuperarDecorator {
     private JTextArea jTextAreaAjuda;    
     private JTable jTableBanco;
     private PopupSelectDecorator popup;
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
     private ObjectTableModelBD model;
     //para teste
     private ArrayList<Info> listInfos;
     
-    public RecuperarDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
+    private Info infoSelecionada;
+    
+    public RecuperarDecorator(CtrlInterface ctrlInterface) {
+        this.ctrlInterface = ctrlInterface;
         this.initComponets();
         this.configureInfoFields();
         configureTable();
@@ -134,12 +137,12 @@ public class RecuperarDecorator {
         this.listInfos = null;
         this.dataCriacaoFTF = new JFormattedTextField();
 //        this.jTableBanco = new JTable();
-        this.popup = new PopupSelectDecorator(this.ctrlGeral);
+        this.popup = new PopupSelectDecorator(this.ctrlInterface);
         
         this.btAvancar = new JButton();
         this.btVoltar = new JButton();
         
-        
+        btAvancar.setEnabled(false);
     }
     
     public JPanel RecuperarReady(){
@@ -153,14 +156,15 @@ public class RecuperarDecorator {
     }
     
     
-    private void populateInfo() throws ParseException{
-        this.listInfos = new ArrayList<Info>();
-        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
-        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
-        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
-        listInfos.get(0).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019")));
-        listInfos.get(1).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019", "2020")));
-        listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
+    public void populateInfo() throws ParseException{
+        this.listInfos =  (ArrayList<Info>) this.ctrlInterface.listarEstacoes();
+//        this.listInfos = new ArrayList<Info>();
+//        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
+//        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
+//        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
+//        listInfos.get(0).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019")));
+//        listInfos.get(1).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019", "2020")));
+//        listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
     }
     
     private void ConfigureButtonTable(int column){
@@ -194,6 +198,7 @@ public class RecuperarDecorator {
                     if(row >= 0 && column >= 0){
                         if(column == 3){
 //                            System.out.println("botão selecionar clicado: " + row);//para teste
+                            
                             insertInfoTextFields(listInfos.get(row).getEstacao().getNome(),
                                              listInfos.get(row).getEstacao().getCodigo(),
                                               listInfos.get(row).getEstacao().getLatitude().toString(),
@@ -203,6 +208,13 @@ public class RecuperarDecorator {
                                           listInfos.get(row).getPeriodicidade(),
                                            listInfos.get(row).getDataCriacaoBR(),
                                                 listInfos.get(row).getListaAnos());
+                            
+                            atualizarComboBoxAnos(ctrlInterface.listarAnosDadosMedidosEstacoes(listInfos.get(row).getEstacao().getCodigo()));
+                            
+                            infoSelecionada = listInfos.get(row);
+                            
+                            btAvancar.setEnabled(true);
+                            
                         }else if(column == 4){
                             int confirm = JOptionPane.showConfirmDialog(jTableBanco, "Tem certeza que deseja excluir?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
                             if(confirm == JOptionPane.YES_NO_OPTION){
@@ -267,6 +279,12 @@ public class RecuperarDecorator {
                 .addContainerGap(GroupLayout.DEFAULT_SIZE, 
                                   Short.MAX_VALUE))
         );
+    }
+    
+    private void atualizarListaAnos(){
+        String codigo;
+        
+       // codigo = jTableBanco.get
     }
     
     private void atualizarComboBoxAnos(List<String> listAnos) {
@@ -419,17 +437,11 @@ public class RecuperarDecorator {
 
         this.btAvancar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btAvancar.setText("Avançar");
-//        this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                
-//                JFrame janela = new JFrame();                
-//                popup.PopupSelectReady(1, janela);
-//                janela.setVisible(true);
-//                janela.repaint();
-//                janela.pack();
-//                janela.show();
-//            }
-//        });
+        this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAvancarActionPerformed(evt);
+            }
+        });
                 
         this.btVoltar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         this.btVoltar.setText("Voltar");         
@@ -620,6 +632,19 @@ public class RecuperarDecorator {
                 .addContainerGap())
         );
 
+    }
+    
+    public void btnAvancarActionPerformed(java.awt.event.ActionEvent evt){
+        System.out.println("Ano Selecionado: " + this.jComboBoxAnoEst.getSelectedItem().toString());
+        System.out.println("Estacao Selecionada: " + this.infoSelecionada.getEstacao().getNome());
+        this.ctrlInterface.setMedicao(infoSelecionada.getEstacao().getCodigo(), jComboBoxAnoEst.getSelectedItem().toString());
+        this.ctrlInterface.atualizarTabelaVisaoGeral();
+//       JFrame janela = new JFrame();                
+//       popup.PopupSelectReady(1, janela);
+//       janela.setVisible(true);
+//       janela.repaint();
+//       janela.pack();
+//       janela.show();
     }
 
 }

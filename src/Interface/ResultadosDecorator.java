@@ -5,7 +5,9 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import static DTO.Funcionalidades.gerarCsv;
+import static DTO.Funcionalidades.gerarTxt;
 import java.awt.event.ActionEvent;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -35,10 +37,11 @@ class ResultadosDecorator {
     private JCheckBox jCheckBoxOpcao3;
     
     private JScrollPane jScrollPaneRelatorio;
-    private CtrlGeral ctrlGeral;
     
-    public ResultadosDecorator(CtrlGeral ctrlGeral){
-        this.ctrlGeral = ctrlGeral;
+    private CtrlInterface ctrlInterface;
+    
+    public ResultadosDecorator(CtrlInterface ctrlInterface){
+        this.ctrlInterface = ctrlInterface;
         this.initComponets();
         this.configureOpcaoCheckBox();
         this.configureTextArea();
@@ -90,7 +93,7 @@ class ResultadosDecorator {
         this.jTextAreaRelatorio.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         this.jTextAreaRelatorio.setForeground(new java.awt.Color(255, 255, 255));
         this.jTextAreaRelatorio.setRows(5);
-        this.jTextAreaRelatorio.setText(ctrlGeral.gerarRelatorio());
+        this.jTextAreaRelatorio.setText(ctrlInterface.gerarRelatorio());
         this.jScrollPaneRelatorio.setViewportView(this.jTextAreaRelatorio);        
     }
 
@@ -205,9 +208,7 @@ class ResultadosDecorator {
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
             String path = fileChooser.getSelectedFile().getAbsolutePath();
             
-            if(!path.endsWith(".csv")){
-                path += ".csv";
-            }
+
             System.out.println("Arquivo a ser salvo: " + path);
             return path;
         }
@@ -217,10 +218,23 @@ class ResultadosDecorator {
     private void btSairActionPerformed(ActionEvent evt) {
         
         String path = "";
+        String pathCsv = "";
+        String pathTxt = "";
+        
         //abre o painel de dialogo caso uma das premissas sejam verdadeiras
         if(this.jCheckBoxOpcao2.isSelected() || this.jCheckBoxOpcao3.isSelected()){
+            
             path = this.dialogSalvarFile();
-            this.jTextAreaRelatorio.setText(ctrlGeral.gerarRelatorio());
+            
+            if(!path.endsWith(".csv")){
+                pathCsv = path + ".csv";
+            }
+            
+            if(!path.endsWith(".csv")){
+                pathTxt = path + ".txt";
+            }
+            
+            this.jTextAreaRelatorio.setText(ctrlInterface.gerarRelatorio());
         }
         
         if(this.jCheckBoxOpcao1.isSelected()){
@@ -229,11 +243,16 @@ class ResultadosDecorator {
         }
         
         if(this.jCheckBoxOpcao2.isSelected() && (!path.equalsIgnoreCase(""))){
-            gerarCsv(ctrlGeral.getMedicao(), path);              
+            gerarCsv(ctrlInterface.getMedicao(), pathCsv);              
         }
         
-        if(this.jCheckBoxOpcao3.isSelected()){
-            //gerar arquivo .txt com o mesmo nome e no mesmo caminho que o .csv
+        if(this.jCheckBoxOpcao3.isSelected() && (!path.equalsIgnoreCase(""))){
+            gerarTxt(ctrlInterface.gerarRelatorio(), pathTxt);
         }
     }    
+    
+    public void atualizarRelatorio(){
+        this.jTextAreaRelatorio.setText("");
+        this.jTextAreaRelatorio.setText(ctrlInterface.gerarRelatorio());
+    }
 }

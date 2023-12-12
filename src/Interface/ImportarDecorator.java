@@ -5,7 +5,9 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import static DTO.Funcionalidades.lerArquivo;
+import Object.Info;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -74,13 +76,14 @@ public class ImportarDecorator {
     private JScrollPane jScrollPaneAjuda;
     private JTextArea jTextAreaAjuda;
     //variaveis 
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
     private JTabbedPane painelTab;
     
-    public ImportarDecorator(CtrlGeral ctrlGeral, JTabbedPane painelTab) {
-        this.ctrlGeral = ctrlGeral;
+    
+    
+    public ImportarDecorator(CtrlInterface ctrlInterface, JTabbedPane painelTab) {
+        this.ctrlInterface = ctrlInterface;
         this.painelTab = painelTab;
-        
         this.initComponets();
         this.configureInfoTextFields();
         
@@ -419,8 +422,8 @@ public class ImportarDecorator {
                                       String Situacao,
                                       String Altitude,
                                       String Longitude,
-                                      String DataInicial,
-                                      String DataFinal,
+//                                      String DataInicial,
+//                                      String DataFinal,
                                       String PeriodMedicao,
                                       String DataCriacao){
         
@@ -567,6 +570,7 @@ public class ImportarDecorator {
     }
     
     private void btAvancarActionPerformed(ActionEvent evt) {
+        this.ctrlInterface.recarregarRecuperarDecorator();
 //        this.focusPainel(1);
 //        this.habilitarPainel(0, false);
 //        this.habilitarPainel(1, true);
@@ -581,19 +585,40 @@ public class ImportarDecorator {
 //    }
     
     private void btImportarActionPerformed(java.awt.event.ActionEvent evt) throws ParseException, IOException {                                           
-            this.ctrlGeral.setMedicao(lerArquivo(camField.getText()));
-//            this.ctrlGeral.setDuplicadaMedicao(lerArquivo(camField.getText()));
-//            CtrlGeral
-            this.insertInfoTextFields(this.ctrlGeral.getMedicao().getEstacao().getNome(), 
-                                  this.ctrlGeral.getMedicao().getEstacao().getCodigo(), 
-                                   this.ctrlGeral.getMedicao().getEstacao().getLatitude().toString(),
-                                   this.ctrlGeral.getMedicao().getEstacao().getSituacao(), 
-                                   this.ctrlGeral.getMedicao().getEstacao().getAltitude().toString(), 
-                                  this.ctrlGeral.getMedicao().getEstacao().getLongitude().toString(),
-                                 this.ctrlGeral.getMedicao().getDataInicialBR(), 
-                                  this.ctrlGeral.getMedicao().getDataFinalBR(), 
-                               this.ctrlGeral.getMedicao().getPeriodicidade(), 
-                                 this.ctrlGeral.getMedicao().getDataCriacaoBR());
+        Info medicao = null;
+        
+        if (!camField.getText().toUpperCase().endsWith("CSV")){
+            JOptionPane.showMessageDialog(null, "Por favor selecione um arquivo .CSV para a importação");
+            return;
+        }
+        
+        medicao = this.ctrlInterface.lerArquivo(camField.getText());
+        
+        if (medicao == null){
+            JOptionPane.showMessageDialog(null, "Ocorreu um erro na importação do arquivo.\n Por favor tente novamente!");
+            return;
+        }
+        
+        
+
+        JOptionPane.showMessageDialog(null, "Leitura Completa!\niniciando carga no Banco de Dados!!");
+        
+        this.ctrlInterface.gravarEstacao(medicao);
+        
+        this.ctrlInterface.gravarListaColunas(medicao);
+        
+//        this.ctrlInterface.setMedicao(medicao);
+        
+        this.insertInfoTextFields(medicao.getEstacao().getNome(), 
+                                  medicao.getEstacao().getCodigo(), 
+                                   medicao.getEstacao().getLatitude().toString(),
+                                   medicao.getEstacao().getSituacao(), 
+                                   medicao.getEstacao().getAltitude().toString(), 
+                                  medicao.getEstacao().getLongitude().toString(),
+//                                 this.ctrlInterface.getMedicao().getDataInicialBR(), 
+//                                  this.ctrlInterface.getMedicao().getDataFinalBR(), 
+                               medicao.getEstacao().getPeriodicidade(), 
+                                 medicao.getEstacao().getDataFundacaoBR());
             //lerArquivo(camField.getText());
             //tabelaTM.setModel(modelo);
 //            System.out.println(modelo.getLista());

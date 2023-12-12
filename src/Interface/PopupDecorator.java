@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -39,10 +40,10 @@ public class PopupDecorator {
     
     private Boolean somaPesos;
     private JFrame janela;
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
 
-    public PopupDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
+    public PopupDecorator(CtrlInterface ctrlInterface) {
+        this.ctrlInterface = ctrlInterface;
         this.fundo = new JPanel(new GridLayout());
         this.panelBTNs = new JPanel();
         this.avancarBtn = new JButton();
@@ -243,6 +244,11 @@ public class PopupDecorator {
         return panelPeso;
     }
     
+    private boolean equalsFloat(float soma, float constant, float epsilon){
+        return Math.abs(soma - constant) < epsilon;
+    }
+    
+    
     private void atualizarValores() {
 
         float valor = 0;
@@ -258,24 +264,24 @@ public class PopupDecorator {
                 }
             }            
         }
-
-        if (soma != 1) {
-            this.somaPesos = false;
-        }else{
+        System.out.println(""+soma);
+        if (equalsFloat(soma, 1.0f, 1E-3f)) {           
             this.somaPesos = true;
+        }else{
+            this.somaPesos = false;
         }
 
     }
     
     private void avancarBtnActionPerformed(ActionEvent evt) {
-        if(!this.somaPesos){
+        if(this.somaPesos == false){
             JOptionPane.showMessageDialog(null,"Soma de pesos diferente de 1.");
         }else{
             //aqui deve exportar a lista de pesos
-            this.ctrlGeral.getMedicao().getMetodologiaAplicada().setLista(this.getListaPesos());
-            System.out.println(this.ctrlGeral.getMedicao().getMetodologiaAplicada().toString());
-            this.ctrlGeral.gerarMetAR();
-            this.ctrlGeral.imputarValoresAr();
+            this.ctrlInterface.getMedicao().getMetodologiaAplicada().setLista(this.getListaPesos());
+            System.out.println(this.ctrlInterface.getMedicao().getMetodologiaAplicada().toString());
+            this.ctrlInterface.gerarMetAR();
+            this.ctrlInterface.imputarValoresAr();
             this.janela.dispose();
         }
     }

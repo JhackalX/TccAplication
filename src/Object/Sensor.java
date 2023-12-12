@@ -9,24 +9,40 @@ package Object;
  * @author Aires
  */
 public class Sensor {
-    private int id;
+    private String id;
     private String nome;
     private String unidadeMedida;
-
+    private String TextoCarga;
+    
     public Sensor() {
     }
 
-    public Sensor(int id, String nome, String unidadeMedida) {
+    public Sensor(String id, String nome, String unidadeMedida) {
         this.id = id;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
     }
 
-    public int getId() {
+        public Sensor(String id, String nome, String unidadeMedida, String TextoCarga) {
+        this.id = id;
+        this.nome = nome;
+        this.unidadeMedida = unidadeMedida;
+        this.TextoCarga = TextoCarga;
+    }
+    
+    public String getTextoCarga() {
+        return TextoCarga;
+    }
+
+    public void setTextoCarga(String TextoCarga) {
+        this.TextoCarga = TextoCarga;
+    }
+    
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -5,6 +5,7 @@
 package Interface;
 
 import DTO.CtrlGeral;
+import DTO.CtrlInterface;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -59,11 +60,11 @@ public class MetodologiaDecorator {
     
     private ButtonGroup buttonGroupOpcoes;
 
-    private CtrlGeral ctrlGeral;
+    private CtrlInterface ctrlInterface;
     
     
-    public MetodologiaDecorator(CtrlGeral ctrlGeral) {
-        this.ctrlGeral = ctrlGeral;
+    public MetodologiaDecorator(CtrlInterface ctrlInterface) {
+        this.ctrlInterface = ctrlInterface;
         this.initComponents();
     }
     
@@ -434,13 +435,13 @@ public class MetodologiaDecorator {
     private void opcao1FocusGained(FocusEvent evt) {
         this.mostrarDescricaoAr(true);
         this.mostrarDescricaoEs(false);
-        this.ctrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(0);
+        this.ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(0);
     }    
 
     private void opcao2FocusGained(FocusEvent evt) {
         this.mostrarDescricaoAr(false);
         this.mostrarDescricaoEs(true);   
-        this.ctrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(1);
+        this.ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(1);
     }
     
     private void mostrarDescricaoAr(boolean entrada) {
@@ -487,7 +488,7 @@ public class MetodologiaDecorator {
     }
     private void avancarBtnPesosActionPerformed(ActionEvent evt) {
         JFrame janela = new JFrame();
-        PopupDecorator popup = new PopupDecorator(this.ctrlGeral);
+        PopupDecorator popup = new PopupDecorator(this.ctrlInterface);
         JScrollPane jScrollPanePopup = new JScrollPane();
         
         janela.setSize(447,312);
@@ -503,10 +504,10 @@ public class MetodologiaDecorator {
     }    
     
     private void avancarBtnCoefActionPerformed(ActionEvent evt) {
-        this.ctrlGeral.getMedicao().getMetodologiaAplicada().setCoef(this.jTextFieldcoef.getText());
+        this.ctrlInterface.getMedicao().getMetodologiaAplicada().setCoef(this.jTextFieldcoef.getText());
 //        System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
-        this.ctrlGeral.gerarMetEs();
-        this.ctrlGeral.imputarValoresEs();
+        this.ctrlInterface.gerarMetEs();
+        this.ctrlInterface.imputarValoresEs();
 
     }    
     

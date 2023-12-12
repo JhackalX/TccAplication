@@ -29,9 +29,9 @@ public class Info {
     //private String longitude;//longitude
    // private String altitude;//altitude
     //private String situacao;//situação
-    private Date dataInicial;//data inicial da medição
-    private Date dataFinal;//data final da medição
-    private String periodicidade;//
+    //private Date dataInicial;//data inicial da medição
+    //private Date dataFinal;//data final da medição
+    //private String periodicidade;//
 
     private List<Coluna> lista;
     private List<Coluna> copiaLista;
@@ -56,8 +56,8 @@ public class Info {
                 String latitude, 
                 String longitude, 
                 String altitude, 
-                Date dataInicial, 
-                Date dataFinal,  
+//                Date dataInicial, 
+//                Date dataFinal,  
                 List<Coluna> lista,
                 Metodologia metodologiaAplicada, 
                 Date dataCriacao) {
@@ -66,8 +66,8 @@ public class Info {
         this.estacao.setLatitude(Float.parseFloat(latitude));
         this.estacao.setLongitude(Float.parseFloat(longitude));
         this.estacao.setAltitude(Float.parseFloat(altitude));
-        this.dataInicial = dataInicial;
-        this.dataFinal = dataFinal;
+//        this.dataInicial = dataInicial;
+//        this.dataFinal = dataFinal;
         this.lista = lista;
         this.copiaLista = new ArrayList<Coluna>(lista);
         this.metodologiaAplicada = metodologiaAplicada;
@@ -82,8 +82,8 @@ public class Info {
                 String longitude, 
                 String altitude, 
                 String situacao, 
-                String dataInicial, 
-                String dataFinal, 
+//                String dataInicial, 
+//                String dataFinal, 
                 String periodicidade                                   
                 ) throws ParseException {
         
@@ -94,9 +94,11 @@ public class Info {
         this.estacao.setLatitude(Float.parseFloat(latitude));
         this.estacao.setLongitude(Float.parseFloat(longitude));
         this.estacao.setAltitude(Float.parseFloat(altitude));
-        this.dataInicial = dateFormate.parse(dataInicial.trim());
-        this.dataFinal = dateFormate.parse(dataFinal.trim());
-        this.periodicidade = periodicidade.trim();
+//        this.dataInicial = dateFormate.parse(dataInicial.trim());
+//        this.dataFinal = dateFormate.parse(dataFinal.trim());
+        this.estacao.setPeriodicidade(periodicidade.trim());
+        
+        this.estacao.setID(this.estacao.getCodigo());
 
         Date data = new Date();
         this.dataCriacao = data;
@@ -170,11 +172,11 @@ public class Info {
 //    }
 
     public String getPeriodicidade() {
-        return periodicidade;
+        return this.estacao.getPeriodicidade();
     }
 
     public void setPeriodicidade(String periodicidade) {
-        this.periodicidade = periodicidade;
+        this.estacao.setPeriodicidade(periodicidade);
     }
    
     //add colunas
@@ -184,20 +186,24 @@ public class Info {
     }
     
     //add elementos
-    public void addElementos(String[] dados) {
+    public void addElementos(String[] dados, Boolean gabarito[]) {
         for(int i = 2; i < dados.length; i++){
-            Dados dado = new Dados(dados[0], dados[1], dados[i]);
-            this.lista.get(i).addDado(dado);            
-            this.copiaLista.get(i).addDado(dado);            
+            if (gabarito[i]) {
+                Dados dado = new Dados(dados[0], dados[1], dados[i]);
+                this.lista.get(i).addDado(dado);            
+                this.copiaLista.get(i).addDado(dado);
+            }            
         }
     }
     
-    public void addElementosEstacoesAutomaticas(String[] dados) throws ParseException, NumberFormatException{
+    public void addElementosEstacoesAutomaticas(String[] dados, Boolean gabarito[]) throws ParseException, NumberFormatException{
         
         for(int i = 2; i < dados.length; i++){
-            Dados dado = new Dados(dados[0], (dados[1].split(" ")[0]), dados[i]);
-            this.lista.get(i).addDado(dado);            
-            this.copiaLista.get(i).addDado(dado);            
+            if (gabarito[i]) {
+                Dados dado = new Dados(dados[0], (dados[1].split(" ")[0]), dados[i]);
+                this.lista.get(i).addDado(dado);            
+                this.copiaLista.get(i).addDado(dado); 
+            }
         }
     }
     
@@ -275,6 +281,11 @@ public class Info {
         }
     }
     
+    public void setSensor(int index, Sensor sensor){
+        this.lista.get(index).setSensor(sensor);
+        this.copiaLista.get(index).setSensor(sensor);
+    }
+    
     public String[] getColuna() {
         System.out.println("-------------------------------");
         if (!this.lista.isEmpty()){
@@ -295,14 +306,35 @@ public class Info {
             linha.add("vazio");
             return linha;
         }else{
-            for(int i = 0; i < this.getColunaCount(); i++){
-                if(i == 0){
+            for(int i = -2; i < this.getColunaCount(); i++){
+                if(i == -2){
                     linha.add(this.getLista(3).getDado(index).getDataBr());
                 }else{
-                    if(i == 1){
+                    if(i == -1){
                         linha.add(""+ this.getLista(3).getDado(index).getPeriodo());
                     }else{
                         linha.add(this.getLista(i).getDado(index).getValor());
+                    }
+                }
+            } 
+            return linha;
+        }
+    }
+
+    public ArrayList<String> getLinhaCsv(int index) {
+        ArrayList<String> linha = new ArrayList<String>();
+        if(this.getColunaCount() == 1){
+            linha.add("vazio");
+            return linha;
+        }else{
+            for(int i = -2; i < this.getColunaCount(); i++){
+                if(i == -2){
+                    linha.add(this.getLista(3).getDado(index).getDataBr());
+                }else{
+                    if(i == -1){
+                        linha.add(""+ this.getLista(3).getDado(index).getPeriodo());
+                    }else{
+                        linha.add(this.getLista(i).getDado(index).getValorCsv());
                     }
                 }
             } 
@@ -316,11 +348,11 @@ public class Info {
             linha.add("vazio");
             return linha;
         }else{
-            for(int i = 0; i < this.getColunaCount(); i++){
-                if(i == 0){
+            for(int i = -2; i < this.getColunaCount(); i++){
+                if(i == -2){
                     linha.add(this.getCopiaLista(3).getDado(index).getDataBr());
                 }else{
-                    if(i == 1){
+                    if(i == -1){
                         linha.add(""+ this.getCopiaLista(3).getDado(index).getPeriodo());
                     }else{
                         linha.add(this.getCopiaLista(i).getDado(index).getValor());
@@ -343,13 +375,15 @@ public class Info {
     public void setColuna(String[] coluna) {
         if(this.isEmpty()){
             for(int i = 0; i < coluna.length; i++){
-                this.lista.add(new Coluna(coluna[i]));
-                this.copiaLista.add(new Coluna(coluna[i]));
+                this.lista.add(new Coluna(coluna[i], this));
+                this.copiaLista.add(new Coluna(coluna[i], this));
             }           
         }else{
             for(int c = 0; c < coluna.length; c++){
                 this.lista.get(c).setTitulo(coluna[c]);
                 this.copiaLista.get(c).setTitulo(coluna[c]);
+                this.lista.get(c).setMedicaoPai(this);
+                this.copiaLista.get(c).setMedicaoPai(this);
             }             
         }
     }
@@ -361,40 +395,6 @@ public class Info {
     public void setMetodologiaAplicada(Metodologia metodologiaAplicada) {
         this.metodologiaAplicada = metodologiaAplicada;
     }
-
-    public Date getDataInicial() {
-        return dataInicial;
-    }
-    
-    public String getDataInicialBR() {
-        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormate.format(dataInicial).toString();
-    }
-
-//    public void setDataInicial(){
-//        if((!lista.isEmpty()) || (lista != null)){
-//            this.dataInicial = lista.get(0).getData();
-//        }else{
-//            this.dataInicial = null;
-//        }
-//    }
-
-    public Date getDataFinal() {
-        return dataFinal;
-    }
-    
-    public String getDataFinalBR() {
-        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
-        return dateFormate.format(dataFinal).toString();
-    }
-    
-//    public void setDataFinal() {
-//        if((!lista.isEmpty()) || (lista != null)){
-//            this.dataFinal = lista.get(lista.size()-1).getData();
-//        }else{
-//            this.dataFinal = null;
-//        }
-//    }
 
     public List<Float> subLista(int coluna, int mes, int ano){
         
@@ -408,7 +408,7 @@ public class Info {
 //                System.out.println(Float.parseFloat(subDados.get(i).getValor()));
             }
         }              
-                System.out.println(subLista);
+//                System.out.println(subLista);
         return subLista;
     }
 
@@ -425,7 +425,7 @@ public class Info {
 //                System.out.println(Float.parseFloat(subDados.get(i).getValor()));
             }
         }              
-        System.out.println(subLista);
+//        System.out.println(subLista);
         return subLista;
     }
 
@@ -508,9 +508,9 @@ public class Info {
                        + "\n Latitude = " + this.estacao.getLatitude()
                        + "\n Longitude = " + this.estacao.getLongitude()
                        + "\n Altitude = " + this.estacao.getAltitude()
-                       + "\n Data Inicial = " + this.getDataInicialBR()
-                       + "\n Data Final = " + this.getDataFinalBR()
-                       + "\n Periodicidade da Medicao = " + this.periodicidade//obs 
+//                       + "\n Data Inicial = " + this.getDataInicialBR()
+//                       + "\n Data Final = " + this.getDataFinalBR()
+                       + "\n Periodicidade da Medicao = " + this.estacao.getPeriodicidade()//obs 
                        + '}'; 
     }//obs: ajeitar o toString da lista
 
@@ -585,8 +585,8 @@ public class Info {
     public void limparGeral(){
         this.lista.removeAll(this.lista);
         
-        this.dataInicial = null;
-        this.dataFinal = null;
+//        this.dataInicial = null;
+//        this.dataFinal = null;
     }
     
     public boolean isEmpty(){
@@ -601,35 +601,35 @@ public class Info {
         return dataUTC.format(dataBR.parse(data));
     }
     
-    public void atualizaDataInicial (String data){
-        DateFormat dateFormate;
-        
-        if (data.contains("-")) {
-            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
-        }
-        try {
-            this.dataInicial = dateFormate.parse(data.toString());
-        } catch (ParseException ex) {
-            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
-        }
-    }
-    
-        public void atualizaDataFinal (String data){
-        DateFormat dateFormate;
-        
-        if (data.contains("-")) {
-            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
-        } else {
-            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
-        }
-        try {
-            this.dataFinal = dateFormate.parse(data.toString());
-        } catch (ParseException ex) {
-            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
-        }
-    }
+//    public void atualizaDataInicial (String data){
+//        DateFormat dateFormate;
+//        
+//        if (data.contains("-")) {
+//            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+//        } else {
+//            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
+//        }
+//        try {
+//            this.dataInicial = dateFormate.parse(data.toString());
+//        } catch (ParseException ex) {
+//            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
+//        }
+//    }
+//    
+//        public void atualizaDataFinal (String data){
+//        DateFormat dateFormate;
+//        
+//        if (data.contains("-")) {
+//            dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+//        } else {
+//            dateFormate = new SimpleDateFormat("yyyy/MM/dd");
+//        }
+//        try {
+//            this.dataFinal = dateFormate.parse(data.toString());
+//        } catch (ParseException ex) {
+//            System.out.println("Erro ao definir data inicial. Mensagem: " + ex.getMessage());
+//        }
+//    }
     
 //    public void listarMedicao(){
 //        System.out.println(this.toString());
