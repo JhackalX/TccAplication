@@ -53,10 +53,60 @@ public class EstudoDAO {
             dataCadatro =  format.format(new Date() );
                     
             Statement sttm = conexao.createStatement();
-            System.out.println("INSERT INTO tb_estudo (id, id_estacao, id_metodologia, nome, periodo, data_estudo) VALUES('" + idEstudo+ "','" + idEstacao + "','" + idMetodologia + "','" + nome + "','" + periodo + "','" + dataCadatro + "');");
+            //System.out.println("INSERT INTO tb_estudo (id, id_estacao, id_metodologia, nome, periodo, data_estudo) VALUES('" + idEstudo+ "','" + idEstacao + "','" + idMetodologia + "','" + nome + "','" + periodo + "','" + dataCadatro + "');");
             sttm.executeUpdate("INSERT INTO tb_estudo (id, id_estacao, id_metodologia, nome, periodo, data_estudo) VALUES('" + idEstudo+ "','" + idEstacao + "','" + idMetodologia + "','" + nome + "','" + periodo + "','" + dataCadatro + "');");
         } catch (SQLException ex) {
             Logger.getLogger(EstudoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public List<Info> listarEstudos(Connection conexao){
+        try {
+            ArrayList<Info> lista = null;
+            
+            Info nova;
+            Statement sttm = conexao.createStatement();
+            
+            ResultSet resultEstudo, resultEstacao;
+            
+            resultEstudo = sttm.executeQuery(   "SELECT TB.*, TE.codigo as TECodigo,TM.codigo as TMCodigo\n" +
+                                                "FROM tb_estudo as TB\n" +
+                                                "LEFT JOIN tb_estacao as TE\n" +
+                                                "ON TB.id_estacao LIKE TE.id\n" +
+                                                "LEFT JOIN tb_metodologia as TM\n" +
+                                                "ON TB.id_metodologia LIKE tm.id;");
+            if (!resultEstudo.isBeforeFirst()) {
+                return null;
+            }
+            
+            lista = new ArrayList<Info> ();
+            
+            while(resultEstudo.next()) {
+                nova = new Info();
+                
+                nova.setId(resultEstudo.getString("id"));
+                nova.setEstacao(this.ctrldao.getEstacao(resultEstudo.getString("TECodigo")));
+                nova.setMetodologiaAplicada(this.ctrldao.getMetodologia(resultEstudo.getInt("TMCodigo")));
+                nova.setNome(resultEstudo.getString("nome"));
+                nova.setPeriodo(resultEstudo.getString("periodo"));
+                
+                if (nova.getMetodologiaAplicada().getOpcao() == 0){
+                    nova.getMetodologiaAplicada().setLista(this.ctrldao.listarPesosEstudo(nova.getId()));
+                    
+                } else {
+                    nova.getMetodologiaAplicada().setCoef(this.ctrldao.listarCoeficienteES(nova.getId()));
+                }
+                
+                lista.add(nova);
+                
+            }
+            
+            
+            return lista;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao recuperar estudos. Mensagem" + ex.getMessage());
+            return null;
         }
     }
 }

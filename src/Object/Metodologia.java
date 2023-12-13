@@ -90,6 +90,10 @@ public class Metodologia {
         this.coef = Float.parseFloat(coef.replace(',', '.'));
     }
 
+    public void setCoef(Float coef) {
+        this.coef = coef;
+    }
+
     public List<Float> getPesos() {
         return pesos;
     }

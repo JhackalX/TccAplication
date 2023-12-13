@@ -30,7 +30,7 @@ public class ColunaDAO {
     public void gravarListaColunas(Connection conexao, List<Coluna> colunas, String codigoEstacao){
         for (int i = 0; i < colunas.size(); i++){
             if (colunas.get(i).getDados().size() > 0) {
-                System.out.println("Gravando coluna: " + colunas.get(i).getSensor().getNome());
+                //System.out.println("Gravando coluna: " + colunas.get(i).getSensor().getNome());
                 this.ctrlDao.gravarDados(colunas.get(i).getDados(), codigoEstacao);
             }
         }
@@ -39,7 +39,7 @@ public class ColunaDAO {
     public void gravarListaColunasProcessadas(Connection conexao, List<Coluna> colunas, String codigoEstacao, String codigoEstudo){
         for (int i = 0; i < colunas.size(); i++){
             if (colunas.get(i).getDados().size() > 0) {
-                System.out.println("Gravando coluna: " + colunas.get(i).getSensor().getNome());
+               // System.out.println("Gravando coluna: " + colunas.get(i).getSensor().getNome());
                 this.ctrlDao.gravarDadosProcessados(colunas.get(i).getDados(), codigoEstacao, codigoEstudo);
             }
         }
@@ -59,7 +59,7 @@ public class ColunaDAO {
         
         
         for (int i =0; i < listasensores.size(); i++){
-            System.out.println("Recuperando sensor: " + listasensores.get(i).getNome());
+            //System.out.println("Recuperando sensor: " + listasensores.get(i).getNome());
             
             nova = new Coluna();
             

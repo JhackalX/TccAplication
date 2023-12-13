@@ -55,7 +55,12 @@ public class Estacao {
     
     public void setID (String codigo){
         this.id = UUID.nameUUIDFromBytes((codigo).getBytes()).toString();
-        System.out.println(this.id);
+        //System.out.println(this.id);
+    }
+    
+    public void setIDExistente (String codigo){
+        this.id = codigo;
+        //System.out.println(this.id);
     }
     
     public void setID (){

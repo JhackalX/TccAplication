@@ -369,5 +369,12 @@ public class CtrlGeral{
         } else {
             this.ctrlDao.gravarPesos(medicao.getId(), medicao.getMetodologiaAplicada().getPesos());
         }
+         
+        this.ctrlDao.gravarListaClassificação((ArrayList<ListaClassificacao>) this.listaClassificacao, this.medicao);
+    
+    }
+    
+    public List<Info> listarEstudos(){
+        return this.ctrlDao.listarEstudos();
     }
 }

@@ -30,6 +30,8 @@ public class CtrlDao {
     private SensorDAO sensorDAO;
     private EstudoDAO estudoDao;
     private MetodologiaDAO metodologiaDao;
+    private AnaliseMensalDao analiseMansalDao;
+    private ListaClassificacaoDAO listClassiDao;
     
     public CtrlDao(String caminhoBanco) {
         this.caminhoBanco = caminhoBanco;
@@ -39,6 +41,8 @@ public class CtrlDao {
         this.sensorDAO = new SensorDAO(this);
         this.estudoDao = new EstudoDAO(this);
         this.metodologiaDao = new MetodologiaDAO(this);
+        this.analiseMansalDao = new AnaliseMensalDao(this);
+        this.listClassiDao = new ListaClassificacaoDAO(this);
         this.conectarBanco();
         this.desconectarBanco();
     }
@@ -366,6 +370,46 @@ public class CtrlDao {
         this.estudoDao.gravarEstudo(conexao, Estudo);
         this.desconectarBanco();
     }
+   
+    public void gravarAnaliseMensal (AnaliseMensal analise, Sensor sensor, Info estudo){
+        this.conectarBanco();
+        this.analiseMansalDao.gravarAnaliseMensal(conexao, analise, sensor, estudo);
+        this.desconectarBanco();
+    }
+    
+    public void gravarListaClassificação(ArrayList<ListaClassificacao> lista, Info Estudo){
+        this.conectarBanco();
+        this.listClassiDao.gravarListaClassificação(conexao, lista, Estudo);
+        this.desconectarBanco();
+    }
+    
+    public Float listarCoeficienteES ( String idEstudo){
+        Float coef;
+        
+        this.conectarBanco();
+        coef = this.metodologiaDao.listarCoeficienteES(conexao, idEstudo);
+        this.desconectarBanco();
+        
+        return coef;
+    }
+    
+    public List<Float> listarPesosEstudo (String idEstudo){
+        List<Float> pesos;
+        
+        this.conectarBanco();
+        pesos = this.metodologiaDao.listarPesosEstudo(conexao, idEstudo);
+        this.desconectarBanco();
+        return pesos;
+    }
+    
+    public List<Info> listarEstudos(){
+        List<Info> lista;
+        this.conectarBanco();
+        lista = this.estudoDao.listarEstudos(conexao);
+        this.desconectarBanco();
+        return lista;
+    }
+    
     
     private static void popularTabelaSensores(Statement sttmBase) throws SQLException{
         

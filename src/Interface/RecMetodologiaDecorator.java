@@ -7,9 +7,9 @@ package Interface;
 import DTO.CtrlGeral;
 import DTO.CtrlInterface;
 import Object.Info;
-import TableBD.ButtonEditor;
-import TableBD.ButtonRenderer;
-import TableBD.ObjectTableModelBD;
+import TableBDEstudo.ButtonEditor;
+import TableBDEstudo.ButtonRenderer;
+import TableBDEstudo.ObjectTableModelBD;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -85,6 +85,8 @@ public class RecMetodologiaDecorator {
     //para teste
     private ArrayList<Info> listInfos;
     
+    private Info  infoselecionada;
+    
     public RecMetodologiaDecorator(CtrlInterface ctrlInterface) {
         this.ctrlInterface = ctrlInterface;
         this.initComponets();
@@ -149,13 +151,7 @@ public class RecMetodologiaDecorator {
         return this.fundo;    
     }
     private void populateInfo() throws ParseException{
-        this.listInfos = new ArrayList<Info>();
-//        listInfos.add(new Info("estacao1", "0001", "0.1", "0.1", "0.1", "doido", "1998-10-01", "1998-10-02", "hora"));
-//        listInfos.add(new Info("estacao2", "0001", "0.1", "0.1", "0.1", "doido", "1999-10-01", "1999-10-02", "hora"));
-//        listInfos.add(new Info("estacao3", "0001", "0.1", "0.1", "0.1", "doido", "2000-10-01", "2000-10-02", "hora"));
-//        listInfos.get(0).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019")));
-//        listInfos.get(1).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018", "2019", "2020")));
-//        listInfos.get(2).setListaAnos(new ArrayList<String>(Arrays.asList("2017", "2018")));
+        this.listInfos = (ArrayList<Info>) this.ctrlInterface.listarEstudos();
     }
     
     private void configureTextMet(int row){
@@ -209,6 +205,9 @@ public class RecMetodologiaDecorator {
                                           listInfos.get(row).getPeriodicidade(),
                                            listInfos.get(row).getDataCriacaoBR(),
                                                 listInfos.get(row).getListaAnos());
+                             infoselecionada = listInfos.get(row);
+                            
+                            btAvancar.setEnabled(true);
                         }else if(column == 4){
                             int confirm = JOptionPane.showConfirmDialog(jTableBanco, "Tem certeza que deseja excluir?", "Confirmar Exclusão", JOptionPane.YES_NO_OPTION);
                             if(confirm == JOptionPane.YES_NO_OPTION){
@@ -423,8 +422,24 @@ public class RecMetodologiaDecorator {
         this.btAvancar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 
+                Info nova;
+                
+                nova = ctrlInterface.getMedicaoPeriodo(infoselecionada.getEstacao().getCodigo(), infoselecionada.getPeriodo());
+                
+                nova.setMetodologiaAplicada(infoselecionada.getMetodologiaAplicada());
+                
+                ctrlInterface.setMedicao(nova);
+                
+                if (nova.getMetodologiaAplicada().getOpcao() == 0) {
+                    ctrlInterface.gerarMetAR();
+                    ctrlInterface.imputarValoresAr();
+                } else {
+                    ctrlInterface.gerarMetEs();
+                    ctrlInterface.imputarValoresEs();
+                }
+                
                 JFrame janela = new JFrame();                
-                popup.PopupSelectReady(1, janela);
+                //popup.PopupSelectReady(1, janela);
                 janela.setVisible(true);
                 janela.repaint();
                 janela.pack();

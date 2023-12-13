@@ -85,7 +85,7 @@ public class MetodologiaDAO {
             for (int i =0; i< pesos.size(); i++) {
                 idPeso =  UUID.nameUUIDFromBytes((idEstudo + pesos.get(i).toString() + String.valueOf(i)).getBytes()).toString();
                 
-                insert = insert + "INSERT INTO tb_parametros(id,id_estudo,valor, ordem) VALUES ('" + idPeso + "','" + idEstudo+ "'." + pesos.get(i).toString() + "," + String.valueOf(i) + ");\n";
+                insert = insert + "INSERT INTO tb_parametros(id,id_estudo,valor, num_ordem) VALUES ('" + idPeso + "','" + idEstudo+ "'," + pesos.get(i).toString() + "," + String.valueOf(i) + ");\n";
             }
             
             insert = insert + "END TRANSACTION;";
@@ -96,6 +96,60 @@ public class MetodologiaDAO {
             
         }catch (SQLException ex) {
             System.out.println("Erro ao gravar pesos. Mensagem: " + ex.getMessage());
+        }
+    }
+    
+    public List<Float> listarPesosEstudo (Connection conexao, String idEstudo){
+        try {
+            List<Float> pesos = new ArrayList();
+            ResultSet result;
+            Statement sttm = conexao.createStatement();
+            
+            result = sttm.executeQuery(  "SELECT * \n" +
+                                "FROM tb_parametros \n" +
+                                "WHERE id_estudo LIKE '"+ idEstudo+ "'\n" +
+                                "ORDER BY num_ordem ASC;");
+            
+            if (!result.isBeforeFirst()){
+                return null;
+            }
+            
+            while(result.next()){
+                pesos.add(result.getFloat("valor"));
+            }
+            
+            return pesos;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MetodologiaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+        public Float listarCoeficienteES (Connection conexao, String idEstudo){
+        try {
+            Float coef = null;
+            ResultSet result;
+            Statement sttm = conexao.createStatement();
+            
+            result = sttm.executeQuery(  "SELECT * \n" +
+                                "FROM tb_parametros \n" +
+                                "WHERE id_estudo LIKE '"+ idEstudo+ "'\n" +
+                                "ORDER BY num_ordem ASC;");
+            
+            if (!result.isBeforeFirst()){
+                return null;
+            }
+            
+            
+            coef = result.getFloat("valor");
+            
+            
+            return coef;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MetodologiaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
     }
 }

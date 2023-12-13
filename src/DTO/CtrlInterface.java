@@ -152,4 +152,12 @@ public class CtrlInterface {
     public void gravarEstudo(){
         this.ctrlGeral.gravarEstudo();
     }
+    
+    public List<Info> listarEstudos(){
+        return this.ctrlGeral.listarEstudos();
+    }
+    
+    public Info getMedicaoPeriodo(String codigo, String periodo){
+        return this.ctrlGeral.getMedicaoPeriodo(codigo, periodo);
+    }
 }

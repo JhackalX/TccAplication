@@ -131,7 +131,8 @@ public class EstacaoDAO {
             do{
                 nova = new Estacao();
                 
-                nova.setID((resultado.getString("id")));
+                nova.setIDExistente((resultado.getString("id")));
+                System.out.println("id "+resultado.getString("id"));
                 nova.setNome(resultado.getString("nome"));
                 nova.setCodigo(resultado.getString("codigo"));
                 nova.setLatitude(Float.valueOf(resultado.getString("latitude")));
@@ -211,7 +212,8 @@ public class EstacaoDAO {
             if (resultado.next()){
                 nova = new Estacao();
                 
-                nova.setID((resultado.getString("id")));
+                nova.setIDExistente((resultado.getString("id")));
+                System.out.println("iD: " +resultado.getString("id"));
                 nova.setNome(resultado.getString("nome"));
                 nova.setCodigo(resultado.getString("codigo"));
                 nova.setLatitude(Float.valueOf(resultado.getString("latitude")));
