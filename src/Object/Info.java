@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -22,6 +23,8 @@ public class Info {
     
     //informações lidas no CSV
     private Estacao estacao;
+    
+    private String id;
     
     //private String cidade;//nome da cidade
    // private String codigo;//codigo da estação
@@ -637,5 +640,23 @@ public class Info {
 //            System.out.println(this.getDado(i).toString());
 //        }       
 //    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
     
+    public void setId (){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd_HH:mm");
+        String entradaHash = ("Estacao:" + this.getEstacao().getId() + "\n" +
+                              "Metodologia: " + this.getMetodologiaAplicada().getId() + "\n" + 
+                              "Pesos:" + this.getMetodologiaAplicada().getStringPesos() + "\n" + 
+                              "TimeStamp: " + format.format(new Date()));
+        //System.out.println("Definindo hash para: "  + entradaHash);
+        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
+        //System.out.println("Hash gerada: " + this.id);
+    }
 }

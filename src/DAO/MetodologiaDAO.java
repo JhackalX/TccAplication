@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
 import Object.Dados;
+import Object.Metodologia;
 import java.util.ArrayList;
 import Object.Sensor;
 import java.text.DateFormat;
@@ -30,8 +31,30 @@ public class MetodologiaDAO {
         this.ctrlDao = ctrlDao;
     }
     
-//    public Metodologia getMeodologia(Connection conexao, String código) {
-//        
-//        
-//    }
+    public Metodologia getMeodologia(Connection conexao, Integer codigo) {        
+        try { 
+            Metodologia met = null;
+            ResultSet result;
+            
+            Statement sttm = conexao.createStatement();
+            
+            result = sttm.executeQuery("SELECT * FROM tb_metodologia WHERE codigo = " + codigo.toString() + ";");
+            
+            if(result.isBeforeFirst()){
+                met = new Metodologia();
+                met.setId(result.getString("id"));
+                met.setNome(result.getString("nome"));
+                met.setSigla(result.getString("sigla"));
+                
+            }
+            
+            return met;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao recuperar metodologia. Codigo: " + codigo + ". Mensagem de erro: " + ex.getMessage());
+            return null;
+        }
+        
+       
+        
+    }
 }

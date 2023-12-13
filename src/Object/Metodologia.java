@@ -14,6 +14,10 @@ import java.util.List;
  */
 
 public class Metodologia {
+    
+    private String id;
+    private String nome;
+    private String sigla;
     //opcao de escolha de metodologia
     private int opcao;
     //coeficiente exponencial
@@ -166,5 +170,38 @@ public class Metodologia {
     public void removePeso(int index) {
         this.pesos.remove(index);
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSigla() {
+        return sigla;
+    }
+
+    public void setSigla(String sigla) {
+        this.sigla = sigla;
+    }
        
+    public String getStringPesos(){
+        String pesos = new String ("");
+        
+        for (int i = 0; i < this.pesos.size(); i++){
+            pesos = pesos+ ", "+this.pesos.get(i);
+        }
+        
+        return pesos;
+    }
 }

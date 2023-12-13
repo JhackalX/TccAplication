@@ -100,7 +100,8 @@ public class CtrlDao {
                                 "nome TEXT(50),\n" +
                                 "dsc TEXT(255),\n" +
                                 "dsc_ajuda TEXT(512),\n" + 
-                                "codigo TEXT(3));");
+                                "codigo INTEGER UNIQUE,\n" +
+                                "sigla TEXT(3);");
 
         System.out.println("Criando tabela de Estacoes");
          sttmBase.executeUpdate("CREATE TABLE tb_estacao (\n" +
@@ -342,7 +343,7 @@ public class CtrlDao {
     }
     
     public static void popularMetodologias(Statement sttm) throws SQLException{
-        sttm.executeUpdate( "INSERT INTO tb_metodologia (id,nome,dsc,codigo) VALUES ('5fcefab7-0eb7-4520-b8cd-cca0556ff694','Arima','Metodologia de Media Movel Ponderada','ARI');\n"+
-                            "INSERT INTO tb_metodologia (id,nome,dsc,codigo) VALUES ('f9da3108-e53f-4a06-93f2-4732b803b9fd','Alizamento Exponencial','Metodologia de Alizamento Exponencial','');");
+        sttm.executeUpdate( "INSERT INTO tb_metodologia (id,nome,dsc,codigo,sigla) VALUES ('5fcefab7-0eb7-4520-b8cd-cca0556ff694','Arima','Metodologia de Media Movel Ponderada',1,'AR');\n"+
+                            "INSERT INTO tb_metodologia (id,nome,dsc,codigo,sigla) VALUES ('f9da3108-e53f-4a06-93f2-4732b803b9fd','Alizamento Exponencial','Metodologia de Alizamento Exponencial',2,'ES');");
     }
 }
