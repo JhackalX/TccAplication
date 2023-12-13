@@ -26,6 +26,10 @@ public class Info {
     
     private String id;
     
+    private String nome;
+    
+    private String periodo;
+    
     //private String cidade;//nome da cidade
    // private String codigo;//codigo da estação
    // private String latitude;//latitude
@@ -658,5 +662,42 @@ public class Info {
         //System.out.println("Definindo hash para: "  + entradaHash);
         this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
         //System.out.println("Hash gerada: " + this.id);
+    }
+    
+    public void atualizarIDsDadosProcessados(){
+        for (int c = 0; c < this.lista.size(); c++){
+            for (int d = 0; d < this.lista.get(c).getDados().size(); d++){
+                this.lista.get(c).getDados().get(d).setIdDadoProcessado(this.id, this.estacao.getId());
+            }
+        }
+        
+        for (int c = 0; c < this.copiaLista.size(); c++){
+            for (int d = 0; d < this.copiaLista.get(c).getDados().size(); d++){
+                this.copiaLista.get(c).getDados().get(d).setIdDadoProcessado(this.id, this.estacao.getId());
+            }
+        }
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    
+    
+    
+    public void setNome(){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        this.nome = this.getEstacao().getNome() +  "_" + this.getEstacao().getCodigo() + "_" + this.getMetodologiaAplicada().getSigla()+ "_"+ this.getPeriodo() + "_" + format.format(new Date());
+    }
+
+    public String getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(String periodo) {
+        this.periodo = periodo;
     }
 }

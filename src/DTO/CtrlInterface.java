@@ -132,7 +132,9 @@ public class CtrlInterface {
     }
     
     public void setMedicao(String codigo, String periodo){
-        this.ctrlGeral.setMedicao(this.ctrlGeral.getMedicaoPeriodo(codigo, periodo));
+        Info med = this.ctrlGeral.getMedicaoPeriodo(codigo, periodo);
+        med.setPeriodo(periodo);
+        this.ctrlGeral.setMedicao(med);
     }
     
     public void atualizarTabelaVisaoGeral(){
@@ -141,5 +143,13 @@ public class CtrlInterface {
 
     public void atualizarTabelaVisaoAuxiliar(){
         this.windowDecorator.popularTabelaEstacoesVisaoGeral();
+    }
+    
+    public void atualizarMetodologia(Integer codigo){
+        this.ctrlGeral.atualizarMetodologia(codigo);
+    }
+    
+    public void gravarEstudo(){
+        this.ctrlGeral.gravarEstudo();
     }
 }

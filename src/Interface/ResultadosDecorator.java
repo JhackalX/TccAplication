@@ -238,8 +238,7 @@ class ResultadosDecorator {
         }
         
         if(this.jCheckBoxOpcao1.isSelected()){
-            //gravar no banco de dados
-            //codigo a fazer
+            this.ctrlInterface.gravarEstudo();
         }
         
         if(this.jCheckBoxOpcao2.isSelected() && (!path.equalsIgnoreCase(""))){

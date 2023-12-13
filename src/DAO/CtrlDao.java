@@ -28,6 +28,8 @@ public class CtrlDao {
     private DadosDAO dadosDao;
     private ColunaDAO colunaDAO;
     private SensorDAO sensorDAO;
+    private EstudoDAO estudoDao;
+    private MetodologiaDAO metodologiaDao;
     
     public CtrlDao(String caminhoBanco) {
         this.caminhoBanco = caminhoBanco;
@@ -35,6 +37,8 @@ public class CtrlDao {
         this.dadosDao = new DadosDAO(this);
         this.colunaDAO = new ColunaDAO(this);
         this.sensorDAO = new SensorDAO(this);
+        this.estudoDao = new EstudoDAO(this);
+        this.metodologiaDao = new MetodologiaDAO(this);
         this.conectarBanco();
         this.desconectarBanco();
     }
@@ -101,7 +105,8 @@ public class CtrlDao {
                                 "dsc TEXT(255),\n" +
                                 "dsc_ajuda TEXT(512),\n" + 
                                 "codigo INTEGER UNIQUE,\n" +
-                                "sigla TEXT(3);");
+                                "sigla TEXT(3))"
+                + ";");
 
         System.out.println("Criando tabela de Estacoes");
          sttmBase.executeUpdate("CREATE TABLE tb_estacao (\n" +
@@ -120,6 +125,8 @@ public class CtrlDao {
         System.out.println("Criando tabela de Estudos");
         sttmBase.executeUpdate("CREATE TABLE tb_estudo (\n" +
                                 "id TEXT(36) PRIMARY KEY UNIQUE,\n" +
+                                "nome TEXT(64) ,\n" +
+                                "periodo TEXT(16) ,\n" +
                                 "id_estacao INTEGER,\n" +
                                 "id_metodologia INTEGER,\n" +
                                 "data_estudo TEXT(32),\n" +
@@ -242,10 +249,24 @@ public class CtrlDao {
         this.dadosDao.gravarListDados(conexao, lista, idEstacao);
         this.desconectarBanco();
     }
+
+    public void gravarDadosProcessados (List<Dados> lista, String codigoEstacao, String codigoEstudo){
+        this.conectarBanco();
+        String idEstacao;
+        idEstacao = String.valueOf(this.estacaoDao.getIdEstacao(conexao, codigoEstacao));
+        this.dadosDao.gravarListDadosProcessados(conexao, lista, idEstacao, codigoEstudo);
+        this.desconectarBanco();
+    }
     
     public void gravarListaColunas (List<Coluna> lista, String codigoEstacao){
         this.conectarBanco();
         this.colunaDAO.gravarListaColunas(conexao, lista, codigoEstacao);
+        this.desconectarBanco();
+    }
+    
+    public void gravarListaColunasProcessadas (List<Coluna> lista, String codigoEstacao, String codigoEstudo){
+        this.conectarBanco();
+        this.colunaDAO.gravarListaColunasProcessadas(conexao, lista, codigoEstacao,codigoEstudo);
         this.desconectarBanco();
     }
 
@@ -315,7 +336,32 @@ public class CtrlDao {
         return medicao;        
     }
        
+    public Metodologia getMetodologia(Integer codigo){
+        Metodologia met = null;
+        this.conectarBanco();
+        met = this.metodologiaDao.getMetodologia(conexao, codigo);
+        this.desconectarBanco();
+        return met;
+    }
     
+    
+    public void gravarCoef(String idEstudo, Float value){
+        this.conectarBanco();
+        this.metodologiaDao.gravarCoef(conexao, idEstudo, value);
+        this.desconectarBanco();
+    }
+    
+    public void gravarPesos(String idEstudo, List<Float> pesos){
+        this.conectarBanco();
+        this.metodologiaDao.gravarListaPesos(conexao, idEstudo, pesos);
+        this.desconectarBanco();
+    }
+    
+    public void gravarEstudo (Info Estudo){
+        this.conectarBanco();
+        this.estudoDao.gravarEstudo(conexao, Estudo);
+        this.desconectarBanco();
+    }
     
     private static void popularTabelaSensores(Statement sttmBase) throws SQLException{
         
@@ -343,7 +389,7 @@ public class CtrlDao {
     }
     
     public static void popularMetodologias(Statement sttm) throws SQLException{
-        sttm.executeUpdate( "INSERT INTO tb_metodologia (id,nome,dsc,codigo,sigla) VALUES ('5fcefab7-0eb7-4520-b8cd-cca0556ff694','Arima','Metodologia de Media Movel Ponderada',1,'AR');\n"+
-                            "INSERT INTO tb_metodologia (id,nome,dsc,codigo,sigla) VALUES ('f9da3108-e53f-4a06-93f2-4732b803b9fd','Alizamento Exponencial','Metodologia de Alizamento Exponencial',2,'ES');");
+        sttm.executeUpdate( "INSERT INTO tb_metodologia (id,nome,dsc,codigo,sigla) VALUES ('5fcefab7-0eb7-4520-b8cd-cca0556ff694','Arima','Metodologia de Media Movel Ponderada',0,'AR');\n"+
+                            "INSERT INTO tb_metodologia (id,nome,dsc,codigo,sigla) VALUES ('f9da3108-e53f-4a06-93f2-4732b803b9fd','Alizamento Exponencial','Metodologia de Alizamento Exponencial',1,'ES');");
     }
 }

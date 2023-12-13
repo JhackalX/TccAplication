@@ -291,5 +291,16 @@ public class Dados implements Comparable<Dados> {
         this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
         //System.out.println("Hash gerada: " + this.id);
     }
+    
+    public void setIdDadoProcessado (String idEstudo, String codEstacao){
+        String entradaHash = ("Data:" + this.getDataBr() + "\n" +
+                              "Periodo: " + Integer.toString(this.getPeriodo()) + "\n" + 
+                              "ID Sensor:" + (this.sensor.getId()) + "\n" + 
+                              "Codigo Estacao: " + codEstacao) + "\n"+
+                              "Codigo Estudo: " + idEstudo;
+        //System.out.println("Definindo hash para: "  + entradaHash);
+        this.id = UUID.nameUUIDFromBytes(entradaHash.getBytes()).toString();
+        //System.out.println("Hash gerada: " + this.id);
+    }
 
 }

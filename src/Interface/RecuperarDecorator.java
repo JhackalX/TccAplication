@@ -637,8 +637,10 @@ public class RecuperarDecorator {
     public void btnAvancarActionPerformed(java.awt.event.ActionEvent evt){
         System.out.println("Ano Selecionado: " + this.jComboBoxAnoEst.getSelectedItem().toString());
         System.out.println("Estacao Selecionada: " + this.infoSelecionada.getEstacao().getNome());
+        infoSelecionada.setPeriodo(this.jComboBoxAnoEst.getSelectedItem().toString());
         this.ctrlInterface.setMedicao(infoSelecionada.getEstacao().getCodigo(), jComboBoxAnoEst.getSelectedItem().toString());
-        this.ctrlInterface.atualizarTabelaVisaoGeral();
+        
+        //this.ctrlInterface.atualizarTabelaVisaoGeral();
 //       JFrame janela = new JFrame();                
 //       popup.PopupSelectReady(1, janela);
 //       janela.setVisible(true);

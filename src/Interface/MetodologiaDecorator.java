@@ -178,7 +178,8 @@ public class MetodologiaDecorator {
         this.jRadioButtonOpcao1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 opcao1FocusGained(evt);
-                //CtrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(0);
+                //ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(0);
+//                ctrlInterface.atualiarMetodologia(0);
 //                System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
             }
         });        
@@ -190,7 +191,8 @@ public class MetodologiaDecorator {
         this.jRadioButtonOpcao2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 opcao2FocusGained(evt);
-                //CtrlGeral.getMedicao().getMetodologiaAplicada().setOpcao(1);
+                    
+//                ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(1);
 //                System.out.println(CtrlGeral.getMedicao().getMetodologiaAplicada().toString());
             }
         });
@@ -435,13 +437,15 @@ public class MetodologiaDecorator {
     private void opcao1FocusGained(FocusEvent evt) {
         this.mostrarDescricaoAr(true);
         this.mostrarDescricaoEs(false);
-        this.ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(0);
+        ctrlInterface.atualizarMetodologia(0);
+        //this.ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(0);
     }    
 
     private void opcao2FocusGained(FocusEvent evt) {
         this.mostrarDescricaoAr(false);
-        this.mostrarDescricaoEs(true);   
-        this.ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(1);
+        this.mostrarDescricaoEs(true);  
+        ctrlInterface.atualizarMetodologia(1);
+        //this.ctrlInterface.getMedicao().getMetodologiaAplicada().setOpcao(1);
     }
     
     private void mostrarDescricaoAr(boolean entrada) {

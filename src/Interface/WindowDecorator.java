@@ -274,7 +274,7 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );   
-        visaoGeral.atualizarPanel();
+        //visaoGeral.atualizarPanel();
 //        this.painelTab.add("Visão Geral", this.jScrollPaneVisaoGeral);
     }
     

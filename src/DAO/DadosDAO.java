@@ -231,5 +231,80 @@ public class DadosDAO {
         
     }
     
-    
+    public void gravarListDadosProcessados(Connection conexaoBase, List<Dados> lista, String idEstacao, String idEstudo){
+        try {
+            DateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+            
+            String dataMedicao, idSensor,valorMedicao,peridoMedicao, idDado;
+            
+            String sttmInsert =  new String("begin transaction;");
+            String sttmInsertArray[];
+            Statement sttm =  conexaoBase.createStatement();
+            
+            
+            System.out.println("Tamanho Array: " + String.valueOf(lista.size()));
+            
+            
+            for (int i =0; i < lista.size(); i ++) {
+                
+                //sttm.executeUpdate("PRAGMA main.wal_checkpoint(FULL)");
+                dataMedicao = dateFormat.format(lista.get(i).getData());
+                peridoMedicao = String.valueOf(lista.get(i).getPeriodo());
+                idSensor = String.valueOf(lista.get(i).getSensor().getId());
+                valorMedicao = lista.get(i).getValor();
+                idDado = lista.get(i).getId();
+
+//                if (existeDado(conexaoBase, idEstacao, dataMedicao, peridoMedicao, nomeSensor)){
+//                    System.out.println("Dado ja existe!");
+//                } else {
+//                    sttmInsert = sttmInsert + ("INSERT INTO tb_dados_medidos (id_estacao, data_medicao, periodo_medicao, valor, sensor) VALUES (" + idEstacao + ",'" + dataMedicao + "'," + peridoMedicao + "," + valorMedicao + ",'" + nomeSensor + "');\n");
+//                }
+                
+                sttmInsert = sttmInsert + ("INSERT INTO tb_dados_processados (id_estacao, data_estudo, periodo_estudo, valor, id_sensor, id, id_estudo) VALUES ('" + idEstacao + "','" + dataMedicao + "'," + peridoMedicao + "," + valorMedicao + ",'" + idSensor + "' ,'"+ idDado + "', '"+idEstudo+"');\n");
+                
+                
+                if (((i % 1000 == 0) || (i == lista.size() - 1) ) && (!sttmInsert.isEmpty())) { 
+                    sttmInsert = sttmInsert + ("END TRANSACTION;");
+                    
+                    try {
+                        
+                        sttm.executeLargeUpdate(sttmInsert);
+                        
+                        
+                        
+                    } catch (SQLException e){
+                        System.out.println("Erro ao inserir grupo de dados. Tentando inserts individais.");
+                        sttm.executeUpdate("END TRANSACTION;");
+                        
+                        sttmInsertArray = sttmInsert.split(";");
+                        
+                        for (int j = 0; j < sttmInsertArray.length ; j++){
+                            try {
+                                sttm.executeUpdate(sttmInsertArray[j]);
+                            } catch (SQLException ex) {
+                                System.out.println("Erro ao gravar dado individual. Mensagem: "+ ex.getMessage());
+                            }
+                            
+                            
+                        }
+                        
+                        
+                    }
+                        
+                    
+                    sttmInsert = "begin transaction;";
+                    System.out.println("Iteracao: " + String.valueOf(i));
+                    
+                }
+                
+                
+                
+            }
+            
+            
+        }
+        catch (SQLException e ){
+            System.out.println("Erro ao gravar dado. Mensagem: " + e.getMessage());
+        }
+    }
 }

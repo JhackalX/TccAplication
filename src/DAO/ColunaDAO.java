@@ -36,6 +36,15 @@ public class ColunaDAO {
         }
     }
     
+    public void gravarListaColunasProcessadas(Connection conexao, List<Coluna> colunas, String codigoEstacao, String codigoEstudo){
+        for (int i = 0; i < colunas.size(); i++){
+            if (colunas.get(i).getDados().size() > 0) {
+                System.out.println("Gravando coluna: " + colunas.get(i).getSensor().getNome());
+                this.ctrlDao.gravarDadosProcessados(colunas.get(i).getDados(), codigoEstacao, codigoEstudo);
+            }
+        }
+    }
+    
     public List<Coluna> getColunasEstacaoPeriodo(String codigoEstacao, String periodo, Info medicao){
         ArrayList<Coluna> lista = null;
        

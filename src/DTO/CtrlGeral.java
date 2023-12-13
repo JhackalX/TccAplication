@@ -347,4 +347,26 @@ public class CtrlGeral{
     public Info getMedicaoPeriodo(String codigo, String periodo){
         return this.ctrlDao.getMedicaoPeriodo(codigo,periodo);
     }
+    
+    public void atualizarMetodologia(Integer codigo){
+        this.medicao.setMetodologiaAplicada(this.ctrlDao.getMetodologia(codigo));
+    }
+    
+    public void gravarEstudo(){
+        medicao.setId();
+        
+        medicao.atualizarIDsDadosProcessados();
+        
+        medicao.setNome();
+        
+        this.ctrlDao.gravarEstudo(medicao);
+        
+        this.ctrlDao.gravarListaColunasProcessadas(this.medicao.getLista(), this.medicao.getEstacao().getCodigo(), this.medicao.getId());
+        
+        if (this.medicao.getMetodologiaAplicada().getOpcao() == 1) {
+            this.ctrlDao.gravarCoef(medicao.getId(), medicao.getMetodologiaAplicada().getCoef());
+        } else {
+            this.ctrlDao.gravarPesos(medicao.getId(), medicao.getMetodologiaAplicada().getPesos());
+        }
+    }
 }

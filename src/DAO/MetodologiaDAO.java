@@ -13,6 +13,7 @@ import Object.Sensor;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +32,7 @@ public class MetodologiaDAO {
         this.ctrlDao = ctrlDao;
     }
     
-    public Metodologia getMeodologia(Connection conexao, Integer codigo) {        
+    public Metodologia getMetodologia(Connection conexao, Integer codigo) {        
         try { 
             Metodologia met = null;
             ResultSet result;
@@ -45,16 +46,56 @@ public class MetodologiaDAO {
                 met.setId(result.getString("id"));
                 met.setNome(result.getString("nome"));
                 met.setSigla(result.getString("sigla"));
-                
+                met.setOpcao(result.getInt("codigo"));
             }
             
             return met;
         } catch (SQLException ex) {
             System.out.println("Erro ao recuperar metodologia. Codigo: " + codigo + ". Mensagem de erro: " + ex.getMessage());
             return null;
+        }       
+    }
+    
+    public void gravarCoef(Connection conexao, String idEstudo, Float value){
+        try {
+            String idCoef;
+            
+            idCoef = UUID.nameUUIDFromBytes((idEstudo + value.toString()).getBytes()).toString();
+            
+            Statement sttm = conexao.createStatement();
+            
+                        sttm.executeUpdate("INSERT INTO tb_parametros(id,id_estudo,valor) VALUES('"+idCoef + "','" + idEstudo + "'," + value +");");
+                        System.out.println("INSERT INTO tb_parametros(id,id_estudo,valor) VALUES('"+idCoef + "','" + idEstudo + "'," + value +");");
+
+            
+        } catch (SQLException ex) { 
+            System.out.println("Erro ao inserir coeficiente de alizamento exponencial. Mensagem: " + ex.getMessage());
         }
-        
-       
-        
+    }
+    
+    
+    public void gravarListaPesos(Connection conexao, String idEstudo, List<Float> pesos) {
+        try{
+            String idPeso, insert;
+            
+            insert = "BEGIN TRANSACTION;\n";
+            
+            Statement sttm = conexao.createStatement();
+            
+            for (int i =0; i< pesos.size(); i++) {
+                idPeso =  UUID.nameUUIDFromBytes((idEstudo + pesos.get(i).toString() + String.valueOf(i)).getBytes()).toString();
+                
+                insert = insert + "INSERT INTO tb_parametros(id,id_estudo,valor, ordem) VALUES ('" + idPeso + "','" + idEstudo+ "'." + pesos.get(i).toString() + "," + String.valueOf(i) + ");\n";
+            }
+            
+            insert = insert + "END TRANSACTION;";
+            
+            System.out.println(insert);
+            
+            sttm.executeUpdate(insert);
+            
+        }catch (SQLException ex) {
+            System.out.println("Erro ao gravar pesos. Mensagem: " + ex.getMessage());
+        }
     }
 }
