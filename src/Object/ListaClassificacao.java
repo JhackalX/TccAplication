@@ -15,6 +15,8 @@ public class ListaClassificacao {
         
     private String titulo;
     private List<AnaliseMensal> analiseMensal;
+    
+    private Sensor sensor;
 
 
     public ListaClassificacao(String titulo) {
@@ -94,5 +96,22 @@ public class ListaClassificacao {
         }
         System.out.println("\n }");        
     }
+
+    public List<AnaliseMensal> getAnaliseMensal() {
+        return analiseMensal;
+    }
+
+    public void setAnaliseMensal(List<AnaliseMensal> analiseMensal) {
+        this.analiseMensal = analiseMensal;
+    }
+
+    public Sensor getSensor() {
+        return sensor;
+    }
+
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
+    }
+   
     
 }

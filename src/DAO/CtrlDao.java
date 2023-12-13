@@ -189,6 +189,8 @@ public class CtrlDao {
                                 "qtd_nulls_mes	INTEGER,\n" +
                                 "qtd_subs_mes	INTEGER,\n" +
                                 "qtd_elem_mes	INTEGER,\n" + 
+                                "id_sensor	TEXT(36) NOT NULL,\n" +
+                                "FOREIGN KEY(id_sensor) REFERENCES tb_sensor,\n" +
                                 "FOREIGN KEY(id_estudo) REFERENCES tb_estudo,\n" +
                                 "PRIMARY KEY(id)\n" +
                                 ");");
@@ -199,6 +201,8 @@ public class CtrlDao {
                                 "tendencia	REAL,\n" +
                                 "coef_sperman	REAL,\n" +
                                 "mes	TEXT(32),\n" +
+                                "id_sensor	TEXT(36) NOT NULL,\n" +
+                                "FOREIGN KEY(id_sensor) REFERENCES tb_sensor,\n" +
                                 "FOREIGN KEY(id_estudo) REFERENCES tb_estudo,\n" +
                                 "PRIMARY KEY(id)\n" +
                                 ");");

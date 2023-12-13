@@ -78,7 +78,8 @@ public class CtrlGeral{
            
             int mes = medicao.getInicMonth();
             int ano = medicao.getInicYear();            
-            ListaClassificacao listCla = new ListaClassificacao(medicao.getColuna(coluna));            
+            ListaClassificacao listCla = new ListaClassificacao(medicao.getColuna(coluna));   
+            listCla.setSensor(medicao.getLista().get(coluna).getSensor());
             
             for(int i = 0; i < getApendice().size(); i++){
                                 
