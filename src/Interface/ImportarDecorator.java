@@ -164,11 +164,9 @@ public class ImportarDecorator {
         this.jTextAreaAjuda.setRows(5);
         this.jTextAreaAjuda.setText(" Entre com os dados que queira trabalhar no botão"
                 + "\n \"Abrir\" no formato CSV.\n"
-                + "\n A data de criação será preenchida e alterada automaticamente.\n"
-                + "\n Ao clicar no botão importar, espere a leitura e inserção na"
-                + "\n base de dados.\n"
-                + "\n Os campos do quadro \"Info\" será preenchido automaticamente"
-                + "\n após a leitura.\n");
+                + "\n Ao clicar no botão importar, espere a leitura e inserção"
+                + "\n na base de dados.\n"
+                + "\n Os campos info será preenchida automaticamente.\n");
 
         
         jPanelAjudaLayout.setHorizontalGroup(

@@ -252,10 +252,10 @@ public class RecuperarDecorator {
         this.jTextAreaAjuda.setRows(5);
         this.jTextAreaAjuda.setText(" Escolha os dados que queira trabalhar na tabela abaixo"
                 + "\n vinda do banco de dados.\n"
-                + "\n A data de criação será preenchida e alterada automaticamente"
-                + "\n toda vez que um dados for selecionado, o painel info atualizará.\n"
-                + "\n O campo ano do quadro \"Info\" é obrigatório para começar o"
-                + "\n estudo.\n");
+                + "\n Os dados de \"info\" serão preenchida e alterada "
+                + "\n automaticamente.\n"
+                + "\n Selecione o ano de estudo e clieque em \"Avançar\".\n"
+                + "\n Clique em \"Excluir\" para excluir uma estação da lista.");
 
         
         jPanelAjudaLayout.setHorizontalGroup(

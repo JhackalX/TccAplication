@@ -123,24 +123,32 @@ public class CtrlGeral{
                                                 this.listaEs.get(coluna).esListaMAE().get(index).toString(), 
                                                 this.listaEs.get(coluna).esListaMAPE().get(index).toString());
                 listaClassificacao.get(coluna).getClassificador(index).setEstatisca(
-                                                                   this.listaEs.get(coluna).getQtdNullMensal(index), 
-                                                                   this.listaEs.get(coluna).getQtdSubsMensal(index), 
-                                                                this.listaEs.get(coluna).getQtdElementosMensal(index));
+                                                                   this.listaEs.get(coluna).getSomaNullsDpois(), 
+                                                                   this.listaEs.get(coluna).getQtdSubstituido(), 
+                                                                   this.listaEs.get(coluna).getQtdElementosProcessados());
+                //para testar
+                System.out.println("=======================================");
+                System.out.println(listaClassificacao.get(coluna).getTitulo());
+                this.listaEs.get(coluna).relatorio();
+//                System.out.println("Null's restante: "+this.listaEs.get(coluna).getSomaNullsDpois());
+//                System.out.println("Qtd de imputações: "+this.listaEs.get(coluna).getQtdSubstituido());
+//                System.out.println("Qtd de elementos processados: "+this.listaEs.get(coluna).getQtdElementosProcessados());
+                System.out.println("=======================================");
             }
         }
-//        System.out.println(Funcionalidades.relatorioEs(listaEs));
-////        this.imputarValoresEs();
-//       
-//        for(int i = 0; i < listaClassificacao.size(); i++){
-//            System.out.println("=======================================");
-//            System.out.println(listaClassificacao.get(i).getTitulo());
-//            System.out.println("=======================================");
-//            
-//            System.out.println("Erro Min::==============================");
-//            System.out.println(listaEs.get(i).getMimMape());
-//            System.out.println("Erro Min::==============================");
-//            System.out.println(listaEs.get(i).getMaxMape());
-//        }
+//        System.out.println(this.gerarRelatorio());
+//        this.imputarValoresEs();
+       
+        for(int i = 0; i < listaClassificacao.size(); i++){
+            System.out.println("=======================================");
+            System.out.println(listaClassificacao.get(i).getTitulo());
+            System.out.println("=======================================");
+            
+            System.out.println("Erro Min::==============================");
+            System.out.println(listaEs.get(i).getMimMape());
+            System.out.println("Erro Max::==============================");
+            System.out.println(listaEs.get(i).getMaxMape());
+        }
     }
     
     public void gerarMetAR(){
@@ -161,26 +169,26 @@ public class CtrlGeral{
                                                 this.listaAR.get(coluna).arListaMAE().get(index).toString(), 
                                                 this.listaAR.get(coluna).arListaMAPE().get(index).toString());
                 listaClassificacao.get(coluna).getClassificador(index).setEstatisca(
-                                                                   this.listaAR.get(coluna).getQtdNullMensal(index), 
-                                                                   this.listaAR.get(coluna).getQtdSubsMensal(index), 
-                                                                this.listaAR.get(coluna).getQtdElementosMensal(index));
+                                                                   this.listaAR.get(coluna).getSomaNullsDpois(), 
+                                                                   this.listaAR.get(coluna).getQtdSubstituido(), 
+                                                                this.listaAR.get(coluna).getQtdElementosProcessados());
             }
         }
-//        System.out.println(Funcionalidades.relatorioAr(listaAR));
-//        
-////        this.imputarValoresAr();
-//       
-//        for(int i = 0; i < listaClassificacao.size(); i++){
-//            System.out.println("=======================================");
-//            System.out.println(listaClassificacao.get(i).getTitulo());
-//            System.out.println("=======================================");
-//
-//            System.out.println("Erro Min::==============================");
-//            System.out.println(listaAR.get(i).getMimMape());             
-//            System.out.println("Erro Max::==============================");
-//            System.out.println(listaAR.get(i).getMaxMape());             
+        System.out.println(Funcionalidades.relatorioAr(listaAR));
+        
+//        this.imputarValoresAr();
+       
+        for(int i = 0; i < listaClassificacao.size(); i++){
+            System.out.println("=======================================");
+            System.out.println(listaClassificacao.get(i).getTitulo());
+            System.out.println("=======================================");
+
+            System.out.println("Erro Min::==============================");
+            System.out.println(listaAR.get(i).getMimMape());             
+            System.out.println("Erro Max::==============================");
+            System.out.println(listaAR.get(i).getMaxMape());             
             
-//        }
+        }
     }
     
     public String gerarRelatorio(){

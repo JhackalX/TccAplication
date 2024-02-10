@@ -56,25 +56,25 @@ public class Funcionalidades {
                "\n***********************************************";
     }
 
-    public static String relatorioEs(List<AuxEs> auxEs){
-        int nullAcumuladoAntes = 0;
-        int nullAcumuladoDepois = 0;
-        int QtdSubsAcumulado = 0;
-        int nElementosAcumulado = 0;
-        for(int index = 0; index < auxEs.size(); index++ ){
-            nullAcumuladoAntes =+ auxEs.get(index).getSomaNullsAntes();
-            nullAcumuladoDepois =+ auxEs.get(index).getSomaNullsDpois();
-            QtdSubsAcumulado =+ auxEs.get(index).getQtdSubstituido();
-            nElementosAcumulado =+ auxEs.get(index).getQtdElementosProcessados();
-        }
-               
-        return "***********************************************" +
-               "\n QTD lacunas totais Antes: " + nullAcumuladoAntes +
-               "\n QTD lacunas totais Depois: " + nullAcumuladoDepois +
-               "\n QTD substituida: " + QtdSubsAcumulado +
-               "\n Numero de elementos (n): " + nElementosAcumulado +
-               "\n***********************************************";
-    }
+//    public static String relatorioEs(List<AuxEs> auxEs){
+//        int nullAcumuladoAntes = 0;
+//        int nullAcumuladoDepois = 0;
+//        int QtdSubsAcumulado = 0;
+//        int nElementosAcumulado = 0;
+//        for(int index = 0; index < auxEs.size(); index++ ){
+//            nullAcumuladoAntes =+ auxEs.get(index).getSomaNullsAntes();
+//            nullAcumuladoDepois =+ auxEs.get(index).getSomaNullsDpois();
+//            QtdSubsAcumulado =+ auxEs.get(index).getQtdSubstituido();
+//            nElementosAcumulado =+ auxEs.get(index).getQtdElementosProcessados();
+//        }
+//               
+//        return "***********************************************" +
+//               "\n QTD lacunas totais Antes: " + nullAcumuladoAntes +
+//               "\n QTD lacunas totais Depois: " + nullAcumuladoDepois +
+//               "\n QTD substituida: " + QtdSubsAcumulado +
+//               "\n Numero de elementos (n): " + nElementosAcumulado +
+//               "\n***********************************************";
+//    }
      
 
     public static Info lerArquivo(String path, ArrayList<Sensor> sensores) throws FileNotFoundException, ParseException, IOException{
@@ -364,7 +364,7 @@ public class Funcionalidades {
             bw.write("\n");
             int linhaCount = info.getLinhaCount();
             for(int index = 0; index < linhaCount; index++){
-                List<String> linha = info.getLinhaCsv(index);
+                List<String> linha = info.getLinha(index);
                 for(String valor : linha){
                     bw.write(valor + ";");
                 }
@@ -375,15 +375,17 @@ public class Funcionalidades {
             e.printStackTrace();
         }
         //Escrevendo cabeçalho
-    }
 
+    }
+    //escreve relatório
     public static void gerarTxt(String relatorio, String pathFile){
-        try(FileWriter fileWriter = new FileWriter(pathFile)){
-            fileWriter.write(relatorio);
+        try(BufferedWriter Writer = new BufferedWriter(new FileWriter(pathFile))){
+//            Writer.write("relatório");
+            Writer.write(relatorio);
         }catch (IOException e){
             e.printStackTrace();
         }
-    }
+    }  
     
     private static Boolean[] preencherGabarito(String[] coluna, ArrayList<Sensor> sensores){
         String stra, strb;

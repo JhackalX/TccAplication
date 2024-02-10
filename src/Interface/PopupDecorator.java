@@ -244,11 +244,6 @@ public class PopupDecorator {
         return panelPeso;
     }
     
-    private boolean equalsFloat(float soma, float constant, float epsilon){
-        return Math.abs(soma - constant) < epsilon;
-    }
-    
-    
     private void atualizarValores() {
 
         float valor = 0;
@@ -264,17 +259,17 @@ public class PopupDecorator {
                 }
             }            
         }
-        System.out.println(""+soma);
-        if (equalsFloat(soma, 1.0f, 1E-3f)) {           
-            this.somaPesos = true;
-        }else{
+
+        if (soma != 1) {
             this.somaPesos = false;
+        }else{
+            this.somaPesos = true;
         }
 
     }
     
     private void avancarBtnActionPerformed(ActionEvent evt) {
-        if(this.somaPesos == false){
+        if(!this.somaPesos){
             JOptionPane.showMessageDialog(null,"Soma de pesos diferente de 1.");
         }else{
             //aqui deve exportar a lista de pesos

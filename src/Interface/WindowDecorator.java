@@ -326,7 +326,6 @@ public class WindowDecorator {
                               GroupLayout.DEFAULT_SIZE, 
                               Short.MAX_VALUE)
         );
-//        visaoAuxiliar.refreshTable();
 //        this.painelTab.add("Visão Auxiliar", this.jScrollPaneVisaoAuxiliar);
     }
     
@@ -361,12 +360,7 @@ public class WindowDecorator {
         this.montarRecuperar();
     }
     
-    public void popularTabelaEstacoesVisaoGeral(){
-        this.montarVisaoGeral();
-    }
-
-    public void popularTabelaEstacoesVisaoAuxiliar(){
-        this.montarVisaoAuxiliar();
+     public void popularTabelaEstacoesVisaoGeral(){
         
     }
 

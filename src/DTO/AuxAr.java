@@ -63,10 +63,8 @@ public class AuxAr {
         //valores acumulados  
         this.madListaAR = new ArrayList<Float>();
         this.maeListaAR = new ArrayList<Float>();
-        this.mapeListaAR = new ArrayList<Float>();
-        
-        this.somaNulls = this.contNull(this.copiaDados);
-        
+        this.mapeListaAR = new ArrayList<Float>();        
+        this.somaNulls = this.contNull(this.copiaDados);        
         this.guia = guia; 
         
         this.preencherAutoAR();
@@ -138,7 +136,7 @@ public class AuxAr {
     }
     
     public int getSomaNullsDpois() {
-        return this.contNull(this.autoAr);
+        return (somaNulls - subsAr.size());
     }
     
     public int getQtdSubstituido() {
@@ -185,24 +183,24 @@ public class AuxAr {
     }
     
     private void preencherAutoAR() {
-        for(int index = 0; index < this.copiaDados.size(); index++){
+        for(int index = 0; index < this.dados.size(); index++){
             if(this.autoAr.isEmpty() || 
                !this.checkCadeia(index-1)){
-                this.autoAr.add(this.copiaDados.get(index));
+                this.autoAr.add(this.dados.get(index));
                 this.copiaAr.add(index);
             }else{
                 if(this.checkCadeia(index-1) &&
          //          this.trocaValorNull(index) &&
-                   (this.copiaDados.get(index) != null)){
+                   (this.dados.get(index) != null)){
                     this.formulaAR(index-1);                    
                 }else{
-                    if((this.copiaDados.get(index) == null) &&
+                    if((this.dados.get(index) == null) &&
                         this.checkCadeia(index-1) &&
                         this.trocaValorNull(index)){
                         this.formulaAR(index-1);
                         this.troca(index);                        
                     }else{
-                        this.autoAr.add(this.copiaDados.get(index));
+                        this.autoAr.add(this.dados.get(index));
                         this.copiaAr.add(index);
                     }
                 }
@@ -233,7 +231,7 @@ public class AuxAr {
             return false;
         }
         for (int index = 0; index < this.pesos.size(); index++ ){
-            if(this.copiaDados.get(inicial - index) == null){
+            if(this.dados.get(inicial - index) == null){
                 return false;
             }
         }

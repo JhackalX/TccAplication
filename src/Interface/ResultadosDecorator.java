@@ -199,7 +199,7 @@ class ResultadosDecorator {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Escolha o local para salvar o arquivo");
         //filtro
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos CSV", "csv");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos CSV", "csv","Arquivos TXT", "txt");
         fileChooser.setFileFilter(filter);
         //configura para o modo de salvar arquivo
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -208,13 +208,16 @@ class ResultadosDecorator {
         if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
             String path = fileChooser.getSelectedFile().getAbsolutePath();
             
-
+//            if(!path.endsWith(".csv")){
+//                path += ".csv";
+//            }
             System.out.println("Arquivo a ser salvo: " + path);
             return path;
         }
         return "";
     }
     
+    //Aqui vem o codigo de salvar e imprimir geral
     private void btSairActionPerformed(ActionEvent evt) {
         
         String path = "";
@@ -230,7 +233,7 @@ class ResultadosDecorator {
                 pathCsv = path + ".csv";
             }
             
-            if(!path.endsWith(".csv")){
+            if(!path.endsWith(".txt")){
                 pathTxt = path + ".txt";
             }
             
@@ -252,7 +255,6 @@ class ResultadosDecorator {
     }    
     
     public void atualizarRelatorio(){
-        this.jTextAreaRelatorio.setText("");
         this.jTextAreaRelatorio.setText(ctrlInterface.gerarRelatorio());
     }
 }

@@ -208,31 +208,23 @@ public class MetodologiaDecorator {
         this.jTextAreaDetalhes.setColumns(20);
         this.jTextAreaDetalhes.setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
         this.jTextAreaDetalhes.setRows(5);
-        this.jTextAreaDetalhes.setText("\n Autoregressive Integrated Moving Average (ARIMA ):\n"
-                                     + "\n É um algoritmo de estatísticas locais comumente "
-                                     + "\n usado para previsões de série temporais. "
-                                     + "\n Ela captura várias estruturas temporais padrão "
-                                     + "\n (organizações com padrão de tempo) no conjunto "
-                                     + "\n de dados de entrada.\n\n Média Movel Ponderada:\n"
-                                     + "\n A média móvel ponderada é utilizada para "
-                                     + "\n \"solucionar\" o problema de igualdade de pesos."
-                                     + "\n Este indicador é calculado através da soma de todos "
-                                     + "\n os valores multiplicado por seus respectivos pesos e "
-                                     + "\n dividido pela soma de todos os pesos de cada dia."
-                                     + "\n Os valores dos pesos indica o grau de importancia "
-                                     + "\n que aquele dado tem em relação a outros dados "
-                                     + "\n mais antigos.\n\n Alisamento Exponencial\n"
-                                     + "\n O alisamento exponencial é uma das técnicas mais "
-                                     + "\n utilizadas na previsão, em parte devido aos seus "
-                                     + "\n requisitos mínimos de armazenamento de dados e "
-                                     + "\n facilidade de cálculo e, também, devido à facilidade "
-                                     + "\n com que o sistema de ponderação pode ser alterado "
-                                     + "\n através da variação do valor coeficiente de \n alisamento. "
-                                     + "\n\t                   (Stevenson, 1996, p. 479)\n"
-                                     + "\n OBS: O método de preenchimento recupera até "
-                                     + "\n 3 lacunas seguidas de dados faltantes garantindo "
-                                     + "\n uma taxa de precisão segura, acima disso não é "
-                                     + "\n garantido confiabilidade em suas predições.");
+        this.jTextAreaDetalhes.setText("\n Selecionando Média Movel Ponderada:\n"
+                                     + "\n Ao selecionar media movel ponderada, "
+                                     + "\n insira a quantidade de pesos. "
+                                     + "\n Ao clicar em avançar um pop up aparecerá, "
+                                     + "\n nela pode inserir os valores dos pesos.\n "
+                                     + "\n Atenção:"
+                                     + "\n Os pesos devem ter soma igual a 1, ou seja, "
+                                     + "\n para uma quantidade de pesos maior que 1,"
+                                     + "\n cada peso precisa ter valores menor 1 e sua "
+                                     + "\n soma deve ser 1. "
+                                     + "\n \n Selecionando Suavização Exponencial:\n"
+                                     + "\n Ao selecionar suavização exponencial, "
+                                     + "\n insira o valor do coeficiente exponencial.\n "
+                                     + "\n Atenção:"
+                                     + "\n O valor do coeficiente deve ser menor que 1 e  "
+                                     + "\n maior que 0, valores extremos 0 e 1 não são  "
+                                     + "\n recomendaveis na inserção.");
         this.jTextAreaDetalhes.setBorder(javax.swing.BorderFactory.createTitledBorder(null,
                                                                                             "Saiba mais:",
                                                                                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,

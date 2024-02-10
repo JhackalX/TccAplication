@@ -151,14 +151,6 @@ public class Dados implements Comparable<Dados> {
         }
     }
 
-    public String getValorCsv(){
-        if(this.valor == null){
-            return "null";
-        }else{
-            return new String().format("%.3f", valor).replace('.', ',');
-        }
-    }
-
     public Float getValorF(){
         return valor;
     }

@@ -138,8 +138,4 @@ public class CtrlInterface {
     public void atualizarTabelaVisaoGeral(){
         this.windowDecorator.popularTabelaEstacoesVisaoGeral();
     }
-
-    public void atualizarTabelaVisaoAuxiliar(){
-        this.windowDecorator.popularTabelaEstacoesVisaoGeral();
-    }
 }

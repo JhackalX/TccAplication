@@ -184,28 +184,25 @@ public class VisaoAuxiliarDecorator {
         this.jTextAreaInfo1.setColumns(20);
         this.jTextAreaInfo1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         this.jTextAreaInfo1.setRows(5);
-        this.jTextAreaInfo1.setText("\n Fórmula:"
-                         + "\n MAD = ( 1 / n ) x ( ∑| Y - Ȳ | )"
-                         + "\n Ȳ = Valor predito"
-                         + "\n Y = Valor original"
-                         + "\n ∑ = Somatória"
-                         + "\n n = Numero de elementos"
-                         + "\n | | = Módulo (valor absoluto)");
-        this.jTextAreaInfo1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Desvio Absoluto Médio:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        this.jTextAreaInfo1.setText(" No botão \"Tabela de valores\"\n"
+                                    + " apresenta uma tabela mostrando\n"
+                                    + " dados como coef. de Sperman e\n"
+                                    + " Tendencia que são usados para\n"
+                                    + " validar os dados a serem\n"
+                                    + " submetidos a imputação.");
+        this.jTextAreaInfo1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tabela de valores:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
         this.jScrollPaneInfo1.setViewportView(this.jTextAreaInfo1);
 
         this.jTextAreaInfo2.setEditable(false);
         this.jTextAreaInfo2.setColumns(20);
         this.jTextAreaInfo2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         this.jTextAreaInfo2.setRows(5);
-        this.jTextAreaInfo2.setText("\n Fórmula:"
-                         + "\n MAE = ( 1 / n ) x ( ∑( | Y - Ȳ | / Y ) )"
-                         + "\n Ȳ = Valor predito"
-                         + "\n Y = Valor original"
-                         + "\n ∑ = Somatoria"
-                         + "\n n = Numero de elementos"
-                         + "\n | | = Módulo (valor absoluto)");
-        this.jTextAreaInfo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Erro Médio Absoluto:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
+        this.jTextAreaInfo2.setText(" Refresh: Atualiza a tabela com\n"
+                                   + " os dadados selecionados na aba\n"
+                                   + " anterior.\n\n"
+                                   + " Avançar: avança para a proxima aba.\n\n"
+                                   + " Voltar: retorna a aba anterior.");
+        this.jTextAreaInfo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Ajuda:", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11))); // NOI18N
         this.jScrollPaneInfo2.setViewportView(this.jTextAreaInfo2);
 
         this.jTextAreaInfo3.setEditable(false);
@@ -592,7 +589,7 @@ public class VisaoAuxiliarDecorator {
     
     private void setTableBActionPerformed(ActionEvent evt) {
 
-//        System.out.println("Numero de colunas:" + this.ctrlInterface.getColuna().size());
+        System.out.println("Numero de colunas:" + this.ctrlInterface.getColuna().size());
         this.list = null;
         this.list = (ArrayList<Employee>) this.ctrlInterface.gerarDadosTabelaImputados();
         
@@ -601,19 +598,6 @@ public class VisaoAuxiliarDecorator {
                                                 new int[]{720, 744});
         this.paginatedDecorator.adjustColumnWidths();
     }
-
-    public void refreshTable() {
-
-//        System.out.println("Numero de colunas:" + this.ctrlInterface.getColuna().size());
-        this.list = null;
-        this.list = (ArrayList<Employee>) this.ctrlInterface.gerarDadosTabelaImputados();
-        
-        this.paginatedDecorator.setNewDataModel(createObjectDataModel(this.ctrlInterface.getColuna()),
-                                                createDataProvider(this.list),
-                                                new int[]{720, 744});
-        this.paginatedDecorator.adjustColumnWidths();
-    }
-    
     private void setVoltarBActionPerformed(ActionEvent evt) {
         this.ctrlInterface.reSetMedicao();
     }

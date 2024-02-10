@@ -321,27 +321,6 @@ public class Info {
         }
     }
 
-    public ArrayList<String> getLinhaCsv(int index) {
-        ArrayList<String> linha = new ArrayList<String>();
-        if(this.getColunaCount() == 1){
-            linha.add("vazio");
-            return linha;
-        }else{
-            for(int i = -2; i < this.getColunaCount(); i++){
-                if(i == -2){
-                    linha.add(this.getLista(3).getDado(index).getDataBr());
-                }else{
-                    if(i == -1){
-                        linha.add(""+ this.getLista(3).getDado(index).getPeriodo());
-                    }else{
-                        linha.add(this.getLista(i).getDado(index).getValorCsv());
-                    }
-                }
-            } 
-            return linha;
-        }
-    }
-
     public ArrayList<String> getLinhaOriginal(int index) {
         ArrayList<String> linha = new ArrayList<String>();
         if(this.getColunaCount() == 1){
@@ -396,6 +375,40 @@ public class Info {
         this.metodologiaAplicada = metodologiaAplicada;
     }
 
+//    public Date getDataInicial() {
+//        return dataInicial;
+//    }
+//    
+//    public String getDataInicialBR() {
+//        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
+//        return dateFormate.format(dataInicial).toString();
+//    }
+
+//    public void setDataInicial(){
+//        if((!lista.isEmpty()) || (lista != null)){
+//            this.dataInicial = lista.get(0).getData();
+//        }else{
+//            this.dataInicial = null;
+//        }
+//    }
+//
+//    public Date getDataFinal() {
+//        return dataFinal;
+//    }
+//    
+//    public String getDataFinalBR() {
+//        SimpleDateFormat dateFormate = new SimpleDateFormat("dd/MM/yyyy");
+//        return dateFormate.format(dataFinal).toString();
+//    }
+    
+//    public void setDataFinal() {
+//        if((!lista.isEmpty()) || (lista != null)){
+//            this.dataFinal = lista.get(lista.size()-1).getData();
+//        }else{
+//            this.dataFinal = null;
+//        }
+//    }
+
     public List<Float> subLista(int coluna, int mes, int ano){
         
         List<Dados> subDados = this.getLista(coluna).getSubDados(mes, ano);
@@ -408,7 +421,7 @@ public class Info {
 //                System.out.println(Float.parseFloat(subDados.get(i).getValor()));
             }
         }              
-//                System.out.println(subLista);
+                System.out.println(subLista);
         return subLista;
     }
 
@@ -425,7 +438,7 @@ public class Info {
 //                System.out.println(Float.parseFloat(subDados.get(i).getValor()));
             }
         }              
-//        System.out.println(subLista);
+        System.out.println(subLista);
         return subLista;
     }
 

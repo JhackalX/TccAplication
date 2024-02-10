@@ -375,18 +375,15 @@ public class VisaoGeralDecorator {
         this.jTextAreaAjuda1.setColumns(20);
         this.jTextAreaAjuda1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         this.jTextAreaAjuda1.setRows(5);
-        this.jTextAreaAjuda1.setText(" p = 1 - (6 x ∑ (d²) ) / (n (n² - 1) )\n "
-                                    + "p = coef. de Spearman\n "
-                                    + "d = diferença entre dois pontos\n "
-                                    + "de cada observação.\n "
-                                    + "n = número da quantidade de \n "
-                                    + "dados.\n p = 1 =>Correlação perfeita\n "
-                                    + "entre variáveis.\n "
-                                    + "p = 0 =>Indepêndencia entre\n variáveis.\n "
-                                    + "p = -1 =>Correlação negativa\n perfeita entre variáveis.");
+        this.jTextAreaAjuda1.setText(" No botão \"Tabela de valores\"\n"
+                                    + " apresenta uma tabela mostrando\n"
+                                    + " dados como coef. de Sperman e\n"
+                                    + " Tendencia que são usados para\n"
+                                    + " validar os dados a serem\n"
+                                    + " submetidos a imputação.");
         this.jTextAreaAjuda1.setBorder(BorderFactory.createTitledBorder(
                                                             null,
-                                                            "Coef. de Spearman:",
+                                                            "Tabela de valores:",
                                                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                                                       javax.swing.border.TitledBorder.DEFAULT_POSITION, 
                                                                 new java.awt.Font("Tahoma", 1, 12))); // NOI18N
@@ -395,16 +392,14 @@ public class VisaoGeralDecorator {
         this.jTextAreaAjuda2.setColumns(20);
         this.jTextAreaAjuda2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         this.jTextAreaAjuda2.setRows(5);
-        this.jTextAreaAjuda2.setText(" T = ∑ (d²)\n d = (R - P) : diferença entre dois \n "
-                                   + "pontos de cada observação.\n\n "
-                                   + "(OBS: neste caso foi adotado um \n "
-                                   + "sistema de Ranking de valores do \n "
-                                   + "menor para o maior e Periodos \n "
-                                   + "espaçados igualmente entre os \n "
-                                   + "valores)\n R = ranking\n P = periodo");
+        this.jTextAreaAjuda2.setText(" Refresh: Atualiza a tabela com\n"
+                                   + " os dadados selecionados na aba\n"
+                                   + " anterior.\n\n"
+                                   + " Avançar: avança para a proxima aba.\n\n"
+                                   + " Voltar: retorna a aba anterior.");
         this.jTextAreaAjuda2.setBorder(BorderFactory.createTitledBorder(
                                                             null, 
-                                                            "Tendência:", 
+                                                            "Ajuda:", 
                                                    javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION,
                                                       javax.swing.border.TitledBorder.DEFAULT_POSITION,
                                                                 new java.awt.Font("Tahoma", 1, 12))); // NOI18N
@@ -579,11 +574,71 @@ public class VisaoGeralDecorator {
                 .addContainerGap())
         );  
         
+//        this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
+//        GroupLayout detalhesLayout = new GroupLayout(this.jPanelDetalhes);
+//        this.jPanelDetalhes.setLayout(detalhesLayout);
+// 
+//        detalhesLayout.setHorizontalGroup(
+//            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addContainerGap()
+//                .addComponent(this.jTabbedPaneColunas, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                .addGroup(detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                    .addComponent(this.jPanelBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                .addContainerGap())
+//        );
+//        detalhesLayout.setVerticalGroup(
+//            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addGap(0, 0, 1)
+//                .addComponent(this.jTabbedPaneColunas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addContainerGap(0, Short.MAX_VALUE))
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addContainerGap())
+//        );
 
         this.jScrollPaneDetalhes.setViewportView(this.jPanelDetalhes);
 
     }
 
+//    private void panelDetalhes(){
+//        
+//        this.panelBtn();
+//        this.StatusTab(this.ctrlGeral.getListaClassificacoes());
+//        
+//        this.jPanelDetalhes.setBackground(new java.awt.Color(255, 255, 255));
+//        GroupLayout detalhesLayout = new GroupLayout(this.jPanelDetalhes);
+//        this.jPanelDetalhes.setLayout(detalhesLayout);
+// 
+//        detalhesLayout.setHorizontalGroup(
+//            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addContainerGap()
+//                .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                .addGroup(detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(this.jPanelBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                .addContainerGap())
+//        );
+//        detalhesLayout.setVerticalGroup(
+//            detalhesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addGap(0, 0, 1)
+//                .addComponent(this.jPanelAjuda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addContainerGap(0, Short.MAX_VALUE))
+//            .addGroup(detalhesLayout.createSequentialGroup()
+//                .addComponent(this.jPanelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                .addContainerGap())
+//        );
+//
+//        this.jScrollPaneDetalhes.setViewportView(this.jPanelDetalhes);
+//
+//    }
     
     //Configura o painel de fundo da aba
     private void panelFundo(){
@@ -596,7 +651,7 @@ public class VisaoGeralDecorator {
     private void setTableBActionPerformed(ActionEvent evt) {
         
 
-//        System.out.println("Numero de colunas:" + this.ctrlInterface.getColuna().size());
+        System.out.println("Numero de colunas:" + this.ctrlInterface.getColuna().size());
         this.list = null;
         this.list = (ArrayList<Employee>) this.ctrlInterface.gerarDadosTabelaOriginal();
         

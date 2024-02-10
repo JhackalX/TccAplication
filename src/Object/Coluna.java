@@ -91,7 +91,7 @@ public class Coluna {
     }
 
     public void atualizaValor(List<Float> valor) {
-//        System.out.println(this.titulo);
+        System.out.println(this.titulo);
         for(int index = 0; index < valor.size(); index++){
             if(!Objects.equals(valor.get(index), this.dados.get(index).getValorF())){
 //                System.out.println(valor.get(index));

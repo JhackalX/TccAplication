@@ -244,9 +244,13 @@ public class RecMetodologiaDecorator {
         this.jTextAreaAjuda.setColumns(20);
         this.jTextAreaAjuda.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         this.jTextAreaAjuda.setRows(5);
+        this.jTextAreaAjuda.setText(" Escolha os dados que queira restaurar na tabela abaixo"
+                + "\n vinda do banco de dados.\n"
+                + "\n Os dados de \"info\" serão preenchida e alterada "
+                + "\n automaticamente.\n"
+                + "\n Selecione o ano de estudo e clieque em \"Avançar\".\n"
+                + "\n Clique em \"Excluir\" para excluir uma estação da lista.");
 
-
-        
         jPanelAjudaLayout.setHorizontalGroup(
             jPanelAjudaLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAjudaLayout.createSequentialGroup()
